@@ -152,6 +152,8 @@
     <button class="ghost" id="bvBack">← もどる</button>
     <strong id="bvTitle" style="font-size:15px"></strong>
     <span class="sp"></span>
+    <button id="bvEdit">✏️ 編集</button>
+    <button id="bvSave" class="primary hidden">保存</button>
     <button id="bvAnalyze">AIで解析する</button>
   </div>
   <div id="bvMeta" class="muted" style="margin:2px 0 12px"></div>
@@ -306,10 +308,12 @@ function renderBooks(){
 }
 
 /* ===== 教材の詳細プレビュー（ページ＋AI解析結果の確認） ===== */
-let viewingBook = null;
+let viewingBook = null, bvUnits = [], bvOthers = [], bvFileId = null, bvEditing = false;
 function kindLabel(k){ return k==='figure'?'図で答える':(k==='writing'?'記述':'答えあり'); }
+function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function setEditUI(){ $('bvEdit').classList.toggle('hidden', bvEditing); $('bvSave').classList.toggle('hidden', !bvEditing); }
 async function openBookDetail(book){
-  viewingBook = book;
+  viewingBook = book; bvEditing = false; setEditUI();
   $('bvTitle').textContent = book.title;
   $('bvMeta').textContent = `${book.subject||''}・${TYPE_LABEL[book.type]||book.type}・もんだい${book.sourcePageIds?.length||0}ページ${book.answerPageIds?.length?`・こたえ${book.answerPageIds.length}ページ`:''}`;
   $('bvAnalyze').textContent = book.structured ? 'AIで解析しなおす' : 'AIで解析する';
@@ -317,25 +321,69 @@ async function openBookDetail(book){
   $('bvUnits').innerHTML = '<div class="muted">読み込み中…</div>';
   $('bookView').classList.remove('hidden');
   try{
-    let us;
-    if(libFolderId){ const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]}); us = (uj.data.units||[]).filter(u=>u.bookId===book.id); }
-    else { us = (window.__demoUnits&&window.__demoUnits[book.id]) || []; }
-    renderBookUnits(us);
+    if(libFolderId){ const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]}); bvFileId = uj.id; const all = uj.data.units||[]; bvUnits = all.filter(u=>u.bookId===book.id); bvOthers = all.filter(u=>u.bookId!==book.id); }
+    else { bvFileId = null; bvUnits = JSON.parse(JSON.stringify((window.__demoUnits&&window.__demoUnits[book.id])||[])); bvOthers = []; }
+    renderBookUnits();
   }catch(e){ $('bvUnits').innerHTML = '<div class="err">構造の読込に失敗: '+e.message+'</div>'; }
 }
-function renderBookUnits(us){
-  if(!us.length){ $('bvUnits').innerHTML = '<div class="muted">まだ解析されていません。上の「AIで解析する」を押すと、大問・小問・設問・解答・採点ポイントが読み取られ、ここに表示されます。</div>'; return; }
+function renderBookUnits(){
+  const us = bvUnits;
+  if(!us.length && !bvEditing){ $('bvUnits').innerHTML = '<div class="muted">まだ解析されていません。上の「AIで解析する」を押すと、大問・小問・設問・解答・採点ポイントが読み取られ、ここに表示されます。</div>'; return; }
+  if(!bvEditing){
+    $('bvUnits').innerHTML = us.map((u,di)=>`
+      <div class="ccard" style="margin-bottom:10px">
+        <div class="cname">大問${di+1}：${esc(u.label)} <span class="cmeta">${esc(u.category)} ${(u.tags||[]).join('・')}</span></div>
+        ${u.items.map((it,si)=>`
+          <div style="border-top:1px solid var(--line);padding:8px 0;font-size:14px">
+            <b>${esc(it.label)||('('+(si+1)+')')}</b>${it.question?('　'+esc(it.question)):''}
+            ${it.evidence?`<div style="font-size:12px;color:#33536b;background:#eef4f9;border-radius:6px;padding:5px 8px;margin:4px 0">📖 本文の手がかり：${esc(it.evidence)}</div>`:''}
+            <div style="color:${(typeof it.conf==='number'&&it.conf<0.6)?'var(--hard)':'var(--ink)'}">✓ こたえ：${esc(it.answer)||'（読み取れず）'} <span class="cmeta">[${kindLabel(it.kind)}${(typeof it.conf==='number'&&it.conf<0.6)?'・要確認':''}]</span></div>
+            ${(it.points&&it.points.length)?`<div class="cmeta">採点ポイント：${it.points.map(p=>'・'+esc(p)).join(' ')}</div>`:''}
+          </div>`).join('')}
+      </div>`).join('');
+    return;
+  }
+  // 編集モード
   $('bvUnits').innerHTML = us.map((u,di)=>`
     <div class="ccard" style="margin-bottom:10px">
-      <div class="cname">大問${di+1}：${u.label||''} <span class="cmeta">${u.category||''} ${(u.tags||[]).join('・')}</span></div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
+        <b style="white-space:nowrap">大問${di+1}</b>
+        <input type="text" value="${esc(u.label)}" oninput="window.__bvSet(${di},-1,'label',this.value)" placeholder="大問のなまえ" style="flex:1;width:auto;min-width:0">
+        <button class="danger" onclick="window.__bvDelUnit(${di})">大問を消す</button>
+      </div>
       ${u.items.map((it,si)=>`
-        <div style="border-top:1px solid var(--line);padding:8px 0;font-size:14px">
-          <b>${it.label||('('+(si+1)+')')}</b>${it.question?('　'+it.question):''}
-          ${it.evidence?`<div style="font-size:12px;color:#33536b;background:#eef4f9;border-radius:6px;padding:5px 8px;margin:4px 0">📖 本文の手がかり：${it.evidence}</div>`:''}
-          <div style="color:${(typeof it.conf==='number'&&it.conf<0.6)?'var(--hard)':'var(--ink)'}">✓ こたえ：${it.answer||'（読み取れず）'} <span class="cmeta">[${kindLabel(it.kind)}${(typeof it.conf==='number'&&it.conf<0.6)?'・要確認':''}]</span></div>
-          ${(it.points&&it.points.length)?`<div class="cmeta">採点ポイント：${it.points.map(p=>'・'+p).join(' ')}</div>`:''}
+        <div style="border-top:1px solid var(--line);padding:8px 0">
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="text" value="${esc(it.label)}" oninput="window.__bvSet(${di},${si},'label',this.value)" placeholder="番号" style="width:64px">
+            <input type="text" value="${esc(it.question)}" oninput="window.__bvSet(${di},${si},'question',this.value)" placeholder="設問（任意）" style="flex:1;width:auto;min-width:0">
+            <button class="danger" onclick="window.__bvDelItem(${di},${si})">✕</button>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-top:5px">
+            <span class="muted" style="font-size:12px;white-space:nowrap">こたえ</span>
+            <input type="text" value="${esc(it.answer)}" oninput="window.__bvSet(${di},${si},'answer',this.value)" placeholder="正解" style="flex:1;width:auto;min-width:0">
+            <select onchange="window.__bvSet(${di},${si},'kind',this.value)" style="width:auto">
+              <option value="value"${it.kind==='value'?' selected':''}>答えあり</option>
+              <option value="writing"${it.kind==='writing'?' selected':''}>記述</option>
+              <option value="figure"${it.kind==='figure'?' selected':''}>図で答える</option>
+            </select>
+          </div>
         </div>`).join('')}
-    </div>`).join('');
+      <button onclick="window.__bvAddItem(${di})" style="margin-top:6px">＋ 小問を追加</button>
+    </div>`).join('') + `<button class="primary" onclick="window.__bvAddUnit()" style="margin-bottom:30px">＋ 大問を追加</button>`;
+}
+window.__bvSet = (di,si,k,v)=>{ if(si<0) bvUnits[di][k]=v; else bvUnits[di].items[si][k]=v; };
+window.__bvDelItem = (di,si)=>{ bvUnits[di].items.splice(si,1); renderBookUnits(); };
+window.__bvDelUnit = (di)=>{ if(confirm('この大問を消しますか？')){ bvUnits.splice(di,1); renderBookUnits(); } };
+window.__bvAddItem = (di)=>{ bvUnits[di].items.push({label:'',question:'',evidence:'',answer:'',kind:'value',conf:1,points:[]}); renderBookUnits(); };
+window.__bvAddUnit = ()=>{ bvUnits.push({ id:newId('u'), bookId:viewingBook.id, label:'', category:'', tags:[], pageId:(viewingBook.sourcePageIds&&viewingBook.sourcePageIds[0])||'', refPages:[], items:[{label:'',question:'',evidence:'',answer:'',kind:'value',conf:1,points:[]}] }); renderBookUnits(); };
+async function saveBookUnits(){
+  bvUnits = bvUnits.filter(u => (u.items||[]).length);
+  if(libFolderId && bvFileId){
+    try{ await writeJSON(bvFileId, { units:[...bvOthers, ...bvUnits] }); }catch(e){ alert('保存に失敗: '+e.message); return; }
+    viewingBook.structured = bvUnits.length>0; viewingBook.unitCount = bvUnits.length;
+    try{ await writeJSON(booksFileId, { books }); }catch(e){}
+  } else if(window.__demoUnits){ window.__demoUnits[viewingBook.id] = bvUnits; }
+  bvEditing = false; setEditUI(); renderBookUnits(); renderBooks(); toast('保存しました');
 }
 async function loadBookPages(){
   const b = viewingBook; if(!b) return;
@@ -521,9 +569,11 @@ $('bImpGo').onclick = prepareImport;
 $('bImpCancel').onclick = () => { if(!importing) $('bookDlg').close(); };
 $('pvGo').onclick = confirmImport;
 $('pvCancel').onclick = () => { if(!importing){ $('importPreview').classList.add('hidden'); pend = null; } };
-$('bvBack').onclick = () => $('bookView').classList.add('hidden');
+$('bvBack').onclick = () => { bvEditing=false; setEditUI(); $('bookView').classList.add('hidden'); };
 $('bvAnalyze').onclick = () => { const b = viewingBook; $('bookView').classList.add('hidden'); analyzeBook(b); };
 $('bvLoadPages').onclick = loadBookPages;
+$('bvEdit').onclick = () => { bvEditing = true; setEditUI(); renderBookUnits(); };
+$('bvSave').onclick = saveBookUnits;
 $('bSettings').onclick = openSettings;
 $('sSave').onclick = saveSettings;
 $('sCancel').onclick = () => $('setDlg').close();
