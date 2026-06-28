@@ -178,6 +178,7 @@
     <button id="bvEdit">✏️ 編集</button>
     <button id="bvSave" class="primary hidden">保存</button>
     <button id="bvImport">📥 取込</button>
+    <button id="bvImportUrl">🌐 URL取込</button>
     <input type="file" id="bvImportFile" accept="application/json,.json" style="display:none">
     <button id="bvAnalyze">AIで解析する</button>
   </div>
@@ -662,25 +663,31 @@ $('bvAnalyze').onclick = () => { const b = viewingBook; $('bookView').classList.
 $('bvLoadPages').onclick = loadBookPages;
 $('bvEdit').onclick = () => { bvEditing = true; setEditUI(); renderBookUnits(); };
 $('bvSave').onclick = saveBookUnits;
+async function applyImport(data){
+  const newUnits = (data.units||[]).map(u=>({ ...u, bookId: viewingBook.id }));
+  if(!newUnits.length){ alert('units が空です'); return; }
+  if(libFolderId){
+    const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]});
+    const others = (uj.data.units||[]).filter(u=>u.bookId!==viewingBook.id);
+    await writeJSON(uj.id, { units:[...others, ...newUnits] });
+    viewingBook.structured = true; viewingBook.unitCount = newUnits.length;
+    await writeJSON(booksFileId, { books });
+    bvFileId = uj.id; bvOthers = others;
+  }
+  bvUnits = newUnits; bvEditing = false; setEditUI(); renderBookUnits(); renderBooks();
+  toast(`取込みました（${newUnits.length}問）`);
+}
 $('bvImport').onclick = () => $('bvImportFile').click();
 $('bvImportFile').onchange = async (e) => {
   const f = e.target.files[0]; if(!f) return;
-  try{
-    const data = JSON.parse(await f.text());
-    const newUnits = (data.units||[]).map(u=>({ ...u, bookId: viewingBook.id }));
-    if(!newUnits.length){ alert('units が空です'); return; }
-    if(libFolderId){
-      const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]});
-      const others = (uj.data.units||[]).filter(u=>u.bookId!==viewingBook.id);
-      await writeJSON(uj.id, { units:[...others, ...newUnits] });
-      viewingBook.structured = true; viewingBook.unitCount = newUnits.length;
-      await writeJSON(booksFileId, { books });
-      bvFileId = uj.id; bvOthers = others;
-    }
-    bvUnits = newUnits; bvEditing = false; setEditUI(); renderBookUnits(); renderBooks();
-    toast(`取込みました（${newUnits.length}問）`);
-  }catch(err){ alert('取込失敗: ' + err.message); }
+  try{ await applyImport(JSON.parse(await f.text())); }catch(err){ alert('取込失敗: ' + err.message); }
   e.target.value = '';
+};
+$('bvImportUrl').onclick = async () => {
+  const url = prompt('取込むJSONのURL（私が渡したリンクを貼ってください）');
+  if(!url) return;
+  try{ const r = await fetch(url.trim()); if(!r.ok) throw new Error('HTTP '+r.status); await applyImport(await r.json()); }
+  catch(err){ alert('URL取込失敗: ' + err.message); }
 };
 $('lightbox').onclick = () => $('lightbox').classList.add('hidden');
 $('bvUnits').addEventListener('click', (e)=>{ const t=e.target; if(t && t.classList && t.classList.contains('thumb') && t.dataset.full) openLightbox(t.dataset.full); });
