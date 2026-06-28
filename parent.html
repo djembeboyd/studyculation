@@ -522,7 +522,7 @@ async function analyzeBook(book){
     }
     // 2) 解答の読み取り
     if(book.answerPageIds?.length){
-      const CH2 = 3;
+      const CH2 = 1;
       for(let off=0; off<book.answerPageIds.length; off+=CH2){
         const grp = book.answerPageIds.slice(off, off+CH2);
         aiBanner(`✓ 答えを読み取り中… ${Math.min(off+CH2, book.answerPageIds.length)}/${book.answerPageIds.length}ページ`);

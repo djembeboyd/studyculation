@@ -1,7 +1,7 @@
 // PDF・画像ファイルを「ダウンスケールしたJPEG（base64）ページ」に変換する。
 // pdf.js はホスト側(parent.html)で読み込み、workerSrc を設定しておくこと（window.pdfjsLib）。
 
-const MAX_EDGE = 2000;   // 長辺の上限px（密集した紙面の可読性を確保）
+const MAX_EDGE = 2400;   // 長辺の上限px（密集した紙面でも答えを正確に読むため高め）
 const QUALITY = 0.8;     // JPEG品質
 
 function canvasToJpeg(canvas) {
