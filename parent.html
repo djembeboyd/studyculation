@@ -54,6 +54,10 @@
   .pvthumb .pnum{position:absolute;top:3px;left:4px;font-size:11px;background:rgba(20,30,50,.6);color:#fff;padding:0 6px;border-radius:6px}
   .pvthumb.ex{opacity:.45}
   .pvthumb.ex::after{content:'除外';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--hard);background:rgba(255,255,255,.45)}
+  #cropDlg{z-index:80}
+  .crop-wrap{position:relative;display:block;width:100%;max-width:760px;touch-action:none;-webkit-user-select:none;user-select:none}
+  .crop-wrap img{display:block;width:100%}
+  .crop-box{position:absolute;border:2px solid var(--accent);background:rgba(255,140,66,.18);box-sizing:border-box;pointer-events:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
@@ -146,6 +150,19 @@
     </div>
   </form>
 </dialog>
+
+<div id="cropDlg" class="pv hidden">
+  <div class="pvhead">
+    <button class="ghost" id="cropCancel">やめる</button>
+    <strong style="font-size:15px">解答の図の はんいを ドラッグで かこってね</strong>
+    <span class="sp"></span>
+    <button class="ghost" id="cropPrev">← 前</button>
+    <span id="cropPageLbl" class="muted"></span>
+    <button class="ghost" id="cropNext">次 →</button>
+    <button class="primary" id="cropOk">決定</button>
+  </div>
+  <div class="crop-wrap" id="cropWrap"><img id="cropImg" alt=""><div class="crop-box hidden" id="cropBox"></div></div>
+</div>
 
 <div id="bookView" class="pv hidden">
   <div class="pvhead">
@@ -367,6 +384,7 @@ function renderBookUnits(){
               <option value="figure"${it.kind==='figure'?' selected':''}>図で答える</option>
             </select>
           </div>
+          <div style="margin-top:6px"><button onclick="window.__bvCrop(${di},${si})">📐 解答の図のはんい</button>${it.figRef&&it.figRef.assetId?' <span class="cmeta">設定済み</span>':''}</div>
         </div>`).join('')}
       <button onclick="window.__bvAddItem(${di})" style="margin-top:6px">＋ 小問を追加</button>
     </div>`).join('') + `<button class="primary" onclick="window.__bvAddUnit()" style="margin-bottom:30px">＋ 大問を追加</button>`;
@@ -385,6 +403,37 @@ async function saveBookUnits(){
   } else if(window.__demoUnits){ window.__demoUnits[viewingBook.id] = bvUnits; }
   bvEditing = false; setEditUI(); renderBookUnits(); renderBooks(); toast('保存しました');
 }
+
+/* ===== 解答の図の範囲をドラッグで指定 ===== */
+let cropTarget = null, cropPages = [], cropIdx = 0, cropBox = null, cropDrawing = false, cropStart = null;
+window.__bvCrop = (di,si)=>openCrop(di,si);
+async function openCrop(di,si){
+  cropTarget = { di, si };
+  const it = bvUnits[di].items[si];
+  cropPages = (viewingBook.answerPageIds&&viewingBook.answerPageIds.length) ? viewingBook.answerPageIds.slice() : (viewingBook.sourcePageIds||[]).slice();
+  if(!cropPages.length){ alert('このきょうざいには解答ページがありません'); return; }
+  cropIdx = (it.figRef&&it.figRef.assetId&&cropPages.indexOf(it.figRef.assetId)>=0) ? cropPages.indexOf(it.figRef.assetId) : 0;
+  cropBox = (it.figRef&&it.figRef.box) ? { ...it.figRef.box } : null;
+  $('cropDlg').classList.remove('hidden');
+  await loadCropPage();
+}
+async function loadCropPage(){
+  $('cropPageLbl').textContent = `${cropIdx+1}/${cropPages.length}`;
+  const img = $('cropImg');
+  img.onload = drawCropBox;
+  img.src = libFolderId ? ('data:image/jpeg;base64,' + await readBase64(cropPages[cropIdx])) : (window.__assetOverride||'');
+}
+function drawCropBox(){
+  const b = $('cropBox'), img = $('cropImg');
+  if(!cropBox){ b.classList.add('hidden'); return; }
+  b.classList.remove('hidden');
+  b.style.left = (cropBox.x*img.clientWidth)+'px'; b.style.top = (cropBox.y*img.clientHeight)+'px';
+  b.style.width = (cropBox.w*img.clientWidth)+'px'; b.style.height = (cropBox.h*img.clientHeight)+'px';
+}
+function cropPt(e){ const r=$('cropImg').getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return { x:Math.min(1,Math.max(0,(t.clientX-r.left)/r.width)), y:Math.min(1,Math.max(0,(t.clientY-r.top)/r.height)) }; }
+function cropDown(e){ e.preventDefault(); cropDrawing=true; cropStart=cropPt(e); cropBox={x:cropStart.x,y:cropStart.y,w:0,h:0}; drawCropBox(); }
+function cropMove(e){ if(!cropDrawing)return; e.preventDefault(); const p=cropPt(e); cropBox={ x:Math.min(p.x,cropStart.x), y:Math.min(p.y,cropStart.y), w:Math.abs(p.x-cropStart.x), h:Math.abs(p.y-cropStart.y) }; drawCropBox(); }
+function cropUp(){ cropDrawing=false; }
 async function loadBookPages(){
   const b = viewingBook; if(!b) return;
   $('bvLoadPages').style.display = 'none';
@@ -574,6 +623,20 @@ $('bvAnalyze').onclick = () => { const b = viewingBook; $('bookView').classList.
 $('bvLoadPages').onclick = loadBookPages;
 $('bvEdit').onclick = () => { bvEditing = true; setEditUI(); renderBookUnits(); };
 $('bvSave').onclick = saveBookUnits;
+$('cropCancel').onclick = () => { $('cropDlg').classList.add('hidden'); cropTarget=null; };
+$('cropPrev').onclick = async () => { if(cropIdx>0){ cropIdx--; cropBox=null; await loadCropPage(); } };
+$('cropNext').onclick = async () => { if(cropIdx<cropPages.length-1){ cropIdx++; cropBox=null; await loadCropPage(); } };
+$('cropOk').onclick = () => {
+  if(!cropTarget) return;
+  if(!cropBox || cropBox.w<0.01 || cropBox.h<0.01){ alert('はんいをドラッグでかこってね'); return; }
+  const it = bvUnits[cropTarget.di].items[cropTarget.si];
+  it.figRef = { assetId: cropPages[cropIdx], box: cropBox }; it.kind = 'figure';
+  $('cropDlg').classList.add('hidden'); cropTarget=null; renderBookUnits(); toast('解答の図のはんいを設定しました');
+};
+(()=>{ const im=$('cropImg');
+  im.addEventListener('pointerdown',cropDown); im.addEventListener('pointermove',cropMove); window.addEventListener('pointerup',cropUp);
+  window.addEventListener('resize',()=>{ if(!$('cropDlg').classList.contains('hidden'))drawCropBox(); });
+})();
 $('bSettings').onclick = openSettings;
 $('sSave').onclick = saveSettings;
 $('sCancel').onclick = () => $('setDlg').close();
@@ -593,6 +656,7 @@ if(new URLSearchParams(location.search).has('demo')){
     { id:'b1', title:'論理エンジン 小4', subject:'国語', type:'reading', sourcePageIds:['x','x','x'], answerPageIds:['y'], structured:true },
     { id:'b2', title:'エリート算数 上', subject:'算数', type:'reps', sourcePageIds:new Array(12).fill('x'), answerPageIds:[], structured:false },
   ];
+  window.__assetOverride = 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="700" height="500"><rect width="700" height="500" fill="#fff"/><text x="24" y="44" font-size="20" font-family="sans-serif">解答ページ（デモ）</text><text x="24" y="110" font-size="16" font-family="sans-serif">ためしてみよう1  ① ろく-6  ② いち-1  ③ きゅう-9</text><text x="24" y="160" font-size="16" font-family="sans-serif">ためしてみよう2  ① 8  ② 7</text></svg>');
   window.__demoUnits = { b1: [
     { label:'問1 読解', category:'読解', tags:['気持ち','抜き出し'], items:[
       { label:'(1)', question:'主人公の名前は？', evidence:'むかしむかし、たろうという男の子がいました。', answer:'たろう', kind:'value', conf:0.95, points:[] },
