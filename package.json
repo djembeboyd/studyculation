@@ -1,0 +1,6 @@
+{
+  "name": "kodomo-study",
+  "private": true,
+  "type": "module",
+  "description": "子供勉強管理 — 共有データコア＋親/子2フロント（Google Drive保管）"
+}

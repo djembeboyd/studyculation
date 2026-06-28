@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>こどもページ</title>
+<style>
+  :root{ --bg:#fff7ef; --card:#fff; --line:#f0e2d4; --ink:#3a2a1c; --mut:#a08a76; --accent:#ff8c42; }
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN",sans-serif;margin:0;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
+  .wrap{max-width:820px;margin:0 auto;padding:20px;min-height:100vh}
+  .center{min-height:84vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+  button{font-family:inherit;cursor:pointer;border:none}
+  .big{font-size:20px;font-weight:800;background:var(--accent);color:#fff;padding:16px 30px;border-radius:16px}
+  .muted{color:var(--mut);font-size:15px}
+  .hidden{display:none!important}
+  h2{font-size:22px;text-align:center;margin:10px 0 22px}
+  .people{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;max-width:620px;margin:0 auto}
+  .person{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 12px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .person:active{transform:scale(.97)}
+  .face{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:40px}
+  .pname{font-size:19px;font-weight:800}
+  .lock{font-size:12px;color:var(--mut)}
+  /* PIN */
+  .modal{position:fixed;inset:0;background:rgba(40,28,18,.45);display:flex;align-items:center;justify-content:center;z-index:20}
+  .pin{background:#fff;border-radius:22px;padding:24px;width:300px;text-align:center}
+  .pin h3{margin:0 0 4px}
+  .dots{display:flex;gap:12px;justify-content:center;margin:16px 0}
+  .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--accent)}
+  .dot.on{background:var(--accent)}
+  .keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .keys button{font-size:22px;font-weight:800;padding:14px;border-radius:14px;background:#fff3ea;color:var(--ink)}
+  .keys button.wide{grid-column:span 1}
+  .pinmsg{color:#e8604c;font-size:14px;min-height:18px}
+  /* home */
+  .home-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .home-top .face{width:56px;height:56px;font-size:26px}
+  .home-top .hi{font-size:20px;font-weight:800}
+  .changeBtn{margin-left:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--mut)}
+  .todo{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;text-align:center}
+  .todo .em{font-size:50px}
+  .todo .t{font-size:19px;font-weight:800;margin-top:8px}
+  .err{color:#e8604c;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- 未ログイン（タブレット側で一度だけ） -->
+  <section id="vLogin" class="center">
+    <div style="font-size:54px">🧒</div>
+    <div class="muted">はじめに おうちの人が ログインしてね</div>
+    <button class="big" id="bIn">Googleで ログイン</button>
+    <div class="err" id="loginErr"></div>
+  </section>
+
+  <!-- だれが学習する -->
+  <section id="vSelect" class="hidden">
+    <h2>だれが がくしゅうする？</h2>
+    <div class="people" id="people"></div>
+    <p class="muted" style="text-align:center;margin-top:24px" id="noChild"></p>
+  </section>
+
+  <!-- 子のホーム -->
+  <section id="vHome" class="hidden">
+    <div class="home-top">
+      <div class="face" id="hFace"></div>
+      <div class="hi" id="hHi"></div>
+      <button class="changeBtn" id="bChange">ひとを かえる</button>
+    </div>
+    <div class="todo">
+      <div class="em">📚</div>
+      <div class="t" id="todoMsg">きょうの がくしゅう</div>
+      <p class="muted" id="todoSub"></p>
+    </div>
+  </section>
+</div>
+
+<!-- PIN -->
+<div class="modal hidden" id="pinModal">
+  <div class="pin">
+    <h3 id="pinName"></h3>
+    <div class="muted">あいことば（4けた）</div>
+    <div class="dots" id="dots"></div>
+    <div class="keys" id="keys"></div>
+    <div class="pinmsg" id="pinMsg"></div>
+    <button style="margin-top:12px;background:none;color:var(--mut);font-size:14px" id="pinCancel">やめる</button>
+  </div>
+</div>
+
+<script type="module">
+import { CONFIG } from './core/config.js';
+import { initAuth, requestToken, hasToken } from './core/auth.js';
+import { loadOrInitJSON } from './core/drive.js';
+import { emptyFamily, getChild } from './core/family.js';
+
+const $ = (id)=>document.getElementById(id);
+let family=null, pinTarget=null, pinBuf='';
+
+function initials(n){ return (n||'?').trim().slice(0,1); }
+
+function show(view){ ['vLogin','vSelect','vHome'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+
+function renderPeople(){
+  const wrap=$('people'); wrap.innerHTML='';
+  const kids=family.children||[];
+  $('noChild').textContent = kids.length? '' : 'まだ こどもが とうろくされていません。おうちの人ページで ふやしてね。';
+  kids.forEach(c=>{
+    const b=document.createElement('button'); b.className='person';
+    b.innerHTML=`<div class="face" style="background:${c.color||'#888'}">${initials(c.name)}</div>
+      <div class="pname">${c.name}</div>${c.pin?'<div class="lock">🔒 あいことば</div>':''}`;
+    b.onclick=()=> c.pin ? openPin(c) : enterChild(c);
+    wrap.appendChild(b);
+  });
+}
+
+function enterChild(c){
+  $('hFace').style.background=c.color||'#888'; $('hFace').textContent=initials(c.name);
+  $('hHi').textContent=`${c.name}、がんばろう！`;
+  // 教材未投入なのでプレースホルダ（次の実装で「きょうの復習」を出す）
+  $('todoMsg').textContent='きょうの がくしゅう';
+  $('todoSub').textContent='教材が とうろくされると ここに もんだいが でるよ。';
+  show('vHome');
+}
+
+/* ---- PIN ---- */
+function openPin(c){ pinTarget=c; pinBuf=''; $('pinName').textContent=c.name; $('pinMsg').textContent=''; renderPin(); $('pinModal').classList.remove('hidden'); }
+function closePin(){ $('pinModal').classList.add('hidden'); pinTarget=null; pinBuf=''; }
+function renderPin(){
+  const dots=$('dots'); dots.innerHTML='';
+  for(let i=0;i<4;i++){ const d=document.createElement('div'); d.className='dot'+(i<pinBuf.length?' on':''); dots.appendChild(d); }
+}
+function pinPress(k){
+  if(k==='del'){ pinBuf=pinBuf.slice(0,-1); renderPin(); return; }
+  if(pinBuf.length>=4) return;
+  pinBuf+=k; renderPin();
+  if(pinBuf.length===4){
+    if(pinBuf===pinTarget.pin){ const c=pinTarget; closePin(); enterChild(c); }
+    else { $('pinMsg').textContent='ちがうみたい'; pinBuf=''; setTimeout(renderPin,400); }
+  }
+}
+function buildKeys(){
+  const keys=$('keys'); keys.innerHTML='';
+  ['1','2','3','4','5','6','7','8','9'].forEach(n=>{ const b=document.createElement('button'); b.textContent=n; b.onclick=()=>pinPress(n); keys.appendChild(b); });
+  const sp=document.createElement('span'); keys.appendChild(sp);
+  const z=document.createElement('button'); z.textContent='0'; z.onclick=()=>pinPress('0'); keys.appendChild(z);
+  const del=document.createElement('button'); del.textContent='⌫'; del.onclick=()=>pinPress('del'); keys.appendChild(del);
+}
+
+async function loadSelect(){
+  const { data } = await loadOrInitJSON(CONFIG.ROOT_FOLDER_ID, 'family.json', emptyFamily());
+  family=data; if(!family.children) family.children=[];
+  renderPeople(); show('vSelect');
+}
+
+$('bIn').onclick=async()=>{
+  $('loginErr').textContent='';
+  try{
+    if(!CONFIG.GOOGLE_CLIENT_ID){ $('loginErr').textContent='config.js に CLIENT_ID 未設定'; return; }
+    await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
+    await requestToken({ prompt: hasToken()?'':'consent' });
+    await loadSelect();
+  }catch(e){ $('loginErr').textContent='ログイン失敗: '+e.message; }
+};
+$('bChange').onclick=()=>show('vSelect');
+$('pinCancel').onclick=closePin;
+buildKeys();
+
+// 開発用デモ（?demo=1）：ログイン無しで選択画面を確認
+if(new URLSearchParams(location.search).has('demo')){
+  family={ ...emptyFamily(), children:[
+    { id:'c1', name:'たろう', color:'#ff8c42', pin:'1234', assignedBooks:[] },
+    { id:'c2', name:'はなこ', color:'#37b87c', pin:'', assignedBooks:[] },
+  ]};
+  renderPeople(); show('vSelect');
+}
+</script>
+</body>
+</html>

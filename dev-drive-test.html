@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Drive接続テスト</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+  h1{font-size:20px}
+  button{font-size:15px;padding:9px 14px;border-radius:9px;border:1px solid #ccc;background:#fff;cursor:pointer;margin:4px 6px 4px 0}
+  button.primary{background:#ff8c42;color:#fff;border-color:#ff8c42}
+  #log{white-space:pre-wrap;background:#0e1116;color:#d6e2ee;border-radius:10px;padding:12px;margin-top:14px;font-size:13px;line-height:1.5;min-height:120px}
+  .ok{color:#5dd58b}.err{color:#ff7a7a}.dim{color:#8aa}
+  pre{background:#f3f5f8;border-radius:8px;padding:10px;overflow:auto;font-size:12px}
+</style>
+</head>
+<body>
+<h1>Google Drive 接続テスト</h1>
+<p class="dim">localhost:8753 で開き、テストユーザーのGoogleアカウントでログインしてください。</p>
+<div>
+  <button class="primary" id="bSignin">① ログイン</button>
+  <button id="bRead">② family.json を読む</button>
+  <button id="bAdd">③ 子「テスト太郎」を追加して書き込む</button>
+  <button id="bClean">④ テスト太郎を削除（後始末）</button>
+  <button class="primary" id="bFixMark">⑤ markBy を「親」に直す</button>
+</div>
+<div id="log"></div>
+<h3>family.json の現在値</h3>
+<pre id="dump">（未取得）</pre>
+
+<script type="module">
+import { CONFIG } from './core/config.js';
+import { initAuth, requestToken } from './core/auth.js';
+import { findChild, readJSON, writeJSON, loadOrInitJSON } from './core/drive.js';
+import { emptyFamily, addChild, removeChild } from './core/family.js';
+
+const logEl = document.getElementById('log');
+const dumpEl = document.getElementById('dump');
+function log(msg, cls=''){ const t=new Date().toLocaleTimeString(); logEl.innerHTML += `<span class="${cls}">[${t}] ${msg}</span>\n`; logEl.scrollTop=logEl.scrollHeight; }
+function show(obj){ dumpEl.textContent = JSON.stringify(obj, null, 2); }
+
+let familyFileId = null;
+
+async function ensureFamily(){
+  // ルート直下の family.json を読み込む（無ければ作る）
+  const { id, data } = await loadOrInitJSON(CONFIG.ROOT_FOLDER_ID, 'family.json', emptyFamily());
+  familyFileId = id;
+  return data;
+}
+
+document.getElementById('bSignin').onclick = async () => {
+  try{
+    if(!CONFIG.GOOGLE_CLIENT_ID){ log('config.js に CLIENT_ID が未設定です', 'err'); return; }
+    log('GIS初期化中…');
+    await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
+    log('同意画面を表示します…');
+    await requestToken({ prompt: 'consent' });
+    log('ログイン成功・トークン取得OK', 'ok');
+  }catch(e){ log('ログイン失敗: '+e.message, 'err'); }
+};
+
+document.getElementById('bRead').onclick = async () => {
+  try{
+    log('family.json を読込中…');
+    const data = await ensureFamily();
+    show(data);
+    log(`読込OK（子ども ${data.children?.length ?? 0} 人）`, 'ok');
+  }catch(e){ log('読込失敗: '+e.message, 'err'); }
+};
+
+document.getElementById('bAdd').onclick = async () => {
+  try{
+    const data = await ensureFamily();
+    const { family, child } = addChild(data, { name: 'テスト太郎', color:'#39c' });
+    await writeJSON(familyFileId, family);
+    const after = await readJSON(familyFileId);
+    show(after);
+    log(`追加＆書込OK（id=${child.id}、現在 ${after.children.length} 人）`, 'ok');
+  }catch(e){ log('追加失敗: '+e.message, 'err'); }
+};
+
+document.getElementById('bFixMark').onclick = async () => {
+  try{
+    const data = await ensureFamily();
+    data.settings = data.settings || {};
+    const before = data.settings.markBy;
+    data.settings.markBy = 'parent';
+    await writeJSON(familyFileId, data);
+    const after = await readJSON(familyFileId);
+    show(after);
+    log(`markBy 修正OK（${before} → ${after.settings.markBy}）`, 'ok');
+  }catch(e){ log('修正失敗: '+e.message, 'err'); }
+};
+
+document.getElementById('bClean').onclick = async () => {
+  try{
+    const data = await ensureFamily();
+    let family = data;
+    (data.children||[]).filter(c=>c.name==='テスト太郎').forEach(c=>{ family = removeChild(family, c.id); });
+    await writeJSON(familyFileId, family);
+    const after = await readJSON(familyFileId);
+    show(after);
+    log(`後始末OK（現在 ${after.children.length} 人）`, 'ok');
+  }catch(e){ log('後始末失敗: '+e.message, 'err'); }
+};
+</script>
+</body>
+</html>

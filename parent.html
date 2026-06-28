@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>おうちの人 — 子ども勉強管理</title>
+<style>
+  :root{ --bg:#f6f8fb; --card:#fff; --line:#e4e9f0; --ink:#1f2b39; --mut:#7a8aa0; --accent:#ff8c42; --good:#37b87c; --hard:#e8604c; }
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;margin:0;background:var(--bg);color:var(--ink)}
+  header{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  header h1{font-size:17px;margin:0;font-weight:800}
+  header .sp{flex:1}
+  .who{font-size:12px;color:var(--mut)}
+  main{max-width:780px;margin:0 auto;padding:18px}
+  button{font-family:inherit;font-size:15px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;cursor:pointer}
+  button.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+  button.ghost{background:transparent}
+  button.danger{color:var(--hard);border-color:#f3c9c2}
+  button:disabled{opacity:.5;cursor:default}
+  .center{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+  .muted{color:var(--mut);font-size:14px}
+  .hidden{display:none!important}
+  .sec-title{font-size:13px;color:var(--mut);font-weight:700;margin:6px 2px 10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .ctop{display:flex;align-items:center;gap:10px}
+  .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;flex:none}
+  .cname{font-weight:800;font-size:16px}
+  .cmeta{font-size:12px;color:var(--mut)}
+  .crow{display:flex;gap:8px;margin-top:2px}
+  .crow button{font-size:13px;padding:6px 10px}
+  .addcard{border:2px dashed var(--line);background:transparent;border-radius:14px;display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--mut);font-weight:700;cursor:pointer}
+  .addcard:hover{border-color:var(--accent);color:var(--accent)}
+  dialog{border:none;border-radius:16px;padding:0;max-width:380px;width:92%;box-shadow:0 20px 60px rgba(20,30,50,.25)}
+  .dlg{padding:18px}
+  .dlg h3{margin:0 0 14px;font-size:17px}
+  label{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px}
+  input[type=text],input[type=password]{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;font-family:inherit}
+  .swatches{display:flex;gap:8px;flex-wrap:wrap}
+  .sw{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent}
+  .sw.on{border-color:#1f2b39}
+  .dlg-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1f2b39;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1}
+  .err{color:var(--hard);font-size:13px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<header>
+  <h1>👪 おうちの人ページ</h1>
+  <span class="sp"></span>
+  <span class="who hidden" id="who"></span>
+  <button class="ghost hidden" id="bOut" style="font-size:13px;padding:6px 10px">ログアウト</button>
+</header>
+<main>
+  <!-- 未ログイン -->
+  <section id="vLogin" class="center">
+    <div style="font-size:40px">🔐</div>
+    <div class="muted">教材の登録や子どもの管理を行います。<br>Googleでログインしてください。</div>
+    <button class="primary" id="bIn">Googleでログイン</button>
+    <div class="err" id="loginErr"></div>
+  </section>
+
+  <!-- ログイン後 -->
+  <section id="vHome" class="hidden">
+    <div class="sec-title">こども（学習する人）</div>
+    <div class="grid" id="childGrid"></div>
+  </section>
+</main>
+
+<dialog id="childDlg">
+  <form method="dialog" class="dlg" id="childForm">
+    <h3 id="dlgTitle">こどもを ふやす</h3>
+    <label>なまえ</label>
+    <input type="text" id="fName" maxlength="12" placeholder="例：はなこ" autocomplete="off">
+    <label>いろ</label>
+    <div class="swatches" id="swatches"></div>
+    <label>あいことば（任意・4けた数字）<span class="muted">この子の画面に入るとき用</span></label>
+    <input type="password" id="fPin" inputmode="numeric" maxlength="4" placeholder="なくてもOK" autocomplete="off">
+    <div class="err" id="dlgErr"></div>
+    <div class="dlg-actions">
+      <button type="button" class="ghost" id="bCancel">やめる</button>
+      <button type="button" class="primary" id="bSave">ほぞん</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { CONFIG } from './core/config.js';
+import { initAuth, requestToken, signOut, hasToken } from './core/auth.js';
+import { loadOrInitJSON, writeJSON } from './core/drive.js';
+import { emptyFamily, addChild, removeChild, updateChild } from './core/family.js';
+
+const $ = (id) => document.getElementById(id);
+const COLORS = ['#ff8c42','#37b87c','#4a90d9','#e8604c','#9b59b6','#f0a500','#1ab59b','#ef6aa6'];
+
+let family = null, familyFileId = null, editingId = null, pickedColor = COLORS[0];
+
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+function initials(name){ return (name||'?').trim().slice(0,1); }
+
+async function saveFamily(){ if(!familyFileId) return; /* demoモードはDrive書込なし */ await writeJSON(familyFileId, family); }
+
+function renderChildren(){
+  const grid = $('childGrid'); grid.innerHTML = '';
+  (family.children||[]).forEach(c => {
+    const el = document.createElement('div'); el.className = 'ccard';
+    const n = c.assignedBooks?.length || 0;
+    el.innerHTML = `
+      <div class="ctop">
+        <div class="avatar" style="background:${c.color||'#888'}">${initials(c.name)}</div>
+        <div>
+          <div class="cname">${c.name}</div>
+          <div class="cmeta">${c.pin?'🔒 あいことばあり':'あいことばなし'} ・ 教材 ${n===0?'ぜんぶ':n+'冊'}</div>
+        </div>
+      </div>
+      <div class="crow">
+        <button class="ghost" data-edit="${c.id}">なまえ・いろ</button>
+        <button class="danger" data-del="${c.id}">けす</button>
+      </div>`;
+    grid.appendChild(el);
+  });
+  const add = document.createElement('div'); add.className='addcard'; add.id='addChildBtn';
+  add.textContent = '＋ こどもを ふやす';
+  add.onclick = () => openDlg(null);
+  grid.appendChild(add);
+  grid.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openDlg(b.dataset.edit));
+  grid.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delChild(b.dataset.del));
+}
+
+function renderSwatches(){
+  const wrap = $('swatches'); wrap.innerHTML='';
+  COLORS.forEach(col=>{
+    const s=document.createElement('div'); s.className='sw'+(col===pickedColor?' on':''); s.style.background=col;
+    s.onclick=()=>{ pickedColor=col; renderSwatches(); };
+    wrap.appendChild(s);
+  });
+}
+
+function openDlg(id){
+  editingId = id;
+  const c = id ? family.children.find(x=>x.id===id) : null;
+  $('dlgTitle').textContent = c ? 'なまえ・いろ を なおす' : 'こどもを ふやす';
+  $('fName').value = c ? c.name : '';
+  $('fPin').value = c ? (c.pin||'') : '';
+  pickedColor = c ? (c.color||COLORS[0]) : COLORS[0];
+  $('dlgErr').textContent='';
+  renderSwatches();
+  $('childDlg').showModal();
+  setTimeout(()=>$('fName').focus(),50);
+}
+
+async function saveChild(){
+  const name = $('fName').value.trim();
+  const pin = $('fPin').value.trim();
+  if(!name){ $('dlgErr').textContent='なまえを いれてね'; return; }
+  if(pin && !/^\d{4}$/.test(pin)){ $('dlgErr').textContent='あいことばは 4けたの数字（または空）'; return; }
+  $('bSave').disabled = true;
+  try{
+    if(editingId){ family = updateChild(family, editingId, { name, color:pickedColor, pin }); }
+    else { family = addChild(family, { name, color:pickedColor, pin }).family; }
+    await saveFamily();
+    renderChildren();
+    $('childDlg').close();
+    toast(editingId?'なおしました':'ふやしました');
+  }catch(e){ $('dlgErr').textContent='ほぞん失敗: '+e.message; }
+  finally{ $('bSave').disabled=false; }
+}
+
+async function delChild(id){
+  const c = family.children.find(x=>x.id===id); if(!c) return;
+  if(!confirm(`「${c.name}」を けしますか？\n（この子の学習記録の参照も外れます）`)) return;
+  try{ family = removeChild(family, id); await saveFamily(); renderChildren(); toast('けしました'); }
+  catch(e){ alert('削除失敗: '+e.message); }
+}
+
+async function loadHome(){
+  const { id, data } = await loadOrInitJSON(CONFIG.ROOT_FOLDER_ID, 'family.json', emptyFamily());
+  familyFileId = id; family = data;
+  if(!family.children) family.children = [];
+  $('vLogin').classList.add('hidden');
+  $('vHome').classList.remove('hidden');
+  $('who').classList.remove('hidden'); $('who').textContent = 'ログイン中';
+  $('bOut').classList.remove('hidden');
+  renderChildren();
+}
+
+$('bIn').onclick = async () => {
+  $('loginErr').textContent='';
+  try{
+    if(!CONFIG.GOOGLE_CLIENT_ID){ $('loginErr').textContent='config.js に CLIENT_ID 未設定'; return; }
+    await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
+    await requestToken({ prompt: hasToken()?'':'consent' });
+    await loadHome();
+  }catch(e){ $('loginErr').textContent='ログイン失敗: '+e.message; }
+};
+$('bOut').onclick = () => { signOut(); location.reload(); };
+$('bSave').onclick = saveChild;
+$('bCancel').onclick = () => $('childDlg').close();
+$('fName').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); saveChild(); } });
+
+// 開発用デモ表示（?demo=1）：ログインを飛ばし、Drive書込なしでボードだけ確認できる
+if(new URLSearchParams(location.search).has('demo')){
+  family = { ...emptyFamily(), children:[
+    { id:'c1', name:'たろう', color:COLORS[0], pin:'1234', assignedBooks:[] },
+    { id:'c2', name:'はなこ', color:COLORS[1], pin:'', assignedBooks:['b1','b2'] },
+  ]};
+  familyFileId = null;
+  $('vLogin').classList.add('hidden'); $('vHome').classList.remove('hidden');
+  $('who').classList.remove('hidden'); $('who').textContent='（デモ表示）';
+  renderChildren();
+}
+</script>
+</body>
+</html>
