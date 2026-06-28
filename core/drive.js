@@ -40,6 +40,17 @@ export async function readText(fileId) {
 }
 export async function readJSON(fileId) { return JSON.parse(await readText(fileId)); }
 
+// 画像などバイナリを base64 文字列で取得（Claude vision に渡す用）。
+export async function readBase64(fileId) {
+  const r = await fetch(`${API}/files/${fileId}?alt=media`, { headers: await authHeaders() });
+  if (!r.ok) throw new Error('readBase64 ' + r.status + ' ' + await r.text());
+  const buf = await r.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  let binary = ''; const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  return btoa(binary);
+}
+
 export async function createFolder(name, parentId) {
   const meta = { name, mimeType: 'application/vnd.google-apps.folder', parents: [parentId] };
   const r = await fetch(`${API}/files?fields=id,name,mimeType`, {
