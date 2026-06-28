@@ -147,6 +147,21 @@
   </form>
 </dialog>
 
+<div id="bookView" class="pv hidden">
+  <div class="pvhead">
+    <button class="ghost" id="bvBack">← もどる</button>
+    <strong id="bvTitle" style="font-size:15px"></strong>
+    <span class="sp"></span>
+    <button id="bvAnalyze">AIで解析する</button>
+  </div>
+  <div id="bvMeta" class="muted" style="margin:2px 0 12px"></div>
+  <div class="sec-title">もんだいの構造（AIが読み取った内容・ここで確認できます）</div>
+  <div id="bvUnits"></div>
+  <div class="sec-title" style="margin-top:20px">ページの画像</div>
+  <button id="bvLoadPages" class="ghost" style="margin-bottom:10px">ページ画像をみる</button>
+  <div class="pvgrid" id="bvPages"></div>
+</div>
+
 <div id="importPreview" class="pv hidden">
   <div class="pvhead">
     <button class="ghost" id="pvCancel">やめる</button>
@@ -286,7 +301,52 @@ function renderBooks(){
   add.textContent = '＋ 教材を とうろく';
   add.onclick = openBookDlg;
   grid.appendChild(add);
-  grid.querySelectorAll('[data-ai]').forEach(btn => btn.onclick = () => analyzeBook(books.find(x => x.id === btn.dataset.ai)));
+  grid.querySelectorAll('.ccard').forEach((el,i)=>{ el.style.cursor='pointer'; el.onclick=()=>openBookDetail(books[i]); });
+  grid.querySelectorAll('[data-ai]').forEach(btn => btn.onclick = (e) => { e.stopPropagation(); analyzeBook(books.find(x => x.id === btn.dataset.ai)); });
+}
+
+/* ===== 教材の詳細プレビュー（ページ＋AI解析結果の確認） ===== */
+let viewingBook = null;
+function kindLabel(k){ return k==='figure'?'図で答える':(k==='writing'?'記述':'答えあり'); }
+async function openBookDetail(book){
+  viewingBook = book;
+  $('bvTitle').textContent = book.title;
+  $('bvMeta').textContent = `${book.subject||''}・${TYPE_LABEL[book.type]||book.type}・もんだい${book.sourcePageIds?.length||0}ページ${book.answerPageIds?.length?`・こたえ${book.answerPageIds.length}ページ`:''}`;
+  $('bvAnalyze').textContent = book.structured ? 'AIで解析しなおす' : 'AIで解析する';
+  $('bvPages').innerHTML = ''; $('bvLoadPages').style.display = '';
+  $('bvUnits').innerHTML = '<div class="muted">読み込み中…</div>';
+  $('bookView').classList.remove('hidden');
+  try{
+    let us;
+    if(libFolderId){ const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]}); us = (uj.data.units||[]).filter(u=>u.bookId===book.id); }
+    else { us = (window.__demoUnits&&window.__demoUnits[book.id]) || []; }
+    renderBookUnits(us);
+  }catch(e){ $('bvUnits').innerHTML = '<div class="err">構造の読込に失敗: '+e.message+'</div>'; }
+}
+function renderBookUnits(us){
+  if(!us.length){ $('bvUnits').innerHTML = '<div class="muted">まだ解析されていません。上の「AIで解析する」を押すと、大問・小問・設問・解答・採点ポイントが読み取られ、ここに表示されます。</div>'; return; }
+  $('bvUnits').innerHTML = us.map((u,di)=>`
+    <div class="ccard" style="margin-bottom:10px">
+      <div class="cname">大問${di+1}：${u.label||''} <span class="cmeta">${u.category||''} ${(u.tags||[]).join('・')}</span></div>
+      ${u.items.map((it,si)=>`
+        <div style="border-top:1px solid var(--line);padding:8px 0;font-size:14px">
+          <b>${it.label||('('+(si+1)+')')}</b>${it.question?('　'+it.question):''}
+          ${it.evidence?`<div style="font-size:12px;color:#33536b;background:#eef4f9;border-radius:6px;padding:5px 8px;margin:4px 0">📖 本文の手がかり：${it.evidence}</div>`:''}
+          <div style="color:${(typeof it.conf==='number'&&it.conf<0.6)?'var(--hard)':'var(--ink)'}">✓ こたえ：${it.answer||'（読み取れず）'} <span class="cmeta">[${kindLabel(it.kind)}${(typeof it.conf==='number'&&it.conf<0.6)?'・要確認':''}]</span></div>
+          ${(it.points&&it.points.length)?`<div class="cmeta">採点ポイント：${it.points.map(p=>'・'+p).join(' ')}</div>`:''}
+        </div>`).join('')}
+    </div>`).join('');
+}
+async function loadBookPages(){
+  const b = viewingBook; if(!b) return;
+  $('bvLoadPages').style.display = 'none';
+  const grid = $('bvPages'); grid.innerHTML = '';
+  const ids = [...(b.sourcePageIds||[]), ...(b.answerPageIds||[])];
+  if(!libFolderId){ grid.innerHTML = '<div class="muted">（デモではページ画像は表示しません）</div>'; return; }
+  for(let i=0;i<ids.length;i++){
+    const d = document.createElement('div'); d.className='pvthumb'; d.innerHTML = `<span class="pnum">${i+1}</span>`; grid.appendChild(d);
+    try{ const im = new Image(); im.src = 'data:image/jpeg;base64,' + await readBase64(ids[i]); d.appendChild(im); }catch(e){}
+  }
 }
 
 /* ===== AI設定（APIキー：この端末のlocalStorageのみ） ===== */
@@ -458,6 +518,9 @@ $('bImpGo').onclick = prepareImport;
 $('bImpCancel').onclick = () => { if(!importing) $('bookDlg').close(); };
 $('pvGo').onclick = confirmImport;
 $('pvCancel').onclick = () => { if(!importing){ $('importPreview').classList.add('hidden'); pend = null; } };
+$('bvBack').onclick = () => $('bookView').classList.add('hidden');
+$('bvAnalyze').onclick = () => { const b = viewingBook; $('bookView').classList.add('hidden'); analyzeBook(b); };
+$('bvLoadPages').onclick = loadBookPages;
 $('bSettings').onclick = openSettings;
 $('sSave').onclick = saveSettings;
 $('sCancel').onclick = () => $('setDlg').close();
@@ -477,6 +540,12 @@ if(new URLSearchParams(location.search).has('demo')){
     { id:'b1', title:'論理エンジン 小4', subject:'国語', type:'reading', sourcePageIds:['x','x','x'], answerPageIds:['y'], structured:true },
     { id:'b2', title:'エリート算数 上', subject:'算数', type:'reps', sourcePageIds:new Array(12).fill('x'), answerPageIds:[], structured:false },
   ];
+  window.__demoUnits = { b1: [
+    { label:'問1 読解', category:'読解', tags:['気持ち','抜き出し'], items:[
+      { label:'(1)', question:'主人公の名前は？', evidence:'むかしむかし、たろうという男の子がいました。', answer:'たろう', kind:'value', conf:0.95, points:[] },
+      { label:'(2)', question:'気持ちを書きなさい。', evidence:'たろうはとてもうれしくて、とびはねた。', answer:'うれしい気持ち', kind:'writing', conf:0.8, points:['「うれしい」等の前向きな気持ち','とびはねた様子から'] },
+    ]},
+  ]};
   renderChildren(); renderBooks();
 }
 
