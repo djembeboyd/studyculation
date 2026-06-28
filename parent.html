@@ -36,7 +36,8 @@
   .dlg{padding:18px}
   .dlg h3{margin:0 0 14px;font-size:17px}
   label{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px}
-  input[type=text],input[type=password]{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;font-family:inherit}
+  input[type=text],input[type=password],select{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;font-family:inherit;background:#fff}
+  input[type=file]{width:100%;font-size:14px;margin-top:2px}
   .swatches{display:flex;gap:8px;flex-wrap:wrap}
   .sw{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent}
   .sw.on{border-color:#1f2b39}
@@ -45,6 +46,8 @@
   .toast.show{opacity:1}
   .err{color:var(--hard);font-size:13px;white-space:pre-wrap}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 </head>
 <body>
 <header>
@@ -66,6 +69,8 @@
   <section id="vHome" class="hidden">
     <div class="sec-title">こども（学習する人）</div>
     <div class="grid" id="childGrid"></div>
+    <div class="sec-title" style="margin-top:24px">教材（ライブラリ・みんなで共有）</div>
+    <div class="grid" id="bookGrid"></div>
   </section>
 </main>
 
@@ -86,18 +91,50 @@
   </form>
 </dialog>
 
+<dialog id="bookDlg">
+  <form method="dialog" class="dlg">
+    <h3>教材を とうろく</h3>
+    <label>教材の名前</label>
+    <input type="text" id="bTitle" maxlength="40" placeholder="例：論理エンジン 小4" autocomplete="off">
+    <label>教科</label>
+    <select id="bSubject">
+      <option>国語</option><option>算数</option><option>理科</option><option>社会</option><option>英語</option><option>その他</option>
+    </select>
+    <label>タイプ</label>
+    <select id="bType">
+      <option value="reps">反復（算数・漢字など くり返す）</option>
+      <option value="reading">読解（長文）</option>
+      <option value="writing">記述・作文</option>
+    </select>
+    <label>もんだいのファイル（PDF か 写真・複数えらべる）</label>
+    <input type="file" id="bFiles" accept="application/pdf,image/*" multiple>
+    <label>こたえのファイル（任意・PDFか写真）</label>
+    <input type="file" id="bAnsFiles" accept="application/pdf,image/*" multiple>
+    <div class="err" id="bErr"></div>
+    <div class="muted" id="bProg" style="margin-top:8px"></div>
+    <div class="dlg-actions">
+      <button type="button" class="ghost" id="bImpCancel">やめる</button>
+      <button type="button" class="primary" id="bImpGo">とうろく</button>
+    </div>
+  </form>
+</dialog>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { CONFIG } from './core/config.js';
 import { initAuth, requestToken, signOut, hasToken } from './core/auth.js';
 import { loadOrInitJSON, writeJSON } from './core/drive.js';
-import { emptyFamily, addChild, removeChild, updateChild } from './core/family.js';
+import { emptyFamily, addChild, removeChild, updateChild, newId } from './core/family.js';
+import { ensureFolder, createBinaryFile } from './core/drive.js';
+import { filesToPages } from './core/pdf.js';
+import { today } from './core/sm2.js';
 
 const $ = (id) => document.getElementById(id);
 const COLORS = ['#ff8c42','#37b87c','#4a90d9','#e8604c','#9b59b6','#f0a500','#1ab59b','#ef6aa6'];
 
 let family = null, familyFileId = null, editingId = null, pickedColor = COLORS[0];
+let libFolderId = null, assetsFolderId = null, booksFileId = null, books = [], importing = false;
 
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
 function initials(name){ return (name||'?').trim().slice(0,1); }
@@ -177,6 +214,84 @@ async function delChild(id){
   catch(e){ alert('削除失敗: '+e.message); }
 }
 
+const TYPE_LABEL = { reps:'反復', reading:'読解', writing:'記述' };
+
+async function resolveLibrary(){
+  const lib = await ensureFolder(CONFIG.ROOT_FOLDER_ID, 'library');
+  libFolderId = lib.id;
+  const assets = await ensureFolder(libFolderId, 'assets');
+  assetsFolderId = assets.id;
+  const bj = await loadOrInitJSON(libFolderId, 'books.json', { books: [] });
+  booksFileId = bj.id; books = bj.data.books || [];
+}
+
+function renderBooks(){
+  const grid = $('bookGrid'); grid.innerHTML = '';
+  (books||[]).forEach(b => {
+    const el = document.createElement('div'); el.className = 'ccard';
+    const np = b.sourcePageIds?.length || 0, na = b.answerPageIds?.length || 0;
+    el.innerHTML = `
+      <div class="cname">${b.title}</div>
+      <div class="cmeta">${b.subject||''} ・ ${TYPE_LABEL[b.type]||b.type} ・ もんだい${np}ページ${na?` ・ こたえ${na}ページ`:''}</div>
+      <div class="cmeta">${b.structured?'もんだい構造：解析ずみ':'もんだい構造：未解析（次の実装でAI解析）'}</div>`;
+    grid.appendChild(el);
+  });
+  const add = document.createElement('div'); add.className='addcard';
+  add.textContent = '＋ 教材を とうろく';
+  add.onclick = openBookDlg;
+  grid.appendChild(add);
+}
+
+function openBookDlg(){
+  $('bTitle').value=''; $('bSubject').value='算数'; $('bType').value='reps';
+  $('bFiles').value=''; $('bAnsFiles').value=''; $('bErr').textContent=''; $('bProg').textContent='';
+  $('bImpGo').disabled=false;
+  $('bookDlg').showModal();
+  setTimeout(()=>$('bTitle').focus(),50);
+}
+
+async function uploadPages(files, bookId, kind, prog){
+  if(!files || !files.length) return [];
+  const pages = await filesToPages(files, ()=>{ prog.rendered++; updateProg(prog); });
+  prog.total = (prog.total||0); // total set by caller
+  const ids = [];
+  for(let i=0;i<pages.length;i++){
+    const f = await createBinaryFile(`${bookId}_${kind}${i+1}.jpg`, assetsFolderId, pages[i].base64, 'image/jpeg');
+    ids.push(f.id); prog.uploaded++; updateProg(prog);
+  }
+  return ids;
+}
+function updateProg(p){
+  $('bProg').textContent = `画像に変換 ${p.rendered}ページ ／ Driveへ保存 ${p.uploaded}枚 …`;
+}
+
+async function doImport(){
+  if(importing) return;
+  const title = $('bTitle').value.trim();
+  const files = $('bFiles').files, ansFiles = $('bAnsFiles').files;
+  if(!title){ $('bErr').textContent='教材の名前を いれてね'; return; }
+  if(!files.length){ $('bErr').textContent='もんだいのファイルを えらんでね'; return; }
+  importing = true; $('bImpGo').disabled = true; $('bErr').textContent='';
+  const prog = { rendered:0, uploaded:0 };
+  try{
+    const bookId = newId('b');
+    const srcIds = await uploadPages(files, bookId, 'p', prog);
+    const ansIds = await uploadPages(ansFiles, bookId, 'a', prog);
+    const book = {
+      id: bookId, title, subject: $('bSubject').value, type: $('bType').value,
+      sourcePageIds: srcIds, answerPageIds: ansIds,
+      structured: false, status: 'pages', createdAt: today(),
+    };
+    books.push(book);
+    await writeJSON(booksFileId, { books });
+    renderBooks();
+    $('bookDlg').close();
+    toast(`「${title}」を とうろくしました（${srcIds.length}ページ）`);
+  }catch(e){
+    $('bErr').textContent = 'とうろく失敗: ' + e.message;
+  }finally{ importing = false; $('bImpGo').disabled = false; }
+}
+
 async function loadHome(){
   const { id, data } = await loadOrInitJSON(CONFIG.ROOT_FOLDER_ID, 'family.json', emptyFamily());
   familyFileId = id; family = data;
@@ -186,6 +301,8 @@ async function loadHome(){
   $('who').classList.remove('hidden'); $('who').textContent = 'ログイン中';
   $('bOut').classList.remove('hidden');
   renderChildren();
+  try{ await resolveLibrary(); renderBooks(); }
+  catch(e){ console.error(e); toast('教材ライブラリの読込に失敗: '+e.message); }
 }
 
 $('bIn').onclick = async () => {
@@ -200,6 +317,8 @@ $('bIn').onclick = async () => {
 $('bOut').onclick = () => { signOut(); location.reload(); };
 $('bSave').onclick = saveChild;
 $('bCancel').onclick = () => $('childDlg').close();
+$('bImpGo').onclick = doImport;
+$('bImpCancel').onclick = () => { if(!importing) $('bookDlg').close(); };
 $('fName').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); saveChild(); } });
 
 // 開発用デモ表示（?demo=1）：ログインを飛ばし、Drive書込なしでボードだけ確認できる
@@ -211,7 +330,11 @@ if(new URLSearchParams(location.search).has('demo')){
   familyFileId = null;
   $('vLogin').classList.add('hidden'); $('vHome').classList.remove('hidden');
   $('who').classList.remove('hidden'); $('who').textContent='（デモ表示）';
-  renderChildren();
+  books = [
+    { id:'b1', title:'論理エンジン 小4', subject:'国語', type:'reading', sourcePageIds:['x','x','x'], answerPageIds:['y'], structured:true },
+    { id:'b2', title:'エリート算数 上', subject:'算数', type:'reps', sourcePageIds:new Array(12).fill('x'), answerPageIds:[], structured:false },
+  ];
+  renderChildren(); renderBooks();
 }
 </script>
 </body>

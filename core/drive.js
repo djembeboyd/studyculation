@@ -67,6 +67,22 @@ export async function createFile(name, parentId, content, mimeType = 'applicatio
   return r.json();
 }
 
+// バイナリ（画像など）を base64 で新規アップロード（multipart）。{id,name} を返す。
+export async function createBinaryFile(name, parentId, base64, mimeType) {
+  const meta = { name, parents: [parentId] };
+  const boundary = '----kodomo' + Math.random().toString(16).slice(2);
+  const body =
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n` +
+    `--${boundary}\r\nContent-Type: ${mimeType}\r\nContent-Transfer-Encoding: base64\r\n\r\n${base64}\r\n--${boundary}--`;
+  const r = await fetch(`${UPLOAD}/files?uploadType=multipart&fields=id,name`, {
+    method: 'POST',
+    headers: await authHeaders({ 'Content-Type': `multipart/related; boundary=${boundary}` }),
+    body,
+  });
+  if (!r.ok) throw new Error('createBinaryFile ' + r.status + ' ' + await r.text());
+  return r.json();
+}
+
 // 既存ファイルの中身を上書き（media）。
 export async function updateText(fileId, content, mimeType = 'application/json') {
   const r = await fetch(`${UPLOAD}/files/${fileId}?uploadType=media`, {
