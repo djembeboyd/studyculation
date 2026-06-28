@@ -35,7 +35,7 @@ export const STRUCT_SCHEMA = { type:'object',additionalProperties:false,required
 export async function detectStructure(images, opts) {
   const content = [{ type:'text', text:'小学生用ワークのページ画像です。ページ順に示します。' }];
   images.forEach((im, i) => { content.push({ type:'text', text:'ページ'+(i+1) }); content.push(imgBlock(im)); });
-  content.push({ type:'text', text:'各ページについて、大問（問1・問2…や 1,2,3）を順に挙げ、各大問の中の小問（(1)(2)…や ①②、または とい1・とい2 など）を列挙してください。各小問は label=番号、question=設問の文（短く要約可）、evidence=本文の中でその設問の答えの手がかりになる箇所をそのまま短く抜き出し（読解で本文がある場合のみ。無ければ空文字）。小問が分かれていなければ subs は空配列。表紙・目次・奥付・解答・白紙は skip=true・daimons=[]。国語の長文など、設問の前提となる「本文（読む文章）が主のページ」は honbun=true（設問ページは false）。各大問に教科カテゴリと1〜3個の日本語スキルタグ。index には示したページ番号を入れてください。' });
+  content.push({ type:'text', text:'各ページについて、子どもが自分で解く「大問」（問1・問2…や 1,2,3）を順に挙げ、各大問の中の小問（(1)(2)…や ①②、または とい1・とい2 など）を列挙してください。各小問は label=番号、question=設問の文（短く要約可）、evidence=本文の中でその設問の答えの手がかりになる箇所をそのまま短く抜き出し（読解で本文がある場合のみ。無ければ空文字）。小問が分かれていなければ subs は空配列。\n【重要】「れいだい／例題／れい／見本／やってみよう（解き方の説明）／解説」など、答えや解き方が最初から示されていて“子どもが解く問題ではない”ものは daimons に含めないでください（そのページに解く問題が他に無ければ skip=true）。空の大問・空の小問は作らないこと。\n表紙・目次・奥付・解答・白紙は skip=true・daimons=[]。国語の長文など、設問の前提となる「本文（読む文章）が主のページ」は honbun=true（設問ページは false）。各大問に教科カテゴリと1〜3個の日本語スキルタグ。index には示したページ番号を入れてください。' });
   return (await claudeVision(content, STRUCT_SCHEMA, { ...opts, maxTokens: 4000 })).pages || [];
 }
 
@@ -47,6 +47,6 @@ export async function extractAnswers(unitList, images, opts) {
   const list = unitList.map((u, di) => `大問${di+1}「${u.name}」: ` + ((u.items||[]).map((it, si) => `小問${si+1}(${it.label||''})`).join(' ') || '小問1')).join('\n');
   const content = [{ type:'text', text:'次の問題構成です。各小問の答えを、以下の解答ページから読み取ってください（このページ群に無い小問は省略可）。\n'+list+'\n\n解答（別冊）のページ画像：' }];
   images.forEach((im, i) => { content.push({ type:'text', text:'解答ページ'+(i+1) }); content.push(imgBlock(im)); });
-  content.push({ type:'text', text:'各小問について daimon=大問番号, sub=小問番号, answer=答え, kind=答えの種類, confidence=自信(0-1), page, box, points を返してください。kind は、数値・記号・語句で確定する答えは "value"（answerにその答え）、図・線・斜線・印など"絵で描いて答える"ものは "figure"、文章で書く記述（答えが一つに定まらない）は "writing"。figure のときは page にその図の解答ページ番号（この束の中での1始まり）、box にその図の位置を {x,y,w,h}（左上0,0〜右下1,1の割合）で。writing のときは answer に解答例、points に採点の要点を2〜4個。value/figure では points は空配列、value/writing では page=0・box は0で構いません。' });
+  content.push({ type:'text', text:'各小問について daimon=大問番号, sub=小問番号, answer=答え, kind=答えの種類, confidence=自信(0-1), page, box, points を返してください。kind は、数値・記号・語句で確定する答えは "value"（answerにその答え）、図・線・斜線・印など"絵で描いて答える"ものは "figure"、文章で書く記述（答えが一つに定まらない）は "writing"。figure のときは page にその図の解答ページ番号（この束の中での1始まり）、box にその図の位置を {x,y,w,h}（左上0,0〜右下1,1の割合）で。writing のときは answer に解答例、points に採点の要点を2〜4個。value/figure では points は空配列、value/writing では page=0・box は0で構いません。\n【重要】線でむすぶ・○をつける・図に書き込むなど“絵で答える”問題は必ず kind="figure" にして figRef（解答ページの該当箇所の box）を返し、answer に不確かな対応（「に、9」のような当て推量）を書かないこと。確実に読み取れない答えは confidence を低く（0.3以下）し、無理に値を埋めないこと。数字・語句で1つに定まる答えだけ value にしてください。' });
   return (await claudeVision(content, ANS_SCHEMA, { ...opts, maxTokens: 4000 })).answers || [];
 }

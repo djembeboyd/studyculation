@@ -136,10 +136,10 @@
     <input type="password" id="sKey" placeholder="sk-ant-..." autocomplete="off">
     <label>モデル</label>
     <select id="sModel">
-      <option value="claude-haiku-4-5">claude-haiku-4-5（安価・標準）</option>
-      <option value="claude-sonnet-4-6">claude-sonnet-4-6（高精度・少し高い）</option>
+      <option value="claude-sonnet-4-6">claude-sonnet-4-6（高精度・おすすめ）</option>
+      <option value="claude-haiku-4-5">claude-haiku-4-5（安価・精度は落ちる）</option>
     </select>
-    <p class="muted" style="margin-top:8px">キーはこの端末のブラウザにのみ保存され、Drive・GitHubには出ません。教材の解析時だけ使います。</p>
+    <p class="muted" style="margin-top:8px">読み取りが甘い時は <b>sonnet</b> にしてください（特に算数の図・マッチング問題）。キーはこの端末のブラウザにのみ保存され、Drive・GitHubには出ません。教材の解析時だけ使います。</p>
     <div class="dlg-actions">
       <button type="button" class="ghost" id="sCancel">とじる</button>
       <button type="button" class="primary" id="sSave">ほぞん</button>
@@ -367,7 +367,7 @@ async function analyzeBook(book){
   analyzing = true;
   const opts = { apiKey, model: getModel() };
   try{
-    const units = []; let honbun = []; const CH = 12;
+    const units = []; let honbun = []; const CH = 6;
     // 1) 問題構造
     for(let off=0; off<book.sourcePageIds.length; off+=CH){
       const grp = book.sourcePageIds.slice(off, off+CH);
@@ -388,7 +388,7 @@ async function analyzeBook(book){
     }
     // 2) 解答の読み取り
     if(book.answerPageIds?.length){
-      const CH2 = 12;
+      const CH2 = 8;
       for(let off=0; off<book.answerPageIds.length; off+=CH2){
         const grp = book.answerPageIds.slice(off, off+CH2);
         aiBanner(`✓ 答えを読み取り中… ${Math.min(off+CH2, book.answerPageIds.length)}/${book.answerPageIds.length}ページ`);
@@ -408,6 +408,9 @@ async function analyzeBook(book){
         });
       }
     }
+    // 空のユニット（例題などで中身が取れなかったもの）を除去
+    const cleaned = units.filter(u => (u.items||[]).some(it => (it.label||'').trim() || (it.answer||'').trim() || (it.question||'').trim()));
+    units.length = 0; units.push(...cleaned);
     // 3) units.json にこの本の分を反映（置換）
     aiBanner('💾 保存中…');
     const uj = await loadOrInitJSON(libFolderId, 'units.json', { units: [] });
