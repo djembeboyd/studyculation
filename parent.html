@@ -45,6 +45,15 @@
   .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1f2b39;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
   .toast.show{opacity:1}
   .err{color:var(--hard);font-size:13px;white-space:pre-wrap}
+  .pv{position:fixed;inset:0;background:var(--bg);z-index:70;overflow:auto;padding:16px}
+  .pvhead{display:flex;align-items:center;gap:10px;position:sticky;top:-16px;background:var(--bg);padding:10px 0;margin:-16px 0 4px;z-index:1;flex-wrap:wrap}
+  .pvhead .sp{flex:1}
+  .pvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px;margin:6px 0 18px}
+  .pvthumb{position:relative;border:2px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;background:#fff}
+  .pvthumb img{display:block;width:100%}
+  .pvthumb .pnum{position:absolute;top:3px;left:4px;font-size:11px;background:rgba(20,30,50,.6);color:#fff;padding:0 6px;border-radius:6px}
+  .pvthumb.ex{opacity:.45}
+  .pvthumb.ex::after{content:'除外';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--hard);background:rgba(255,255,255,.45)}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
@@ -137,6 +146,20 @@
     </div>
   </form>
 </dialog>
+
+<div id="importPreview" class="pv hidden">
+  <div class="pvhead">
+    <button class="ghost" id="pvCancel">やめる</button>
+    <strong id="pvTitle" style="font-size:15px"></strong>
+    <span class="sp"></span>
+    <span class="muted" style="font-size:12px">不要なページ（表紙・もくじ・白紙・巻末など）をタップで除外</span>
+    <button class="primary" id="pvGo">とうろく</button>
+  </div>
+  <div class="sec-title">もんだい ページ</div>
+  <div class="pvgrid" id="pvProb"></div>
+  <div class="sec-title" id="pvAnsTitle">こたえ ページ</div>
+  <div class="pvgrid" id="pvAns"></div>
+</div>
 
 <div id="aiBanner" class="hidden" style="position:fixed;left:0;right:0;bottom:0;background:#1f2b39;color:#fff;padding:13px 16px;text-align:center;z-index:60;font-size:14px"></div>
 
@@ -346,46 +369,64 @@ function openBookDlg(){
   setTimeout(()=>$('bTitle').focus(),50);
 }
 
-async function uploadPages(files, bookId, kind, prog){
-  if(!files || !files.length) return [];
-  const pages = await filesToPages(files, ()=>{ prog.rendered++; updateProg(prog); });
-  prog.total = (prog.total||0); // total set by caller
-  const ids = [];
-  for(let i=0;i<pages.length;i++){
-    const f = await createBinaryFile(`${bookId}_${kind}${i+1}.jpg`, assetsFolderId, pages[i].base64, 'image/jpeg');
-    ids.push(f.id); prog.uploaded++; updateProg(prog);
-  }
-  return ids;
-}
-function updateProg(p){
-  $('bProg').textContent = `画像に変換 ${p.rendered}ページ ／ Driveへ保存 ${p.uploaded}枚 …`;
-}
-
-async function doImport(){
+// 取り込み：①ファイル→画像変換 → ②プレビューで不要ページ除外 → ③残りをDrive保存
+let pend = null;
+async function prepareImport(){
   if(importing) return;
   const title = $('bTitle').value.trim();
   const files = $('bFiles').files, ansFiles = $('bAnsFiles').files;
   if(!title){ $('bErr').textContent='教材の名前を いれてね'; return; }
   if(!files.length){ $('bErr').textContent='もんだいのファイルを えらんでね'; return; }
   importing = true; $('bImpGo').disabled = true; $('bErr').textContent='';
-  const prog = { rendered:0, uploaded:0 };
+  try{
+    let n = 0; const onP = () => { $('bProg').textContent = `ページを画像に変換中… ${++n}枚`; };
+    const prob = (await filesToPages(files, onP)).map(p => ({ ...p, inc:true }));
+    const ans  = (await filesToPages(ansFiles, onP)).map(p => ({ ...p, inc:true }));
+    pend = { title, subject:$('bSubject').value, type:$('bType').value, prob, ans };
+    $('bookDlg').close();
+    showPreview();
+  }catch(e){ $('bErr').textContent = '変換失敗: ' + e.message; }
+  finally{ importing = false; $('bImpGo').disabled = false; $('bProg').textContent=''; }
+}
+
+function renderPvGrid(id, arr){
+  const g = $(id); g.innerHTML = '';
+  arr.forEach((p, i) => {
+    const d = document.createElement('div'); d.className = 'pvthumb' + (p.inc ? '' : ' ex');
+    d.innerHTML = `<span class="pnum">${i+1}</span><img src="data:image/jpeg;base64,${p.base64}">`;
+    d.onclick = () => { p.inc = !p.inc; d.classList.toggle('ex', !p.inc); updatePvGo(); };
+    g.appendChild(d);
+  });
+}
+function updatePvGo(){
+  const n = pend.prob.filter(p=>p.inc).length, a = pend.ans.filter(p=>p.inc).length;
+  $('pvGo').textContent = `この ${n}${a?`＋${a}`:''}ページで とうろく`;
+}
+function showPreview(){
+  $('pvTitle').textContent = `「${pend.title}」ページの かくにん`;
+  renderPvGrid('pvProb', pend.prob);
+  renderPvGrid('pvAns', pend.ans);
+  $('pvAnsTitle').style.display = pend.ans.length ? '' : 'none';
+  $('importPreview').classList.remove('hidden');
+  updatePvGo();
+}
+async function confirmImport(){
+  if(importing || !pend) return;
+  importing = true; $('pvGo').disabled = true;
   try{
     const bookId = newId('b');
-    const srcIds = await uploadPages(files, bookId, 'p', prog);
-    const ansIds = await uploadPages(ansFiles, bookId, 'a', prog);
-    const book = {
-      id: bookId, title, subject: $('bSubject').value, type: $('bType').value,
-      sourcePageIds: srcIds, answerPageIds: ansIds,
-      structured: false, status: 'pages', createdAt: today(),
-    };
-    books.push(book);
-    await writeJSON(booksFileId, { books });
-    renderBooks();
-    $('bookDlg').close();
-    toast(`「${title}」を とうろくしました（${srcIds.length}ページ）`);
-  }catch(e){
-    $('bErr').textContent = 'とうろく失敗: ' + e.message;
-  }finally{ importing = false; $('bImpGo').disabled = false; }
+    const prob = pend.prob.filter(p=>p.inc), ans = pend.ans.filter(p=>p.inc);
+    const total = prob.length + ans.length; let done = 0;
+    const srcIds = [];
+    for(let i=0;i<prob.length;i++){ const f = await createBinaryFile(`${bookId}_p${i+1}.jpg`, assetsFolderId, prob[i].base64, 'image/jpeg'); srcIds.push(f.id); aiBanner(`💾 Driveへ保存中… ${++done}/${total}`); }
+    const ansIds = [];
+    for(let i=0;i<ans.length;i++){ const f = await createBinaryFile(`${bookId}_a${i+1}.jpg`, assetsFolderId, ans[i].base64, 'image/jpeg'); ansIds.push(f.id); aiBanner(`💾 Driveへ保存中… ${++done}/${total}`); }
+    const book = { id:bookId, title:pend.title, subject:pend.subject, type:pend.type, sourcePageIds:srcIds, answerPageIds:ansIds, structured:false, status:'pages', createdAt: today() };
+    books.push(book); await writeJSON(booksFileId, { books });
+    renderBooks(); $('importPreview').classList.add('hidden'); pend = null;
+    toast(`とうろくしました（もんだい${srcIds.length}ページ）`);
+  }catch(e){ alert('とうろく失敗: ' + e.message); }
+  finally{ importing = false; $('pvGo').disabled = false; aiBanner(null); }
 }
 
 async function loadHome(){
@@ -413,8 +454,10 @@ $('bIn').onclick = async () => {
 $('bOut').onclick = () => { signOut(); location.reload(); };
 $('bSave').onclick = saveChild;
 $('bCancel').onclick = () => $('childDlg').close();
-$('bImpGo').onclick = doImport;
+$('bImpGo').onclick = prepareImport;
 $('bImpCancel').onclick = () => { if(!importing) $('bookDlg').close(); };
+$('pvGo').onclick = confirmImport;
+$('pvCancel').onclick = () => { if(!importing){ $('importPreview').classList.add('hidden'); pend = null; } };
 $('bSettings').onclick = openSettings;
 $('sSave').onclick = saveSettings;
 $('sCancel').onclick = () => $('setDlg').close();
@@ -435,6 +478,16 @@ if(new URLSearchParams(location.search).has('demo')){
     { id:'b2', title:'エリート算数 上', subject:'算数', type:'reps', sourcePageIds:new Array(12).fill('x'), answerPageIds:[], structured:false },
   ];
   renderChildren(); renderBooks();
+}
+
+// 取り込みプレビューのデモ（?pv=1）
+if(new URLSearchParams(location.search).has('pv')){
+  const c=document.createElement('canvas'); c.width=120; c.height=160; const x=c.getContext('2d');
+  const mk=(t,col)=>{ x.fillStyle=col; x.fillRect(0,0,120,160); x.fillStyle='#333'; x.font='15px sans-serif'; x.fillText(t,10,84); return c.toDataURL('image/jpeg',0.7).split(',')[1]; };
+  pend={ title:'デモ教材', subject:'国語', type:'reading',
+    prob:[{base64:mk('表紙','#fffbe6'),inc:true},{base64:mk('もくじ','#eef3ff'),inc:true},{base64:mk('問1','#ffffff'),inc:true},{base64:mk('問2','#ffffff'),inc:true},{base64:mk('白紙','#fafafa'),inc:true}],
+    ans:[{base64:mk('解答1','#eafbe9'),inc:true},{base64:mk('解答2','#eafbe9'),inc:true}] };
+  showPreview();
 }
 </script>
 </body>
