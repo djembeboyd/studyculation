@@ -41,6 +41,28 @@
   .todo .em{font-size:50px}
   .todo .t{font-size:19px;font-weight:800;margin-top:8px}
   .err{color:#e8604c;font-size:14px}
+  /* study */
+  .study-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .study-top .nm{font-weight:800;font-size:18px}
+  .study-top .cnt{margin-left:auto;color:var(--mut);font-size:15px}
+  .refimg{width:100%;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+  .sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .sheet img{display:block;width:100%}
+  .sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none}
+  .tools{display:flex;gap:8px;margin:10px 0}
+  .tools button{flex:1;padding:11px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:15px;font-weight:700}
+  .tools button.on{background:#fff3ea;border-color:var(--accent);color:var(--accent)}
+  .bigbtn{width:100%;padding:15px;border-radius:14px;background:var(--accent);color:#fff;font-weight:800;font-size:18px;margin-top:10px;border:none}
+  .gcard{border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:10px;background:#fff}
+  .gcard .gqq{font-weight:800;font-size:15px}
+  .gcard .gevi{font-size:13px;line-height:1.55;color:#33536b;background:#eef4f9;border-radius:8px;padding:6px 9px;margin:5px 0}
+  .gcard .gans2{font-size:14px;margin:3px 0}
+  .gcard .gpts{font-size:12px;color:var(--mut);margin-top:1px}
+  .gcard .gbtns{display:flex;gap:8px;margin-top:8px}
+  .gcard .gbtns button{flex:1;height:46px;border-radius:10px;font-weight:900;font-size:21px;border:2px solid var(--line);background:#fff;color:var(--mut)}
+  .gcard .gbtns .o-on{background:#37b87c;color:#fff;border-color:#37b87c}
+  .gcard .gbtns .h-on{background:#f0a500;color:#fff;border-color:#f0a500}
+  .gcard .gbtns .x-on{background:#e8604c;color:#fff;border-color:#e8604c}
 </style>
 </head>
 <body>
@@ -60,7 +82,25 @@
     <p class="muted" style="text-align:center;margin-top:24px" id="noChild"></p>
   </section>
 
-  <!-- 子のホーム -->
+  <!-- 学習画面 -->
+  <section id="vStudy" class="hidden">
+    <div class="study-top">
+      <button class="changeBtn" id="bQuit">やめる</button>
+      <div class="nm" id="stName"></div>
+      <div class="cnt" id="stCnt"></div>
+    </div>
+    <div id="stRefs"></div>
+    <div class="sheet" id="stSheet"><img id="stImg" alt=""><canvas id="stCanvas"></canvas></div>
+    <div class="tools" id="stTools">
+      <button id="tPen" class="on">✏️ ペン</button>
+      <button id="tUndo">⌫ もどす</button>
+      <button id="tClear">🧹 ぜんぶけす</button>
+    </div>
+    <button class="bigbtn" id="bCheck">こたえあわせ</button>
+    <div id="stGrade" class="hidden"></div>
+  </section>
+
+  <!-- 子のホーム（完了/お知らせ） -->
   <section id="vHome" class="hidden">
     <div class="home-top">
       <div class="face" id="hFace"></div>
@@ -90,15 +130,17 @@
 <script type="module">
 import { CONFIG } from './core/config.js';
 import { initAuth, requestToken, hasToken } from './core/auth.js';
-import { loadOrInitJSON } from './core/drive.js';
+import { loadOrInitJSON, ensureFolder, writeJSON, readBase64 } from './core/drive.js';
 import { emptyFamily, getChild } from './core/family.js';
+import { buildQueue, commit } from './core/study.js';
+import { today } from './core/sm2.js';
 
 const $ = (id)=>document.getElementById(id);
 let family=null, pinTarget=null, pinBuf='';
 
 function initials(n){ return (n||'?').trim().slice(0,1); }
 
-function show(view){ ['vLogin','vSelect','vHome'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+function show(view){ ['vLogin','vSelect','vStudy','vHome'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
 
 function renderPeople(){
   const wrap=$('people'); wrap.innerHTML='';
@@ -113,12 +155,125 @@ function renderPeople(){
   });
 }
 
-function enterChild(c){
-  $('hFace').style.background=c.color||'#888'; $('hFace').textContent=initials(c.name);
-  $('hHi').textContent=`${c.name}、がんばろう！`;
-  // 教材未投入なのでプレースホルダ（次の実装で「きょうの復習」を出す）
-  $('todoMsg').textContent='きょうの がくしゅう';
-  $('todoSub').textContent='教材が とうろくされると ここに もんだいが でるよ。';
+function enterChild(c){ startStudy(c).catch(e=>{ alert('読み込みに失敗: '+e.message); show('vSelect'); }); }
+
+/* ===== 学習セッション ===== */
+let sChild=null, sLib={books:[],units:[]}, sBookById={};
+let sProgress, sProgId, sReviews, sReviewsId, sWorks, sWorksId;
+let sQueue=[], sIdx=0, sStrokes=[], sSubResults=[];
+let curStroke=null, drawing=false, eraseMode=false;
+
+function childSettings(c){ const s=(family&&family.settings)||{}; const o=(c&&c.settingsOverride)||{};
+  return { cap:o.cap||s.cap||15, newpd:o.newpd||s.newpd||6, grad:o.grad||s.grad||30, markBy:s.markBy||'parent' }; }
+function currentUnit(){ return sLib.units.find(u=>u.id===sQueue[sIdx]); }
+async function assetUrl(id){ if(window.__assetOverride) return window.__assetOverride; return 'data:image/jpeg;base64,'+await readBase64(id); }
+
+async function startStudy(c){
+  sChild=c; show('vStudy'); $('stName').textContent=c.name; $('stRefs').innerHTML=''; $('stGrade').classList.add('hidden');
+  const lib=await ensureFolder(CONFIG.ROOT_FOLDER_ID,'library');
+  const bj=await loadOrInitJSON(lib.id,'books.json',{books:[]});
+  const uj=await loadOrInitJSON(lib.id,'units.json',{units:[]});
+  sLib={ books:bj.data.books||[], units:uj.data.units||[] };
+  sBookById={}; sLib.books.forEach(b=>sBookById[b.id]=b);
+  const childrenF=await ensureFolder(CONFIG.ROOT_FOLDER_ID,'children');
+  const cf=await ensureFolder(childrenF.id, c.id);
+  const pj=await loadOrInitJSON(cf.id,'progress.json',{units:{}}); sProgress=pj.data; sProgId=pj.id; if(!sProgress.units)sProgress.units={};
+  const rj=await loadOrInitJSON(cf.id,'reviews.json',{reviews:[]}); sReviews=rj.data; sReviewsId=rj.id; if(!sReviews.reviews)sReviews.reviews=[];
+  const wj=await loadOrInitJSON(cf.id,'works.json',{works:[]}); sWorks=wj.data; sWorksId=wj.id; if(!sWorks.works)sWorks.works=[];
+  const st=childSettings(c);
+  sQueue=buildQueue(sLib.units, sProgress, { assignedBooks:c.assignedBooks||[], cap:st.cap, newpd:st.newpd });
+  sIdx=0;
+  if(!sQueue.length){ showDone(true); return; }
+  await showUnit();
+}
+
+async function showUnit(){
+  const u=currentUnit();
+  $('stCnt').textContent=`${sIdx+1} / ${sQueue.length}`;
+  $('stGrade').classList.add('hidden'); $('stGrade').innerHTML='';
+  $('bCheck').classList.remove('hidden'); $('stTools').style.display='flex';
+  sStrokes=[]; sSubResults=[]; eraseMode=false; $('tPen').classList.add('on');
+  $('stRefs').innerHTML='';
+  for(const rid of (u.refPages||[])){ const im=new Image(); im.className='refimg'; im.src=await assetUrl(rid); $('stRefs').appendChild(im); }
+  const img=$('stImg'); img.onload=setupCanvas; img.src=await assetUrl(u.pageId);
+  window.scrollTo(0,0);
+}
+
+/* --- お絵かき（正規化座標で保持） --- */
+function setupCanvas(){
+  const img=$('stImg'), cv=$('stCanvas');
+  cv.width=img.clientWidth; cv.height=img.clientHeight;
+  redraw();
+}
+function redraw(){
+  const cv=$('stCanvas'), ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
+  for(const s of sStrokes){ ctx.strokeStyle=s.color; ctx.lineWidth=s.width; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath();
+    s.points.forEach((p,i)=>{ const x=p[0]*cv.width, y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+  if(curStroke){ ctx.strokeStyle=curStroke.color; ctx.lineWidth=curStroke.width; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath();
+    curStroke.points.forEach((p,i)=>{ const x=p[0]*cv.width, y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+}
+function ptFromEvent(e){ const cv=$('stCanvas'), r=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [ (t.clientX-r.left)/r.width, (t.clientY-r.top)/r.height ]; }
+function onDown(e){ if(eraseMode)return; e.preventDefault(); drawing=true; curStroke={ color:'#1b66c9', width:3, points:[ptFromEvent(e)] }; redraw(); }
+function onMove(e){ if(!drawing)return; e.preventDefault(); curStroke.points.push(ptFromEvent(e)); redraw(); }
+function onUp(){ if(!drawing)return; drawing=false; if(curStroke&&curStroke.points.length>1)sStrokes.push(curStroke); curStroke=null; redraw(); }
+
+/* --- 採点（同居カード） --- */
+window.__setSub=(i,v)=>{ sSubResults[i]=v; renderGrade(currentUnit()); };
+window.__commitUnit=()=>commitUnit();
+
+function onCheck(){ const u=currentUnit(); sSubResults=u.items.map(()=>null); $('bCheck').classList.add('hidden'); $('stTools').style.display='none'; renderGrade(u); setTimeout(()=>$('stGrade').scrollIntoView({behavior:'smooth',block:'start'}),50); }
+
+function renderGrade(u){
+  const b=sBookById[u.bookId]||{}; const writing=b.type==='writing'; const lead=writing?'解答例':'こたえ';
+  const cards=u.items.map((it,i)=>{ const low=(typeof it.conf==='number'&&it.conf<0.6); const fig=it.kind==='figure'; const wr=it.kind==='writing'; const hasCrop=fig&&it.figRef&&it.figRef.assetId;
+    const q=`${it.label||('('+(i+1)+')')}${it.question?'　'+it.question:''}`;
+    const evi=it.evidence?`<div class="gevi"><b>📖 本文の手がかり：</b>${it.evidence}</div>`:'';
+    const ansBody= hasCrop?`🖼 こたえの図 <img id="figc${i}" alt="" style="max-height:64px;border-radius:6px;border:1px solid #e0e0e0;vertical-align:middle;margin-left:4px">`
+      : fig?'🖼 図で答える（うえの ワークシートと 見くらべて）'
+      : (it.answer?((low?'？ ':'')+it.answer):'（解答が読み取れませんでした）');
+    const pts=(wr&&it.points&&it.points.length)?`<div class="gpts">採点ポイント: ${it.points.map(p=>'・'+p).join(' ')}</div>`:'';
+    return `<div class="gcard"><div class="gqq">${q}</div>${evi}
+      <div class="gans2" style="${fig?'color:#c0560a':(low?'color:#e8604c':'')}">✓ ${lead}：${ansBody}</div>${pts}
+      <div class="gbtns">
+        <button class="${sSubResults[i]===true?'o-on':''}" onclick="window.__setSub(${i},true)">◯</button>
+        <button class="${sSubResults[i]==='half'?'h-on':''}" onclick="window.__setSub(${i},'half')">△</button>
+        <button class="${sSubResults[i]===false?'x-on':''}" onclick="window.__setSub(${i},false)">✕</button>
+      </div></div>`; }).join('');
+  const n=sSubResults.filter(r=>r!==null).length, done=n===u.items.length;
+  $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">設問・本文の手がかり・こたえが ぜんぶ ここ → ◯△✕</div>${cards}
+    <button class="bigbtn" style="${done?'':'opacity:.45;pointer-events:none'}" onclick="window.__commitUnit()">これで おわり（${n}/${u.items.length}）</button>`;
+  $('stGrade').classList.remove('hidden');
+  u.items.forEach(async(it,i)=>{ if(it.kind==='figure'&&it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
+}
+
+async function cropAsset(assetId,box){
+  if(!box)return null; const url=await assetUrl(assetId);
+  return await new Promise(res=>{ const img=new Image(); img.onload=()=>{ const c=document.createElement('canvas');
+    const sx=box.x*img.naturalWidth, sy=box.y*img.naturalHeight, sw=Math.max(1,box.w*img.naturalWidth), sh=Math.max(1,box.h*img.naturalHeight);
+    c.width=sw; c.height=sh; c.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,sw,sh); res(c.toDataURL('image/jpeg',0.85)); };
+    img.onerror=()=>res(null); img.src=url; });
+}
+
+async function commitUnit(){
+  const u=currentUnit(); const b=sBookById[u.bookId]||{}; const st=childSettings(sChild);
+  const { state, review }=commit(sProgress.units[u.id], u.items, sSubResults, { bookType:b.type||'reps', grad:st.grad, by:st.markBy });
+  sProgress.units[u.id]=state;
+  sReviews.reviews.push({ unitId:u.id, ...review });
+  const work={ unitId:u.id, page:0, strokes:sStrokes, stamps:[], updatedAt:today() };
+  const wi=sWorks.works.findIndex(w=>w.unitId===u.id); if(wi>=0)sWorks.works[wi]=work; else sWorks.works.push(work);
+  if(!window.__assetOverride){
+    try{ await writeJSON(sProgId,sProgress); await writeJSON(sReviewsId,sReviews); await writeJSON(sWorksId,sWorks); }
+    catch(e){ alert('保存に失敗: '+e.message); return; }
+  }
+  sIdx++;
+  if(sIdx>=sQueue.length) showDone(false); else await showUnit();
+}
+
+function showDone(empty){
+  $('hFace').style.background=(sChild&&sChild.color)||'#888'; $('hFace').textContent=initials(sChild?sChild.name:'');
+  $('hHi').textContent=empty?`${sChild?sChild.name:''}、こんにちは`:`${sChild?sChild.name:''}、おつかれさま！`;
+  $('todoMsg').textContent=empty?'きょうの ぶんは ないよ':'ぜんぶ おわったよ！🎉';
+  $('todoSub').textContent=empty?'教材が とうろくされたら ここに もんだいが でるよ。':'よく がんばりました。';
   show('vHome');
 }
 
@@ -164,6 +319,32 @@ $('bIn').onclick=async()=>{
 $('bChange').onclick=()=>show('vSelect');
 $('pinCancel').onclick=closePin;
 buildKeys();
+
+/* 学習画面の操作 */
+$('bCheck').onclick=onCheck;
+$('bQuit').onclick=()=>{ if(confirm('やめる？ かいた ものは ほぞんされないよ')) show('vSelect'); };
+$('tPen').onclick=()=>{ eraseMode=false; $('tPen').classList.add('on'); };
+$('tUndo').onclick=()=>{ sStrokes.pop(); redraw(); };
+$('tClear').onclick=()=>{ sStrokes=[]; redraw(); };
+(()=>{ const cv=$('stCanvas');
+  cv.addEventListener('pointerdown',onDown); cv.addEventListener('pointermove',onMove); window.addEventListener('pointerup',onUp);
+  window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden'))setupCanvas(); });
+})();
+
+/* 開発用デモ（?study=1）：Drive無しで学習〜採点を確認 */
+if(new URLSearchParams(location.search).has('study')){
+  window.__assetOverride='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440"><rect width="640" height="440" fill="#fff"/><text x="28" y="56" font-size="22" font-family="sans-serif">ワークシート（デモ）</text><text x="28" y="110" font-size="18" font-family="sans-serif">問1 つぎの文をよんで こたえなさい。</text><text x="28" y="160" font-size="16" font-family="sans-serif">(1) 主人公の名前は？</text><text x="28" y="210" font-size="16" font-family="sans-serif">(2) たろうの気持ちを書きなさい。</text></svg>');
+  family={ settings:{cap:15,newpd:6,grad:30,markBy:'parent'} };
+  sChild={ id:'demo', name:'たろう', color:'#ff8c42', assignedBooks:[] };
+  sLib={ books:[{id:'b1',type:'reading'}], units:[
+    { id:'u1', bookId:'b1', label:'問1 読解', refPages:[], pageId:'x', items:[
+      { label:'(1)', question:'主人公の名前は？', evidence:'むかしむかし、たろうという男の子がいました。', answer:'たろう', kind:'value', conf:0.9, points:[] },
+      { label:'(2)', question:'たろうの気持ちを書きなさい。', evidence:'たろうはとてもうれしくて、とびはねた。', answer:'うれしい気持ち', kind:'writing', conf:0.8, points:['「うれしい」等の前向きな気持ち','とびはねた様子から'] },
+    ]},
+  ]};
+  sBookById={b1:sLib.books[0]}; sProgress={units:{}}; sReviews={reviews:[]}; sWorks={works:[]};
+  sQueue=['u1']; sIdx=0; show('vStudy'); $('stName').textContent='たろう'; showUnit();
+}
 
 // 開発用デモ（?demo=1）：ログイン無しで選択画面を確認
 if(new URLSearchParams(location.search).has('demo')){
