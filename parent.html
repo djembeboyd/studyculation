@@ -177,6 +177,8 @@
     <span class="sp"></span>
     <button id="bvEdit">✏️ 編集</button>
     <button id="bvSave" class="primary hidden">保存</button>
+    <button id="bvImport">📥 取込</button>
+    <input type="file" id="bvImportFile" accept="application/json,.json" style="display:none">
     <button id="bvAnalyze">AIで解析する</button>
   </div>
   <div id="bvMeta" class="muted" style="margin:2px 0 12px"></div>
@@ -660,6 +662,26 @@ $('bvAnalyze').onclick = () => { const b = viewingBook; $('bookView').classList.
 $('bvLoadPages').onclick = loadBookPages;
 $('bvEdit').onclick = () => { bvEditing = true; setEditUI(); renderBookUnits(); };
 $('bvSave').onclick = saveBookUnits;
+$('bvImport').onclick = () => $('bvImportFile').click();
+$('bvImportFile').onchange = async (e) => {
+  const f = e.target.files[0]; if(!f) return;
+  try{
+    const data = JSON.parse(await f.text());
+    const newUnits = (data.units||[]).map(u=>({ ...u, bookId: viewingBook.id }));
+    if(!newUnits.length){ alert('units が空です'); return; }
+    if(libFolderId){
+      const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]});
+      const others = (uj.data.units||[]).filter(u=>u.bookId!==viewingBook.id);
+      await writeJSON(uj.id, { units:[...others, ...newUnits] });
+      viewingBook.structured = true; viewingBook.unitCount = newUnits.length;
+      await writeJSON(booksFileId, { books });
+      bvFileId = uj.id; bvOthers = others;
+    }
+    bvUnits = newUnits; bvEditing = false; setEditUI(); renderBookUnits(); renderBooks();
+    toast(`取込みました（${newUnits.length}問）`);
+  }catch(err){ alert('取込失敗: ' + err.message); }
+  e.target.value = '';
+};
 $('lightbox').onclick = () => $('lightbox').classList.add('hidden');
 $('bvUnits').addEventListener('click', (e)=>{ const t=e.target; if(t && t.classList && t.classList.contains('thumb') && t.dataset.full) openLightbox(t.dataset.full); });
 $('cropCancel').onclick = () => { $('cropDlg').classList.add('hidden'); cropTarget=null; };
