@@ -66,4 +66,71 @@ t('commit: 不正解多めで q=2・interval=1', () => {
   assert.equal(state.due, addDays(NOW, 1));
 });
 
+// ===== ラリー =====
+import { startSession, activeIndices, submit, grade, nextAttempt, sessionQ, finishSession } from './study.js';
+
+t('1発全問正解 → q5・完了', () => {
+  let s = startSession(3);
+  assert.deepEqual(activeIndices(s), [0,1,2]);
+  s = submit(s); assert.equal(s.phase,'pending');
+  s = grade(s, [true,true,true]);
+  assert.equal(s.complete, true); assert.equal(s.phase,'result');
+  assert.equal(sessionQ(s), 5);
+});
+
+t('やり直し1回で完成（r=0.5）→ q4', () => {
+  let s = startSession(4);
+  s = grade(s, [true,true,false,false]);   // attempt1: 2正解
+  assert.equal(s.complete, false); assert.equal(s.firstCorrect, 2);
+  assert.deepEqual(activeIndices(s), [2,3]);
+  s = nextAttempt(s); assert.equal(s.attempt, 2); assert.equal(s.showAnswer, false);
+  s = grade(s, [true,true]);                // 残り2つ正解
+  assert.equal(s.complete, true);
+  assert.equal(sessionQ(s), 4);
+});
+
+t('1発正解が半分未満・やり直しで完成 → q3', () => {
+  let s = startSession(4);
+  s = grade(s, [true,false,false,false]);   // 1正解 r=0.25
+  s = nextAttempt(s);
+  s = grade(s, [true,true,true]);
+  assert.equal(s.complete, true);
+  assert.equal(sessionQ(s), 3);
+});
+
+t('3回目（答え表示）まで行く → q2・showAnswer', () => {
+  let s = startSession(2);
+  s = grade(s, [false,false]);   // attempt1 全✕
+  assert.equal(s.complete, false);
+  s = nextAttempt(s); assert.equal(s.attempt, 2); assert.equal(s.showAnswer, false);
+  s = grade(s, [false,false]);   // attempt2 まだ✕
+  assert.equal(s.complete, false);
+  s = nextAttempt(s); assert.equal(s.attempt, 3); assert.equal(s.showAnswer, true);
+  s = grade(s, [true,true]);     // 3回目
+  assert.equal(s.complete, true);
+  assert.equal(sessionQ(s), 2);
+});
+
+t('finishSession: SM-2前進＋review', () => {
+  const items = [{label:'(1)'},{label:'(2)'},{label:'(3)'}];
+  let s = startSession(3);
+  s = grade(s, [true,true,true]);
+  const { state, review } = finishSession(freshState(), items, s, { bookType:'reps', now:NOW });
+  assert.equal(review.q, 5);
+  assert.equal(review.attempts, 1);
+  assert.equal(review.sawAnswer, false);
+  assert.equal(state.interval, 1);
+  assert.deepEqual(state.lastWrong, []);
+});
+
+t('finishSession: 3回目答えは間隔リセット(翌日)', () => {
+  const items = [{label:'a'},{label:'b'}];
+  let s = startSession(2);
+  s = grade(s,[false,false]); s = nextAttempt(s); s = grade(s,[false,false]); s = nextAttempt(s); s = grade(s,[true,true]);
+  const { state, review } = finishSession(freshState(), items, s, { now:NOW });
+  assert.equal(review.q, 2);
+  assert.equal(state.interval, 1);
+  assert.equal(state.due, addDays(NOW,1));
+});
+
 console.log(`\n${pass} 件すべて成功`);
