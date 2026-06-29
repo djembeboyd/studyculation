@@ -140,6 +140,7 @@ const $ = (id)=>document.getElementById(id);
 let family=null, pinTarget=null, pinBuf='';
 
 function initials(n){ return (n||'?').trim().slice(0,1); }
+function toast(msg){ let t=document.getElementById('toast'); if(!t){ t=document.createElement('div'); t.id='toast'; t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#3a2a1c;color:#fff;padding:12px 20px;border-radius:12px;font-size:16px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;max-width:90%;text-align:center'; document.body.appendChild(t); } t.textContent=msg; t.style.opacity='1'; clearTimeout(t._t); t._t=setTimeout(()=>{ t.style.opacity='0'; },1900); }
 
 function show(view){ ['vLogin','vSelect','vStudy','vHome'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
 

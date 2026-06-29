@@ -639,7 +639,10 @@ async function prepareImport(){
   if(!title){ $('bErr').textContent='教材の名前を いれてね'; return; }
   if(!files.length){ $('bErr').textContent='もんだいのファイルを えらんでね'; return; }
   importing = true; $('bImpGo').disabled = true; $('bErr').textContent='';
+  $('bProg').textContent='ファイルを読み込み中… ページ数が多いと数十秒かかります';
+  $('bImpGo').textContent='変換中…';
   try{
+    await new Promise(r=>setTimeout(r,30)); // 画面更新を入れる
     let n = 0; const onP = () => { $('bProg').textContent = `ページを画像に変換中… ${++n}枚`; };
     const prob = (await filesToPages(files, onP)).map(p => ({ ...p, inc:true }));
     const ans  = (await filesToPages(ansFiles, onP)).map(p => ({ ...p, inc:true }));
@@ -647,7 +650,7 @@ async function prepareImport(){
     $('bookDlg').close();
     showPreview();
   }catch(e){ $('bErr').textContent = '変換失敗: ' + e.message; }
-  finally{ importing = false; $('bImpGo').disabled = false; $('bProg').textContent=''; }
+  finally{ importing = false; $('bImpGo').disabled = false; $('bImpGo').textContent='とうろく'; $('bProg').textContent=''; }
 }
 
 function renderPvGrid(id, arr){
