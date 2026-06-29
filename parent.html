@@ -793,12 +793,10 @@ function drawChildWork(strokes){
 
 // 採点画面のデモ（?grade=1）
 if(new URLSearchParams(location.search).has('grade')){
-  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#fff"/>'+
-    '<text x="22" y="40" font-size="20" font-family="sans-serif">ためしてみよう2  大きさくらべ</text>'+
-    '<text x="22" y="92" font-size="16" font-family="sans-serif">① バナナ：うえ □  した □  大きいほうに○</text>'+
-    '<rect x="300" y="74" width="44" height="30" fill="none" stroke="#999"/><rect x="360" y="74" width="44" height="30" fill="none" stroke="#999"/>'+
-    '<text x="22" y="170" font-size="16" font-family="sans-serif">② ぶどう：うえ □  した □  大きいほうに○</text>'+
-    '<rect x="300" y="152" width="44" height="30" fill="none" stroke="#999"/><rect x="360" y="152" width="44" height="30" fill="none" stroke="#999"/></svg>';
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#eef1f5"/>'+
+    '<rect x="20" y="20" width="600" height="320" fill="#fff" stroke="#c7cfda" stroke-dasharray="8 6"/>'+
+    '<text x="320" y="160" font-size="20" font-family="sans-serif" fill="#7a8aa0" text-anchor="middle">（デモ）ここに本物の問題画像が入ります</text>'+
+    '<text x="320" y="195" font-size="15" font-family="sans-serif" fill="#9aa7b8" text-anchor="middle">本番＝スキャンした問題＋子のペン書き込み</text></svg>';
   $('gvName').textContent='たろう'; $('gvCnt').textContent='さいてん 1 / 3';
   gItems=[
     {label:'(1)',question:'バナナを数えて大きいほうに○',answer:'上8・下5（8に○）',kind:'value',kaisetsu:'実際に数えさせてから比べると確実です'},
