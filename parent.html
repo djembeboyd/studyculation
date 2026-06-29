@@ -137,6 +137,8 @@
     <input type="password" id="fPin" inputmode="numeric" maxlength="4" placeholder="なくてもOK" autocomplete="off">
     <label>やる教材（チェックした教材から出題されます）</label>
     <div id="fBooks" style="display:flex;flex-direction:column;gap:6px;max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px"></div>
+    <label>1日に出す もんだい数（あたらしい分）</label>
+    <input type="number" id="fNewpd" min="1" max="30" placeholder="6">
     <div class="err" id="dlgErr"></div>
     <div class="dlg-actions">
       <button type="button" class="ghost" id="bCancel">やめる</button>
@@ -271,16 +273,18 @@ function renderChildren(){
   (family.children||[]).forEach(c => {
     const el = document.createElement('div'); el.className = 'ccard';
     const n = c.assignedBooks?.length || 0;
+    const npd = (c.settingsOverride && c.settingsOverride.newpd) || (family.settings && family.settings.newpd) || 6;
     el.innerHTML = `
       <div class="ctop">
         <div class="avatar" style="background:${c.color||'#888'}">${initials(c.name)}</div>
         <div>
           <div class="cname">${c.name}</div>
-          <div class="cmeta">${c.pin?'🔒 あいことばあり':'あいことばなし'} ・ 教材 ${n===0?'ぜんぶ':n+'冊'}</div>
+          <div class="cmeta">教材 ${n===0?'ぜんぶ':n+'冊'} ・ 1日 ${npd}問</div>
         </div>
       </div>
       <div class="crow">
-        <button class="ghost" data-edit="${c.id}">なまえ・いろ</button>
+        <button class="ghost" data-edit="${c.id}">せってい</button>
+        <button class="ghost" data-link="${c.id}">🔗 リンク</button>
         <button class="danger" data-del="${c.id}">けす</button>
       </div>`;
     grid.appendChild(el);
@@ -291,6 +295,13 @@ function renderChildren(){
   grid.appendChild(add);
   grid.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openDlg(b.dataset.edit));
   grid.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delChild(b.dataset.del));
+  grid.querySelectorAll('[data-link]').forEach(b=>b.onclick=()=>showChildLink(b.dataset.link));
+}
+function showChildLink(id){
+  const c=(family.children||[]).find(x=>x.id===id); if(!c) return;
+  const url = new URL('child.html?child='+id, location.href).href;
+  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(()=>toast(`${c.name}のリンクをコピーしました`)).catch(()=>prompt(`${c.name}のリンク（コピーして子の端末で開く）`, url)); }
+  else prompt(`${c.name}のリンク（コピーして子の端末で開く）`, url);
 }
 
 function renderSwatches(){
@@ -312,6 +323,7 @@ function openDlg(id){
   $('dlgErr').textContent='';
   renderSwatches();
   renderBookChecks(c ? (c.assignedBooks||[]) : []);
+  $('fNewpd').value = (c && c.settingsOverride && c.settingsOverride.newpd) || '';
   $('childDlg').showModal();
   setTimeout(()=>$('fName').focus(),50);
 }
@@ -330,10 +342,12 @@ async function saveChild(){
   if(!name){ $('dlgErr').textContent='なまえを いれてね'; return; }
   if(pin && !/^\d{4}$/.test(pin)){ $('dlgErr').textContent='あいことばは 4けたの数字（または空）'; return; }
   const assignedBooks = [...$('fBooks').querySelectorAll('.fbk:checked')].map(x=>x.value);
+  const npd = parseInt($('fNewpd').value,10);
+  const settingsOverride = (npd && npd>0) ? { newpd: npd } : {};
   $('bSave').disabled = true;
   try{
-    if(editingId){ family = updateChild(family, editingId, { name, color:pickedColor, pin, assignedBooks }); }
-    else { const r = addChild(family, { name, color:pickedColor, pin }); family = updateChild(r.family, r.child.id, { assignedBooks }); }
+    if(editingId){ family = updateChild(family, editingId, { name, color:pickedColor, pin, assignedBooks, settingsOverride }); }
+    else { const r = addChild(family, { name, color:pickedColor, pin }); family = updateChild(r.family, r.child.id, { assignedBooks, settingsOverride }); }
     await saveFamily();
     renderChildren();
     $('childDlg').close();

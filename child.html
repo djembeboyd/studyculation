@@ -340,6 +340,9 @@ function buildKeys(){
 async function loadSelect(){
   const { data } = await loadOrInitJSON(CONFIG.ROOT_FOLDER_ID, 'family.json', emptyFamily());
   family=data; if(!family.children) family.children=[];
+  // 子ごとの直リンク（?child=<id>）＝プロフィール選択もPINも無しで直行（別端末用）
+  const cid=new URLSearchParams(location.search).get('child');
+  if(cid){ const c=family.children.find(x=>x.id===cid); if(c){ enterChild(c); return; } }
   renderPeople(); show('vSelect');
 }
 
