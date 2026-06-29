@@ -135,6 +135,8 @@
     <div class="swatches" id="swatches"></div>
     <label>あいことば（任意・4けた数字）<span class="muted">この子の画面に入るとき用</span></label>
     <input type="password" id="fPin" inputmode="numeric" maxlength="4" placeholder="なくてもOK" autocomplete="off">
+    <label>やる教材（チェックした教材から出題されます）</label>
+    <div id="fBooks" style="display:flex;flex-direction:column;gap:6px;max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px"></div>
     <div class="err" id="dlgErr"></div>
     <div class="dlg-actions">
       <button type="button" class="ghost" id="bCancel">やめる</button>
@@ -309,8 +311,17 @@ function openDlg(id){
   pickedColor = c ? (c.color||COLORS[0]) : COLORS[0];
   $('dlgErr').textContent='';
   renderSwatches();
+  renderBookChecks(c ? (c.assignedBooks||[]) : []);
   $('childDlg').showModal();
   setTimeout(()=>$('fName').focus(),50);
+}
+function renderBookChecks(assigned){
+  const all = !(assigned && assigned.length); // 未設定＝ぜんぶ
+  $('fBooks').innerHTML = (books && books.length)
+    ? books.map(b=>`<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
+        <input type="checkbox" class="fbk" value="${b.id}" ${(all||assigned.includes(b.id))?'checked':''} style="width:auto;flex:none">
+        <span>${esc(b.title)} <span class="cmeta">${esc(b.subject||'')}・${b.structured?(b.unitCount||0)+'問':'未解析'}</span></span></label>`).join('')
+    : '<div class="muted">先に教材を登録してください</div>';
 }
 
 async function saveChild(){
@@ -318,10 +329,11 @@ async function saveChild(){
   const pin = $('fPin').value.trim();
   if(!name){ $('dlgErr').textContent='なまえを いれてね'; return; }
   if(pin && !/^\d{4}$/.test(pin)){ $('dlgErr').textContent='あいことばは 4けたの数字（または空）'; return; }
+  const assignedBooks = [...$('fBooks').querySelectorAll('.fbk:checked')].map(x=>x.value);
   $('bSave').disabled = true;
   try{
-    if(editingId){ family = updateChild(family, editingId, { name, color:pickedColor, pin }); }
-    else { family = addChild(family, { name, color:pickedColor, pin }).family; }
+    if(editingId){ family = updateChild(family, editingId, { name, color:pickedColor, pin, assignedBooks }); }
+    else { const r = addChild(family, { name, color:pickedColor, pin }); family = updateChild(r.family, r.child.id, { assignedBooks }); }
     await saveFamily();
     renderChildren();
     $('childDlg').close();
