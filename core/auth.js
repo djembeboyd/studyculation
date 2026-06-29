@@ -3,6 +3,21 @@ let tokenClient = null;
 let accessToken = null;
 let tokenExp = 0;
 
+// トークンは1時間有効。localStorageに保存して、期限内の再読み込みでは再ログインを不要にする。
+const TOKEN_KEY = 'gdrive_token_v1';
+function loadCachedToken() {
+  try {
+    const raw = localStorage.getItem(TOKEN_KEY);
+    if (!raw) return;
+    const o = JSON.parse(raw);
+    if (o && o.token && Date.now() < o.exp) { accessToken = o.token; tokenExp = o.exp; }
+  } catch {}
+}
+function saveCachedToken() {
+  try { localStorage.setItem(TOKEN_KEY, JSON.stringify({ token: accessToken, exp: tokenExp })); } catch {}
+}
+loadCachedToken();
+
 export function loadGis() {
   return new Promise((resolve, reject) => {
     if (window.google?.accounts?.oauth2) return resolve();
@@ -32,6 +47,7 @@ export function requestToken({ prompt = '' } = {}) {
       if (resp.error) return reject(new Error(resp.error + (resp.error_description ? ': ' + resp.error_description : '')));
       accessToken = resp.access_token;
       tokenExp = Date.now() + ((resp.expires_in || 3600) * 1000) - 60000; // 1分の余裕
+      saveCachedToken();
       resolve(accessToken);
     };
     tokenClient.requestAccessToken({ prompt });
@@ -45,4 +61,4 @@ export async function getToken() {
 }
 
 export function hasToken() { return !!accessToken && Date.now() < tokenExp; }
-export function signOut() { accessToken = null; tokenExp = 0; }
+export function signOut() { accessToken = null; tokenExp = 0; try { localStorage.removeItem(TOKEN_KEY); } catch {} }

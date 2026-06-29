@@ -1,8 +1,9 @@
 // PDF・画像ファイルを「ダウンスケールしたJPEG（base64）ページ」に変換する。
 // pdf.js はホスト側(parent.html)で読み込み、workerSrc を設定しておくこと（window.pdfjsLib）。
 
-const MAX_EDGE = 1600;   // 長辺の上限px（実機での取り込み安定を優先。AI解析はClaude側で実読するため高解像度は不要）
-const QUALITY = 0.8;     // JPEG品質
+const MAX_EDGE = 1400;   // 長辺の上限px（実機での取り込み安定を優先。AI解析はClaude側で実読するため高解像度は不要）
+const ZOOM = 1.5;        // PDF基準サイズに対する描画倍率（重さ軽減のため2.0→1.5）
+const QUALITY = 0.78;    // JPEG品質
 
 function canvasToJpeg(canvas) {
   const dataUrl = canvas.toDataURL('image/jpeg', QUALITY);
@@ -36,8 +37,9 @@ async function pdfToPages(file, onPage) {
   for (let p = 1; p <= pdf.numPages; p++) {
     const page = await pdf.getPage(p);
     const base = page.getViewport({ scale: 1 });
-    const scale = Math.min(scaleFor(base.width, base.height) * 2, 2); // 文字の可読性のため最大2倍までは許容
-    const vp = page.getViewport({ scale: Math.max(scale, scaleFor(base.width, base.height)) });
+    // 基準の ZOOM 倍で描画しつつ、長辺が MAX_EDGE を超えないよう上限を掛ける
+    const fit = scaleFor(base.width * ZOOM, base.height * ZOOM); // ZOOM適用後にMAX_EDGEへ収める係数
+    const vp = page.getViewport({ scale: ZOOM * fit });
     const canvas = document.createElement('canvas');
     canvas.width = Math.round(vp.width); canvas.height = Math.round(vp.height);
     await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;

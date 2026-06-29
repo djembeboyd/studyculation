@@ -711,7 +711,10 @@ $('bIn').onclick = async () => {
   try{
     if(!CONFIG.GOOGLE_CLIENT_ID){ $('loginErr').textContent='config.js に CLIENT_ID 未設定'; return; }
     await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
-    await requestToken({ prompt: hasToken()?'':'consent' });
+    if(!hasToken()){
+      try{ await requestToken({ prompt:'' }); }          // 同意済みならサイレント
+      catch{ await requestToken({ prompt:'consent' }); }  // 初回のみ同意画面
+    }
     await loadHome();
   }catch(e){ $('loginErr').textContent='ログイン失敗: '+e.message; }
 };
@@ -799,6 +802,16 @@ if(new URLSearchParams(location.search).has('demo')){
   renderChildren(); renderBooks();
 }
 
+// 起動時：前回のトークンが生きていれば、ログイン画面を出さず自動でホームへ
+if(!new URLSearchParams(location.search).has('demo')){
+  (async()=>{
+    try{
+      await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
+      if(hasToken()){ await loadHome(); }
+    }catch(e){ /* ログイン画面のままにする */ }
+  })();
+}
+
 /* ===== 採点画面（同居・スマホ向け） ===== */
 let gItems = [], gMarks = [];
 function renderGradeItems(){
@@ -859,6 +872,7 @@ async function gvShow(){
   renderGradeItems();
   const img=$('gvImg'); img.onload=()=>drawChildWork(item.strokes);
   img.src=item.unit.pageId ? await getAssetUrl(item.unit.pageId) : '';
+  if(img.complete && img.naturalWidth) drawChildWork(item.strokes);   // キャッシュ済みの保険
   ['vLogin','vHome'].forEach(v=>$(v).classList.add('hidden')); $('vGrade').classList.remove('hidden');
   window.scrollTo(0,0);
 }

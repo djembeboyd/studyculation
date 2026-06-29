@@ -236,6 +236,7 @@ async function showAnswer(){
     u.items.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
   }
   const img=$('stImg'); img.onload=setupCanvas; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) setupCanvas();   // キャッシュ済みで onload が発火しない場合の保険
   window.scrollTo(0,0);
 }
 
@@ -267,7 +268,9 @@ async function showResult(){
     : `<button class="bigbtn" onclick="window.__redo()">まちがいを なおす（${wrongN}もん）</button>`;
   $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">おうちの人が さいてんしたよ</div>${cards}${btn}`;
   $('stGrade').classList.remove('hidden');
-  const img=$('stImg'); img.onload=()=>{ const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[]; drawStrokes(w); }; img.src=await assetUrl(u.pageId);
+  const img=$('stImg'); const draw=()=>{ const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[]; const cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight; drawStrokes(w); };
+  img.onload=draw; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) draw();   // キャッシュ済みの保険
   window.scrollTo(0,0);
 }
 window.__finish=async()=>{
@@ -355,13 +358,26 @@ $('bIn').onclick=async()=>{
   try{
     if(!CONFIG.GOOGLE_CLIENT_ID){ $('loginErr').textContent='config.js に CLIENT_ID 未設定'; return; }
     await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
-    await requestToken({ prompt: hasToken()?'':'consent' });
+    if(!hasToken()){
+      try{ await requestToken({ prompt:'' }); }
+      catch{ await requestToken({ prompt:'consent' }); }
+    }
     await loadSelect();
   }catch(e){ $('loginErr').textContent='ログイン失敗: '+e.message; }
 };
 $('bChange').onclick=()=>show('vSelect');
 $('pinCancel').onclick=closePin;
 buildKeys();
+
+// 起動時：前回のトークンが生きていれば、ログイン画面を出さず自動でプロフィール選択へ
+if(!new URLSearchParams(location.search).has('study') && !new URLSearchParams(location.search).has('demo')){
+  (async()=>{
+    try{
+      await initAuth(CONFIG.GOOGLE_CLIENT_ID, CONFIG.DRIVE_SCOPE);
+      if(hasToken()){ await loadSelect(); }
+    }catch(e){ /* ログイン画面のまま */ }
+  })();
+}
 
 /* 学習画面の操作 */
 $('bCheck').onclick=onSubmit;
