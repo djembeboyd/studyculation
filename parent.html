@@ -69,6 +69,11 @@
   .gitem .ans b{color:var(--good)}
   .gitem .kaisetsu{font-size:13px;color:#33536b;background:#eef4f9;border-radius:8px;padding:6px 9px;margin-top:6px}
   .gitem .figc{max-height:80px;border:1px solid var(--line);border-radius:6px;margin-top:6px}
+  /* 国語（縦書き）：テキスト部だけ縦書き。設問→こたえ→解説が右から左の列で読める。ボタンは横のまま */
+  .gitem.vtxt .vbody{writing-mode:vertical-rl;text-orientation:mixed;max-height:50vh;overflow:auto;padding:2px 0}
+  .gitem.vtxt .vbody>div{margin:0 0 0 12px}
+  .gitem.vtxt .kaisetsu{padding:6px}
+  .gitem.vtxt .figc{writing-mode:horizontal-tb}
   .gbtns3{display:flex;gap:10px;margin-top:10px}
   .gbtns3 button{flex:1;height:52px;border-radius:12px;font-weight:900;font-size:24px;border:2px solid var(--line);background:#fff;color:var(--mut)}
   .gbtns3 .o-on{background:var(--good);color:#fff;border-color:var(--good)}
@@ -813,14 +818,18 @@ if(!new URLSearchParams(location.search).has('demo')){
 }
 
 /* ===== 採点画面（同居・スマホ向け） ===== */
-let gItems = [], gMarks = [];
+let gItems = [], gMarks = [], gVertical = false;
+// 国語/読解の教材は縦書きで表示する
+function isVerticalBook(b){ return !!b && (b.subject==='国語' || b.type==='reading'); }
 function renderGradeItems(){
   $('gvItems').innerHTML = gItems.map((it,i)=>`
-    <div class="gitem">
-      <div class="q">${esc(it.label)}　${esc(it.question||'')}</div>
-      <div class="ans">✓ <b>正解：</b>${it.kind==='figure'?'（図・右に表示）':esc(it.answer||'')}</div>
-      ${(it.figRef&&it.figRef.assetId)?`<img class="figc" id="gfig${i}" alt="解答の図">`:''}
-      ${it.kaisetsu?`<div class="kaisetsu">💡 ${esc(it.kaisetsu)}</div>`:''}
+    <div class="gitem ${gVertical?'vtxt':''}">
+      <div class="vbody">
+        <div class="q">${esc(it.label)}　${esc(it.question||'')}</div>
+        <div class="ans">✓ <b>正解：</b>${it.kind==='figure'?'（図・右に表示）':esc(it.answer||'')}</div>
+        ${(it.figRef&&it.figRef.assetId)?`<img class="figc" id="gfig${i}" alt="解答の図">`:''}
+        ${it.kaisetsu?`<div class="kaisetsu">💡 ${esc(it.kaisetsu)}</div>`:''}
+      </div>
       <div class="gbtns3">
         <button class="${gMarks[i]===true?'o-on':''}" onclick="window.__gMark(${i},true)">◯</button>
         <button class="${gMarks[i]==='half'?'h-on':''}" onclick="window.__gMark(${i},'half')">△</button>
@@ -869,6 +878,7 @@ async function gvShow(){
   $('gvCnt').textContent=`さいてん ${gradeIdx+1} / ${gradeQ.length}`;
   const active=activeIndices(item.session);
   gItems=active.map(idx=>item.unit.items[idx]); gMarks=gItems.map(()=>null);
+  gVertical=isVerticalBook((books||[]).find(b=>b.id===item.unit.bookId));
   renderGradeItems();
   const img=$('gvImg'); img.onload=()=>drawChildWork(item.strokes);
   img.src=item.unit.pageId ? await getAssetUrl(item.unit.pageId) : '';
@@ -891,10 +901,11 @@ $('gvDone').onclick=gvConfirm;
 // 採点画面のデモ（?grade=1）
 if(new URLSearchParams(location.search).has('grade')){
   window.__assetOverride='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#eef1f5"/><rect x="20" y="20" width="600" height="320" fill="#fff" stroke="#c7cfda" stroke-dasharray="8 6"/><text x="320" y="160" font-size="20" font-family="sans-serif" fill="#7a8aa0" text-anchor="middle">（デモ）ここに本物の問題画像が入ります</text><text x="320" y="195" font-size="15" font-family="sans-serif" fill="#9aa7b8" text-anchor="middle">本番＝スキャンした問題＋子のペン書き込み</text></svg>');
+  books=[{id:'b1',subject:'国語',type:'reading'}];   // 国語＝縦書きデモ
   gradeQ=[{ childName:'たろう', unitId:'u1', progId:null, prog:{units:{u1:{}}},
-    unit:{ id:'u1', pageId:'x', items:[
-      {label:'(1)',question:'バナナを数えて大きいほうに○',answer:'上8・下5（8に○）',kind:'value',kaisetsu:'実際に数えさせてから比べると確実です'},
-      {label:'(2)',question:'ぶどうを数えて大きいほうに○',answer:'上3・下7（7に○）',kind:'value'} ]},
+    unit:{ id:'u1', bookId:'b1', pageId:'x', items:[
+      {label:'問1',question:'主人公はどんな気持ちでしたか。',answer:'うれしい気持ち',kind:'writing',kaisetsu:'「とびはねた」様子から前向きな気持ちが読み取れます'},
+      {label:'問2',question:'――線の言葉の意味を書きなさい。',answer:'とても喜ぶこと',kind:'value'} ]},
     session:{ attempt:1, total:2, resolved:[false,false], phase:'pending' },
     strokes:[ {points:[[0.48,0.22],[0.52,0.30]]}, {points:[[0.50,0.20],[0.47,0.31]]}, {points:[[0.46,0.55],[0.50,0.62]]}, {points:[[0.49,0.53],[0.46,0.63]]} ] }];
   gradeIdx=0; gvShow().then(()=>{ gMarks=[true,false]; renderGradeItems(); });

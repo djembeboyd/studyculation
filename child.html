@@ -57,6 +57,7 @@
   .gcard .gqq{font-weight:800;font-size:15px}
   .gcard .gevi{font-size:13px;line-height:1.55;color:#33536b;background:#eef4f9;border-radius:8px;padding:6px 9px;margin:5px 0}
   .gcard .gans2{font-size:14px;margin:3px 0}
+  .gcard.vtxt .gans2{writing-mode:vertical-rl;text-orientation:mixed;max-height:34vh}
   .gcard .gpts{font-size:12px;color:var(--mut);margin-top:1px}
   .gcard .gbtns{display:flex;gap:8px;margin-top:8px}
   .gcard .gbtns button{flex:1;height:46px;border-radius:10px;font-weight:900;font-size:21px;border:2px solid var(--line);background:#fff;color:var(--mut)}
@@ -167,6 +168,7 @@ let curStroke=null, drawing=false;
 
 function childSettings(c){ const s=(family&&family.settings)||{}; const o=(c&&c.settingsOverride)||{};
   return { cap:o.cap||s.cap||15, newpd:o.newpd||s.newpd||6, grad:o.grad||s.grad||30 }; }
+function isVerticalBook(b){ return !!b && (b.subject==='国語' || b.type==='reading'); }   // 国語/読解は縦書き
 function currentItem(){ return sQueue[sIdx]; }
 function currentUnit(){ const it=currentItem(); return it && sLib.units.find(u=>u.id===it.unitId); }
 async function assetUrl(id){ if(window.__assetOverride) return window.__assetOverride; return 'data:image/jpeg;base64,'+await readBase64(id); }
@@ -227,8 +229,9 @@ async function showAnswer(){
   $('stRefs').innerHTML='';
   for(const rid of (u.refPages||[])){ const im=new Image(); im.className='refimg'; im.src=await assetUrl(rid); $('stRefs').appendChild(im); }
   if(sSession.showAnswer){   // 3回目だけ・問題の直下に答えを表示
+    const vert = isVerticalBook(sBookById[u.bookId]);   // 国語/読解は縦書き
     const cards=u.items.map((it,i)=> sSession.resolved[i] ? '' :
-      `<div class="gcard"><div class="gqq">${it.label||('('+(i+1)+')')}</div>
+      `<div class="gcard${vert?' vtxt':''}"><div class="gqq">${it.label||('('+(i+1)+')')}</div>
         <div class="gans2">✓ こたえ：${it.kind==='figure'?'（図・解答ページ）':(it.answer||'')}</div>
         ${(it.figRef&&it.figRef.assetId)?`<img id="figc${i}" alt="" style="max-height:64px;border-radius:6px;border:1px solid #e0e0e0;margin-top:4px">`:''}</div>`).join('');
     $('stAnswerHint').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">3かいめ：こたえを見て なおそう</div>${cards}`;
