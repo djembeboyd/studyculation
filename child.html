@@ -312,7 +312,7 @@ async function showResult(){
     const img=$('stImg'), cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight;
     drawStrokes(w);
     const ctx=cv.getContext('2d'); const r=Math.max(15, Math.min(cv.width,cv.height)*0.05); const marks=sSession.marks||{};
-    Object.keys(marks).forEach(k=>{ const m=marks[k]; if(m) drawStampC(ctx, m.type, m.x*cv.width, m.y*cv.height, r); });
+    Object.keys(marks).forEach(k=>{ const m=marks[k]; if(m && m.x!=null && m.y!=null) drawStampC(ctx, m.type, m.x*cv.width, m.y*cv.height, r); });
     clearGuide();
   };
   const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);

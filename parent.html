@@ -100,6 +100,8 @@
   .gbtns3 .h-on{background:#f0a500;color:#fff;border-color:#f0a500}
   .gbtns3 .x-on{background:var(--hard);color:#fff;border-color:var(--hard)}
   .gv-done{width:100%;padding:16px;border-radius:14px;background:var(--accent);color:#fff;font-weight:800;font-size:18px;border:none;margin:8px 0 30px}
+  .gv-allo{width:100%;padding:18px;border-radius:14px;background:var(--good);color:#fff;font-weight:900;font-size:20px;border:none;margin:6px 0 4px}
+  .gv-allo:active{transform:scale(.99)}
   .thumb{height:70px;max-width:130px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;vertical-align:middle;background:#f0f2f5}
   .thumb.missing{display:none}
   #lightbox{position:fixed;inset:0;background:rgba(15,20,30,.88);z-index:90;display:flex;align-items:center;justify-content:center;padding:18px}
@@ -144,7 +146,8 @@
       <span class="nm" id="gvName"></span>
       <span class="cnt" id="gvCnt"></span>
     </div>
-    <div class="gv-sheetlabel">◆ 答案に赤ペンで採点 — ◯△✕をえらんで、答えの上をタップ</div>
+    <button class="gv-allo" id="gvAllO">⭕️ ぜんぶ せいかい！（ワンタップで かくにん）</button>
+    <div class="gv-sheetlabel">◆ まちがいがあるとき：1問ずつ ◯△✕ をえらんで、答えの上をタップ</div>
     <div class="gv-sheet" id="gvSheet"><img id="gvImg" alt=""><canvas id="gvCanvas"></canvas></div>
     <div id="gvCur" class="gvcur"></div>
     <div class="gbtns3" id="gvInk">
@@ -153,7 +156,7 @@
       <button id="gvInkX" data-ink="x">✕</button>
     </div>
     <div id="gvChips" class="gvchips"></div>
-    <button class="gv-done" id="gvDone">確定（子にけっかを返す）</button>
+    <button class="gv-done" id="gvDone">かくにん（子に かえす）</button>
   </section>
 </main>
 
@@ -924,7 +927,7 @@ async function gvShow(){
   $('gvCnt').textContent=`さいてん ${gradeIdx+1} / ${gradeQ.length}`;
   gActiveAbs=activeIndices(item.session);
   gItems=gActiveAbs.map(idx=>item.unit.items[idx]);
-  gStamps=gItems.map(()=>null); gMarks=gItems.map(()=>null); gSel=0; gInk='o';
+  gStamps=gItems.map(()=>null); gMarks=gItems.map(()=>null); gSel=0; gInk='x';   // 既定は✕＝間違いをタップ
   gVertical=isVerticalBook((books||[]).find(b=>b.id===item.unit.bookId));
   renderGvCur(); renderGvChips(); renderGvInk();
   const img=$('gvImg'); img.onload=redrawGrade;
@@ -935,11 +938,12 @@ async function gvShow(){
 }
 async function gvConfirm(){
   const item=gradeQ[gradeIdx];
-  const rest=gStamps.filter(s=>!s).length;
-  if(rest){ alert(`まだ採点していない答えが ${rest}もん あります。マークをえらんで答案の上をタップしてください`); return; }
-  const ns=grade(item.session, gMarks);
+  // 印のない小問は ◯（正解）とみなす＝親は「まちがいだけ」付ければよい
+  const marks = gMarks.map(m => (m===null||m===undefined) ? true : m);
+  const ns=grade(item.session, marks);
   ns.marks={ ...(item.session.marks||{}) };
-  gItems.forEach((it,k)=>{ const st=gStamps[k]; ns.marks[gActiveAbs[k]]={ type:st.type, x:st.x, y:st.y }; });
+  gItems.forEach((it,k)=>{ const st=gStamps[k];
+    ns.marks[gActiveAbs[k]] = st ? { type:st.type, x:st.x, y:st.y } : { type:'o' }; });  // 位置なし◯
   item.prog.units[item.unitId].session=ns;
   if(item.progId){ try{ await writeJSON(item.progId, item.prog); }catch(e){ alert('保存に失敗: '+e.message); return; } }
   toast('さいてん しました（子に かえします）');
@@ -964,6 +968,8 @@ $('gvCanvas').addEventListener('pointerdown', (e)=>{
 });
 $('gvBack').onclick=gvBackHome;
 $('gvDone').onclick=gvConfirm;
+// ぜんぶ正解＝全小問を◯にして即確定（最速＝1タップ）
+$('gvAllO').onclick=()=>{ gMarks=gItems.map(()=>true); gStamps=gItems.map(()=>null); gvConfirm(); };
 
 // 採点画面のデモ（?grade=1）
 if(new URLSearchParams(location.search).has('grade')){
