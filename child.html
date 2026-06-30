@@ -46,10 +46,12 @@
   .study-top .nm{font-weight:800;font-size:18px}
   .study-top .cnt{margin-left:auto;color:var(--mut);font-size:15px}
   .refimg{width:100%;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
-  .sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;touch-action:none}
+  #stZoom{position:relative;transform-origin:0 0;will-change:transform}
   .sheet img{display:block;width:100%}
   .sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none}
   #stGuide{pointer-events:none}
+  .zhint{font-size:12px;color:var(--mut);text-align:center;margin:6px 0 0}
   .tools{display:flex;gap:8px;margin:10px 0}
   .tools button{flex:1;padding:11px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:15px;font-weight:700}
   .tools button.on{background:#fff3ea;border-color:var(--accent);color:var(--accent)}
@@ -92,7 +94,8 @@
       <div class="cnt" id="stCnt"></div>
     </div>
     <div id="stRefs"></div>
-    <div class="sheet" id="stSheet"><img id="stImg" alt=""><canvas id="stGuide"></canvas><canvas id="stCanvas"></canvas></div>
+    <div class="sheet" id="stSheet"><div id="stZoom"><img id="stImg" alt=""><canvas id="stGuide"></canvas><canvas id="stCanvas"></canvas></div></div>
+    <div class="zhint" id="zHint">2ほんゆびで ひろげると 大きくなるよ</div>
     <div id="stAnswerHint" class="hidden"></div>
     <div class="tools" id="stTools">
       <button id="tPen" class="on">✏️ ペン</button>
@@ -111,9 +114,10 @@
       <button class="changeBtn" id="bChange">ひとを かえる</button>
     </div>
     <div class="todo">
-      <div class="em">📚</div>
+      <div class="em" id="todoEm">📚</div>
       <div class="t" id="todoMsg">きょうの がくしゅう</div>
       <p class="muted" id="todoSub"></p>
+      <button class="big hidden" id="bStart" style="margin-top:18px">はじめる</button>
     </div>
   </section>
 </div>
@@ -172,11 +176,20 @@ function childSettings(c){ const s=(family&&family.settings)||{}; const o=(c&&c.
 function isVerticalBook(b){ return !!b && (b.subject==='国語' || b.type==='reading'); }   // 国語/読解は縦書き
 function currentItem(){ return sQueue[sIdx]; }
 function currentUnit(){ const it=currentItem(); return it && sLib.units.find(u=>u.id===it.unitId); }
-async function assetUrl(id){ if(window.__assetOverride) return window.__assetOverride; return 'data:image/jpeg;base64,'+await readBase64(id); }
+const assetCache={};   // id -> dataURL（一度読んだら使い回す＝待ち時間ゼロ）
+async function assetUrl(id){ if(window.__assetOverride) return window.__assetOverride;
+  if(assetCache[id]) return assetCache[id];
+  const u='data:image/jpeg;base64,'+await readBase64(id); assetCache[id]=u; return u; }
+// 指定ユニットの画像（問題＋本文）を裏で先読みしてキャッシュに入れる
+function prefetchUnit(qitem){ if(!qitem||window.__assetOverride) return;
+  const u=sLib.units.find(x=>x.id===qitem.unitId); if(!u) return;
+  [u.pageId, ...(u.refPages||[])].filter(Boolean).forEach(id=>{
+    assetUrl(id).then(url=>{ const im=new Image(); im.src=url; }).catch(()=>{}); });
+}
 async function persist(){ if(window.__assetOverride) return; await writeJSON(sProgId,sProgress); await writeJSON(sReviewsId,sReviews); await writeJSON(sWorksId,sWorks); }
 
 async function startStudy(c){
-  sChild=c; show('vStudy'); $('stName').textContent=c.name; $('stRefs').innerHTML=''; $('stGrade').classList.add('hidden');
+  sChild=c;
   const lib=await ensureFolder(CONFIG.ROOT_FOLDER_ID,'library');
   const bj=await loadOrInitJSON(lib.id,'books.json',{books:[]});
   const uj=await loadOrInitJSON(lib.id,'units.json',{units:[]});
@@ -190,7 +203,25 @@ async function startStudy(c){
   buildChildQueue();
   sIdx=0;
   if(!sQueue.length){ showDone(true); return; }
-  await showCurrent();
+  showStart();   // 一タップ開始：今日の量を見せて「はじめる」を待つ
+}
+
+// 一タップ開始の画面（今日やる量＋はじめるボタン）
+function showStart(){
+  $('hFace').style.background=(sChild&&sChild.color)||'#888'; $('hFace').textContent=initials(sChild?sChild.name:'');
+  $('hHi').textContent=`${sChild?sChild.name:''}、こんにちは`;
+  $('todoEm').textContent='📚';
+  $('todoMsg').textContent=`きょうは ${sQueue.length}もん！`;
+  $('todoSub').textContent='じゅんびは いい？';
+  $('bStart').classList.remove('hidden');
+  $('bStart').textContent=`はじめる（${sQueue.length}もん）`;
+  prefetchUnit(sQueue[0]);   // 1問目を先読み
+  show('vHome');
+}
+function beginStudy(){
+  $('bStart').classList.add('hidden');
+  $('stName').textContent=sChild.name; $('stRefs').innerHTML=''; $('stGrade').classList.add('hidden');
+  show('vStudy'); showCurrent();
 }
 
 // 子がいま操作する対象：結果確認（親採点済み）→やり直し→新規 の順。pending(親採点まち)は出さない。
@@ -213,7 +244,9 @@ function buildChildQueue(){
 
 async function showCurrent(){
   if(sIdx>=sQueue.length){ showDone(false); return; }
+  resetZoom();   // 問題ごとにズームは等倍に戻す
   $('stCnt').textContent=`${sIdx+1} / ${sQueue.length}`;
+  prefetchUnit(sQueue[sIdx+1]);   // 次の問題を裏で先読み（めくった瞬間に出る）
   if(currentItem().mode==='result') return showResult();
   return showAnswer();
 }
@@ -335,9 +368,26 @@ function renderGuide(u){
 }
 function clearGuide(){ const g=$('stGuide'), img=$('stImg'); g.width=img.clientWidth; g.height=img.clientHeight; g.getContext('2d').clearRect(0,0,g.width,g.height); }
 function ptFromEvent(e){ const cv=$('stCanvas'), r=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [ (t.clientX-r.left)/r.width, (t.clientY-r.top)/r.height ]; }
-function onDown(e){ if(currentItem()&&currentItem().mode==='result')return; e.preventDefault(); drawing=true; curStroke={ color:'#1b66c9', width:3, points:[ptFromEvent(e)] }; redraw(); }
-function onMove(e){ if(!drawing)return; e.preventDefault(); curStroke.points.push(ptFromEvent(e)); redraw(); }
+function cancelStroke(){ drawing=false; curStroke=null; redraw(); }
+function onDown(e){ if(zPtrs.size>=2)return; if(currentItem()&&currentItem().mode==='result')return; e.preventDefault(); drawing=true; curStroke={ color:'#1b66c9', width:3, points:[ptFromEvent(e)] }; redraw(); }
+function onMove(e){ if(!drawing||zPtrs.size>=2)return; e.preventDefault(); curStroke.points.push(ptFromEvent(e)); redraw(); }
 function onUp(){ if(!drawing)return; drawing=false; if(curStroke&&curStroke.points.length>1)sStrokes.push(curStroke); curStroke=null; redraw(); }
+
+/* --- ピンチでズーム＆移動（2本指）／1本指は手書き --- */
+let zoomS=1, zoomTX=0, zoomTY=0; const zPtrs=new Map(); let pinch0=null;
+function applyZoom(){ const z=$('stZoom'); if(z) z.style.transform=`translate(${zoomTX}px,${zoomTY}px) scale(${zoomS})`; }
+function resetZoom(){ zoomS=1; zoomTX=0; zoomTY=0; applyZoom(); }
+function zDist(a,b){ return Math.hypot(a.x-b.x,a.y-b.y); }
+function zMid(a,b){ return {x:(a.x+b.x)/2,y:(a.y+b.y)/2}; }
+function zDown(e){ zPtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(zPtrs.size===2){ cancelStroke(); const [a,b]=[...zPtrs.values()]; pinch0={d:zDist(a,b),m:zMid(a,b),s:zoomS,tx:zoomTX,ty:zoomTY}; } }
+function zMove(e){ if(!zPtrs.has(e.pointerId))return; zPtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(zPtrs.size>=2 && pinch0){ e.preventDefault(); const [a,b]=[...zPtrs.values()]; const d=zDist(a,b), m=zMid(a,b);
+    let s=pinch0.s*(d/pinch0.d); s=Math.max(1,Math.min(4,s));
+    zoomS=s; zoomTX=pinch0.tx+(m.x-pinch0.m.x); zoomTY=pinch0.ty+(m.y-pinch0.m.y);
+    if(zoomS<=1.001){ zoomTX=0; zoomTY=0; }
+    applyZoom(); } }
+function zUp(e){ zPtrs.delete(e.pointerId); if(zPtrs.size<2) pinch0=null; }
 
 async function cropAsset(assetId,box){
   if(!box)return null; const url=await assetUrl(assetId);
@@ -348,8 +398,10 @@ async function cropAsset(assetId,box){
 }
 
 function showDone(empty){
+  $('bStart').classList.add('hidden');
   $('hFace').style.background=(sChild&&sChild.color)||'#888'; $('hFace').textContent=initials(sChild?sChild.name:'');
   $('hHi').textContent=empty?`${sChild?sChild.name:''}、こんにちは`:`${sChild?sChild.name:''}、おつかれさま！`;
+  $('todoEm').textContent=empty?'📚':'🎉';
   $('todoMsg').textContent=empty?'いまは やる もんだいが ないよ':'きょうのぶん おわり！🎉';
   $('todoSub').textContent=empty?'おうちの人の さいてんまちか、ぜんぶ おわったよ。':'よく がんばりました。';
   show('vHome');
@@ -415,13 +467,17 @@ if(!new URLSearchParams(location.search).has('study') && !new URLSearchParams(lo
 }
 
 /* 学習画面の操作 */
+$('bStart').onclick=beginStudy;
 $('bCheck').onclick=onSubmit;
 $('bQuit').onclick=()=>{ if(confirm('やめる？ かいた ものは ほぞんされないよ')) show('vSelect'); };
 $('tPen').onclick=()=>$('tPen').classList.add('on');
 $('tUndo').onclick=()=>{ sStrokes.pop(); redraw(); };
 $('tClear').onclick=()=>{ sStrokes=[]; redraw(); };
-(()=>{ const cv=$('stCanvas');
+(()=>{ const cv=$('stCanvas'), sheet=$('stSheet');
   cv.addEventListener('pointerdown',onDown); cv.addEventListener('pointermove',onMove); window.addEventListener('pointerup',onUp);
+  // ピンチ判定は描画より先に走らせる（capture）＝2本目が触れたら描画を中断
+  sheet.addEventListener('pointerdown',zDown,true); sheet.addEventListener('pointermove',zMove,true);
+  window.addEventListener('pointerup',zUp,true); window.addEventListener('pointercancel',zUp,true);
   window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden')){ if(stPaint) stPaint(); else setupCanvas(); } });
 })();
 
@@ -453,7 +509,9 @@ if(new URLSearchParams(location.search).has('study')){
   } else {
     sQueue=[{unitId:'u1',mode:'answer'}];
   }
-  sIdx=0; show('vStudy'); $('stName').textContent='たろう'; showCurrent();
+  sIdx=0;
+  if(params.has('result')||params.has('ans')){ show('vStudy'); $('stName').textContent='たろう'; showCurrent(); }
+  else { showStart(); }   // 通常デモは一タップ開始から
 }
 
 // 開発用デモ（?demo=1）：ログイン無しで選択画面を確認
