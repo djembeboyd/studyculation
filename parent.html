@@ -62,7 +62,27 @@
   .gv-sheetlabel{font-size:13px;color:var(--mut);margin:12px 0 4px}
   .gv-sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
   .gv-sheet img{display:block;width:100%}
-  .gv-sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+  .gv-sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+  .gvcur{border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin:10px 0 6px;background:#fff}
+  .gvcur .who{font-size:12px;color:var(--mut)}
+  .gvcur .q{font-weight:800;font-size:15px;margin-top:2px}
+  .gvcur .ans{font-size:15px;margin-top:5px}
+  .gvcur .ans b{color:var(--good)}
+  .gvcur .kaisetsu{font-size:13px;color:#33536b;background:#eef4f9;border-radius:8px;padding:6px 9px;margin-top:6px}
+  .gvcur .figc{max-height:80px;border:1px solid var(--line);border-radius:6px;margin-top:6px}
+  .gvcur.vtxt .vbody{writing-mode:vertical-rl;text-orientation:mixed;max-height:46vh;overflow:auto;padding:2px 0}
+  .gvcur.vtxt .vbody>div{margin:0 0 0 12px}
+  .gvcur.vtxt .kaisetsu{padding:6px}
+  .gvcur.vtxt .figc{writing-mode:horizontal-tb}
+  #gvInk button.sel{box-shadow:0 0 0 3px rgba(0,0,0,.08)}
+  #gvInk .o-on{background:var(--good);color:#fff;border-color:var(--good)}
+  #gvInk .h-on{background:#f0a500;color:#fff;border-color:#f0a500}
+  #gvInk .x-on{background:var(--hard);color:#fff;border-color:var(--hard)}
+  .gvchips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+  .gvchips .chip{border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700;background:#fff;color:var(--mut)}
+  .gvchips .chip.cur{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 2px var(--bg-accent)}
+  .gvchips .chip .mk{font-weight:900;margin-left:5px}
+  .gvchips .chip.done-o .mk{color:var(--good)} .gvchips .chip.done-half .mk{color:#f0a500} .gvchips .chip.done-x .mk{color:var(--hard)}
   .gitem{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff}
   .gitem .q{font-weight:800;font-size:15px}
   .gitem .ans{font-size:15px;margin-top:5px}
@@ -124,9 +144,15 @@
       <span class="nm" id="gvName"></span>
       <span class="cnt" id="gvCnt"></span>
     </div>
-    <div class="gv-sheetlabel">◆ 子の答案（問題に書き込み）</div>
+    <div class="gv-sheetlabel">◆ 答案に赤ペンで採点 — ◯△✕をえらんで、答えの上をタップ</div>
     <div class="gv-sheet" id="gvSheet"><img id="gvImg" alt=""><canvas id="gvCanvas"></canvas></div>
-    <div id="gvItems"></div>
+    <div id="gvCur" class="gvcur"></div>
+    <div class="gbtns3" id="gvInk">
+      <button id="gvInkO" data-ink="o">◯</button>
+      <button id="gvInkH" data-ink="half">△</button>
+      <button id="gvInkX" data-ink="x">✕</button>
+    </div>
+    <div id="gvChips" class="gvchips"></div>
     <button class="gv-done" id="gvDone">確定（子にけっかを返す）</button>
   </section>
 </main>
@@ -817,34 +843,54 @@ if(!new URLSearchParams(location.search).has('demo')){
   })();
 }
 
-/* ===== 採点画面（同居・スマホ向け） ===== */
-let gItems = [], gMarks = [], gVertical = false;
+/* ===== 採点画面：本物の答案に赤ペンで採点する方式 ===== */
+let gItems=[], gActiveAbs=[], gStamps=[], gMarks=[], gSel=0, gInk='o', gVertical=false;
 // 国語/読解の教材は縦書きで表示する
 function isVerticalBook(b){ return !!b && (b.subject==='国語' || b.type==='reading'); }
-function renderGradeItems(){
-  $('gvItems').innerHTML = gItems.map((it,i)=>`
-    <div class="gitem ${gVertical?'vtxt':''}">
-      <div class="vbody">
-        <div class="q">${esc(it.label)}　${esc(it.question||'')}</div>
-        <div class="ans">✓ <b>正解：</b>${it.kind==='figure'?'（図・右に表示）':esc(it.answer||'')}</div>
-        ${(it.figRef&&it.figRef.assetId)?`<img class="figc" id="gfig${i}" alt="解答の図">`:''}
-        ${it.kaisetsu?`<div class="kaisetsu">💡 ${esc(it.kaisetsu)}</div>`:''}
-      </div>
-      <div class="gbtns3">
-        <button class="${gMarks[i]===true?'o-on':''}" onclick="window.__gMark(${i},true)">◯</button>
-        <button class="${gMarks[i]==='half'?'h-on':''}" onclick="window.__gMark(${i},'half')">△</button>
-        <button class="${gMarks[i]===false?'x-on':''}" onclick="window.__gMark(${i},false)">✕</button>
-      </div>
-    </div>`).join('');
-  gItems.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropToUrl(it.figRef.assetId,it.figRef.box); const el=document.getElementById('gfig'+i); if(el&&d)el.src=d; } });
+
+// 赤ペンの採点マークを描く（◯=赤丸 △=赤三角 ✕=赤バツ。先生の赤ペン）
+function drawStamp(ctx, type, cx, cy, r){
+  ctx.save(); ctx.strokeStyle='#e8302a'; ctx.lineWidth=Math.max(3.5, r*0.3); ctx.lineCap='round'; ctx.lineJoin='round';
+  if(type==='o'){ ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); }
+  else if(type==='x'){ const d=r*0.85; ctx.beginPath(); ctx.moveTo(cx-d,cy-d); ctx.lineTo(cx+d,cy+d); ctx.moveTo(cx+d,cy-d); ctx.lineTo(cx-d,cy+d); ctx.stroke(); }
+  else if(type==='half'){ const d=r; ctx.beginPath(); ctx.moveTo(cx,cy-d); ctx.lineTo(cx+d*0.92,cy+d*0.62); ctx.lineTo(cx-d*0.92,cy+d*0.62); ctx.closePath(); ctx.stroke(); }
+  ctx.restore();
 }
-window.__gMark = (i,v)=>{ gMarks[i]=v; renderGradeItems(); };
-function drawChildWork(strokes){
-  const img=$('gvImg'), cv=$('gvCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight;
+// 子の書き込み＋採点スタンプ（任意のフィルタ）を1枚のキャンバスに描く
+function drawGradeCanvas(strokes, stamps){
+  const img=$('gvImg'), cv=$('gvCanvas');
+  cv.width=img.clientWidth||img.naturalWidth; cv.height=img.clientHeight||img.naturalHeight;
   const ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height); ctx.lineCap='round'; ctx.lineJoin='round';
   for(const s of (strokes||[])){ const pts=Array.isArray(s)?s:(s.points||[]); ctx.strokeStyle=(s&&s.color)||'#1b66c9'; ctx.lineWidth=(s&&s.width)||3; ctx.beginPath();
     pts.forEach((p,i)=>{ const x=p[0]*cv.width,y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+  const r=Math.max(16, Math.min(cv.width,cv.height)*0.05);
+  (stamps||[]).forEach(st=>{ if(st) drawStamp(ctx, st.type, st.x*cv.width, st.y*cv.height, r); });
 }
+function redrawGrade(){ const item=gradeQ[gradeIdx]; drawGradeCanvas(item?item.strokes:[], gStamps); }
+
+// いま採点している小問の情報（設問・正解・解説）を共置きで表示
+function renderGvCur(){
+  const it=gItems[gSel];
+  if(!it){ $('gvCur').innerHTML=''; return; }
+  $('gvCur').className='gvcur'+(gVertical?' vtxt':'');
+  $('gvCur').innerHTML=`<div class="who">いま採点：${gSel+1} / ${gItems.length}もん目　— マークをえらんで答案の上をタップ</div>
+    <div class="vbody">
+      <div class="q">${esc(it.label||('('+(gSel+1)+')'))}　${esc(it.question||'')}</div>
+      <div class="ans">✓ <b>正解：</b>${it.kind==='figure'?'（図・下に表示）':esc(it.answer||'')}</div>
+      ${(it.figRef&&it.figRef.assetId)?`<img class="figc" id="gcurfig" alt="解答の図">`:''}
+      ${it.kaisetsu?`<div class="kaisetsu">💡 ${esc(it.kaisetsu)}</div>`:''}
+    </div>`;
+  if(it.figRef&&it.figRef.assetId){ cropToUrl(it.figRef.assetId,it.figRef.box).then(d=>{ const el=$('gcurfig'); if(el&&d)el.src=d; }); }
+}
+// 小問チップ（採点状況つき）。タップで対象を切替
+function renderGvChips(){
+  $('gvChips').innerHTML=gItems.map((it,i)=>{
+    const st=gStamps[i]; const mk=st?(st.type==='o'?'◯':st.type==='half'?'△':'✕'):'—';
+    return `<button class="chip ${i===gSel?'cur':''} ${st?('done-'+st.type):''}" onclick="window.__gvSel(${i})">${esc(it.label||('('+(i+1)+')'))}<span class="mk">${mk}</span></button>`;
+  }).join('');
+}
+function renderGvInk(){ $('gvInkO').className=gInk==='o'?'o-on':''; $('gvInkH').className=gInk==='half'?'h-on':''; $('gvInkX').className=gInk==='x'?'x-on':''; }
+window.__gvSel=(i)=>{ gSel=i; renderGvCur(); renderGvChips(); };
 
 /* ===== 採点キュー（未採点を全員ぶん集めて採点→子に結果を返す） ===== */
 let gradeQ=[], gradeIdx=0;
@@ -876,25 +922,46 @@ async function gvShow(){
   const item=gradeQ[gradeIdx]; if(!item){ gvBackHome(); return; }
   $('gvName').textContent=item.childName;
   $('gvCnt').textContent=`さいてん ${gradeIdx+1} / ${gradeQ.length}`;
-  const active=activeIndices(item.session);
-  gItems=active.map(idx=>item.unit.items[idx]); gMarks=gItems.map(()=>null);
+  gActiveAbs=activeIndices(item.session);
+  gItems=gActiveAbs.map(idx=>item.unit.items[idx]);
+  gStamps=gItems.map(()=>null); gMarks=gItems.map(()=>null); gSel=0; gInk='o';
   gVertical=isVerticalBook((books||[]).find(b=>b.id===item.unit.bookId));
-  renderGradeItems();
-  const img=$('gvImg'); img.onload=()=>drawChildWork(item.strokes);
+  renderGvCur(); renderGvChips(); renderGvInk();
+  const img=$('gvImg'); img.onload=redrawGrade;
   img.src=item.unit.pageId ? await getAssetUrl(item.unit.pageId) : '';
-  if(img.complete && img.naturalWidth) drawChildWork(item.strokes);   // キャッシュ済みの保険
+  if(img.complete && img.naturalWidth) redrawGrade();   // キャッシュ済みの保険
   ['vLogin','vHome'].forEach(v=>$(v).classList.add('hidden')); $('vGrade').classList.remove('hidden');
   window.scrollTo(0,0);
 }
 async function gvConfirm(){
   const item=gradeQ[gradeIdx];
-  if(gMarks.some(m=>m===null||m===undefined)){ alert('ぜんぶ ◯△✕ をつけてね'); return; }
-  item.prog.units[item.unitId].session = grade(item.session, gMarks);
-  try{ await writeJSON(item.progId, item.prog); }catch(e){ alert('保存に失敗: '+e.message); return; }
+  const rest=gStamps.filter(s=>!s).length;
+  if(rest){ alert(`まだ採点していない答えが ${rest}もん あります。マークをえらんで答案の上をタップしてください`); return; }
+  const ns=grade(item.session, gMarks);
+  ns.marks={ ...(item.session.marks||{}) };
+  gItems.forEach((it,k)=>{ const st=gStamps[k]; ns.marks[gActiveAbs[k]]={ type:st.type, x:st.x, y:st.y }; });
+  item.prog.units[item.unitId].session=ns;
+  if(item.progId){ try{ await writeJSON(item.progId, item.prog); }catch(e){ alert('保存に失敗: '+e.message); return; } }
   toast('さいてん しました（子に かえします）');
   gradeIdx++; if(gradeIdx>=gradeQ.length) gvBackHome(); else await gvShow();
 }
 function gvBackHome(){ $('vGrade').classList.add('hidden'); $('vHome').classList.remove('hidden'); renderChildren(); }
+// 採点マーク（インク）の選択
+$('gvInk').querySelectorAll('button').forEach(b=>{ b.onclick=()=>{ gInk=b.dataset.ink; renderGvInk(); }; });
+// 答案の上をタップ＝いまの小問にスタンプを置く→次の未採点へ自動で進む
+$('gvCanvas').addEventListener('pointerdown', (e)=>{
+  if($('vGrade').classList.contains('hidden')) return;
+  if(!gItems.length) return;
+  if(!gInk){ toast('◯△✕ をえらんでね'); return; }
+  e.preventDefault();
+  const cv=$('gvCanvas'), rct=cv.getBoundingClientRect();
+  const x=(e.clientX-rct.left)/rct.width, y=(e.clientY-rct.top)/rct.height;
+  gStamps[gSel]={ type:gInk, x:Math.min(1,Math.max(0,x)), y:Math.min(1,Math.max(0,y)) };
+  gMarks[gSel]= gInk==='o'?true:(gInk==='half'?'half':false);
+  let nxt=-1; for(let k=1;k<=gItems.length;k++){ const idx=(gSel+k)%gItems.length; if(!gStamps[idx]){ nxt=idx; break; } }
+  if(nxt>=0) gSel=nxt;
+  redrawGrade(); renderGvCur(); renderGvChips();
+});
 $('gvBack').onclick=gvBackHome;
 $('gvDone').onclick=gvConfirm;
 
@@ -908,7 +975,7 @@ if(new URLSearchParams(location.search).has('grade')){
       {label:'問2',question:'――線の言葉の意味を書きなさい。',answer:'とても喜ぶこと',kind:'value'} ]},
     session:{ attempt:1, total:2, resolved:[false,false], phase:'pending' },
     strokes:[ {points:[[0.48,0.22],[0.52,0.30]]}, {points:[[0.50,0.20],[0.47,0.31]]}, {points:[[0.46,0.55],[0.50,0.62]]}, {points:[[0.49,0.53],[0.46,0.63]]} ] }];
-  gradeIdx=0; gvShow().then(()=>{ gMarks=[true,false]; renderGradeItems(); });
+  gradeIdx=0; gvShow();
 }
 
 // 取り込みプレビューのデモ（?pv=1）

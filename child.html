@@ -49,6 +49,7 @@
   .sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
   .sheet img{display:block;width:100%}
   .sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none}
+  #stGuide{pointer-events:none}
   .tools{display:flex;gap:8px;margin:10px 0}
   .tools button{flex:1;padding:11px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:15px;font-weight:700}
   .tools button.on{background:#fff3ea;border-color:var(--accent);color:var(--accent)}
@@ -91,7 +92,7 @@
       <div class="cnt" id="stCnt"></div>
     </div>
     <div id="stRefs"></div>
-    <div class="sheet" id="stSheet"><img id="stImg" alt=""><canvas id="stCanvas"></canvas></div>
+    <div class="sheet" id="stSheet"><img id="stImg" alt=""><canvas id="stGuide"></canvas><canvas id="stCanvas"></canvas></div>
     <div id="stAnswerHint" class="hidden"></div>
     <div class="tools" id="stTools">
       <button id="tPen" class="on">✏️ ペン</button>
@@ -238,8 +239,9 @@ async function showAnswer(){
     $('stAnswerHint').classList.remove('hidden');
     u.items.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
   }
-  const img=$('stImg'); img.onload=setupCanvas; img.src=await assetUrl(u.pageId);
-  if(img.complete && img.naturalWidth) setupCanvas();   // キャッシュ済みで onload が発火しない場合の保険
+  stPaint=()=>{ setupCanvas(); renderGuide(u); };
+  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みで onload が発火しない場合の保険
   window.scrollTo(0,0);
 }
 
@@ -261,19 +263,27 @@ async function showResult(){
   const u=currentUnit(); sSession=sProgress.units[u.id].session;
   $('stTools').style.display='none'; $('bCheck').classList.add('hidden');
   $('stAnswerHint').classList.add('hidden'); $('stAnswerHint').innerHTML='';
-  const cards=u.items.map((it,i)=>`<div class="gcard"><div class="gqq">${it.label||('('+(i+1)+')')}　${
-    sSession.resolved[i] ? '<span style="color:#37b87c;font-weight:800">◯ せいかい！</span>' : '<span style="color:#e8604c;font-weight:800">✕ もういちど</span>'
-  }</div></div>`).join('');
   const allRight=sSession.resolved.every(Boolean);
   const wrongN=sSession.resolved.filter(x=>!x).length;
+  const head = allRight
+    ? '<div style="text-align:center;margin:8px 0;font-weight:800;color:#37b87c">ぜんぶ ◯！ よくできました🎉</div>'
+    : `<div style="text-align:center;margin:8px 0;font-weight:800;color:#e8604c">✕ のところを なおそう（のこり${wrongN}もん）</div>`;
   const btn = sSession.complete
-    ? `<button class="bigbtn" onclick="window.__finish()">おわり！${allRight?' ぜんぶせいかい🎉':''}</button>`
-    : `<button class="bigbtn" onclick="window.__redo()">まちがいを なおす（${wrongN}もん）</button>`;
-  $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">おうちの人が さいてんしたよ</div>${cards}${btn}`;
+    ? `<button class="bigbtn" onclick="window.__finish()">おわり！${allRight?' 🎉':''}</button>`
+    : `<button class="bigbtn" onclick="window.__redo()">なおす（${wrongN}もん）</button>`;
+  $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:6px 0">おうちの人が さいてんしたよ</div>${head}${btn}`;
   $('stGrade').classList.remove('hidden');
-  const img=$('stImg'); const draw=()=>{ const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[]; const cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight; drawStrokes(w); };
-  img.onload=draw; img.src=await assetUrl(u.pageId);
-  if(img.complete && img.naturalWidth) draw();   // キャッシュ済みの保険
+  // 答案に赤い◯✕を重ねて表示（返ってきたテストと同じ）
+  stPaint=()=>{
+    const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[];
+    const img=$('stImg'), cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight;
+    drawStrokes(w);
+    const ctx=cv.getContext('2d'); const r=Math.max(15, Math.min(cv.width,cv.height)*0.05); const marks=sSession.marks||{};
+    Object.keys(marks).forEach(k=>{ const m=marks[k]; if(m) drawStampC(ctx, m.type, m.x*cv.width, m.y*cv.height, r); });
+    clearGuide();
+  };
+  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みの保険
   window.scrollTo(0,0);
 }
 window.__finish=async()=>{
@@ -302,6 +312,28 @@ function drawStrokes(strokes){
     curStroke.points.forEach((p,i)=>{ const x=p[0]*cv.width, y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
 }
 function redraw(){ drawStrokes(sStrokes); }
+let stPaint=null;   // いまの画面の再描画関数（リサイズ時に使う）
+// 赤ペンの採点マーク（◯△✕）
+function drawStampC(ctx, type, cx, cy, r){
+  ctx.save(); ctx.strokeStyle='#e8302a'; ctx.lineWidth=Math.max(3.5, r*0.3); ctx.lineCap='round'; ctx.lineJoin='round';
+  if(type==='o'){ ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); }
+  else if(type==='x'){ const d=r*0.85; ctx.beginPath(); ctx.moveTo(cx-d,cy-d); ctx.lineTo(cx+d,cy+d); ctx.moveTo(cx+d,cy-d); ctx.lineTo(cx-d,cy+d); ctx.stroke(); }
+  else if(type==='half'){ const d=r; ctx.beginPath(); ctx.moveTo(cx,cy-d); ctx.lineTo(cx+d*0.92,cy+d*0.62); ctx.lineTo(cx-d*0.92,cy+d*0.62); ctx.closePath(); ctx.stroke(); }
+  ctx.restore();
+}
+// ガイド層（やり直し時）：前回の書き込みを薄く＋まだ直していない✕マーク
+function renderGuide(u){
+  const g=$('stGuide'), img=$('stImg'); g.width=img.clientWidth; g.height=img.clientHeight;
+  const ctx=g.getContext('2d'); ctx.clearRect(0,0,g.width,g.height);
+  if(!sSession || sSession.attempt<=1) return;   // 1回目はガイド無し
+  const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[];
+  ctx.save(); ctx.globalAlpha=0.25; ctx.lineCap='round'; ctx.lineJoin='round';
+  for(const s of w){ ctx.strokeStyle=s.color||'#1b66c9'; ctx.lineWidth=s.width||3; ctx.beginPath(); (s.points||[]).forEach((p,i)=>{ const x=p[0]*g.width,y=p[1]*g.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+  ctx.restore();
+  const r=Math.max(15, Math.min(g.width,g.height)*0.05); const marks=sSession.marks||{};
+  u.items.forEach((it,i)=>{ const m=marks[i]; if(m && !sSession.resolved[i]) drawStampC(ctx, m.type, m.x*g.width, m.y*g.height, r); });
+}
+function clearGuide(){ const g=$('stGuide'), img=$('stImg'); g.width=img.clientWidth; g.height=img.clientHeight; g.getContext('2d').clearRect(0,0,g.width,g.height); }
 function ptFromEvent(e){ const cv=$('stCanvas'), r=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [ (t.clientX-r.left)/r.width, (t.clientY-r.top)/r.height ]; }
 function onDown(e){ if(currentItem()&&currentItem().mode==='result')return; e.preventDefault(); drawing=true; curStroke={ color:'#1b66c9', width:3, points:[ptFromEvent(e)] }; redraw(); }
 function onMove(e){ if(!drawing)return; e.preventDefault(); curStroke.points.push(ptFromEvent(e)); redraw(); }
@@ -390,7 +422,7 @@ $('tUndo').onclick=()=>{ sStrokes.pop(); redraw(); };
 $('tClear').onclick=()=>{ sStrokes=[]; redraw(); };
 (()=>{ const cv=$('stCanvas');
   cv.addEventListener('pointerdown',onDown); cv.addEventListener('pointermove',onMove); window.addEventListener('pointerup',onUp);
-  window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden'))setupCanvas(); });
+  window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden')){ if(stPaint) stPaint(); else setupCanvas(); } });
 })();
 
 /* 開発用デモ（?study=1）：Drive無しで学習〜採点を確認 */
@@ -406,14 +438,17 @@ if(new URLSearchParams(location.search).has('study')){
   ]};
   sBookById={b1:sLib.books[0]}; sProgress={units:{}}; sReviews={reviews:[]}; sWorks={works:[]};
   const params=new URLSearchParams(location.search);
+  const demoMarks={ 0:{type:'o',x:0.30,y:0.34}, 1:{type:'x',x:0.30,y:0.50} };   // 親が答案に置いた赤◯✕
+  const demoStrokes=[ {color:'#1b66c9',width:4,points:[[0.18,0.33],[0.24,0.35]]}, {color:'#1b66c9',width:4,points:[[0.18,0.49],[0.27,0.51],[0.20,0.55]]} ];
   if(params.has('result')){
-    // 親採点済みの結果確認デモ：(1)○ (2)✕（未完了→やり直し）
-    sProgress.units['u1']={ ...freshState(), session:{ attempt:1, total:2, resolved:[true,false], firstCorrect:1, phase:'result', showAnswer:false, complete:false } };
-    sWorks.works=[{unitId:'u1',strokes:[]}];
+    // 親採点済みの結果確認デモ：(1)○ (2)✕（未完了→やり直し）。答案に赤◯✕がのる
+    sProgress.units['u1']={ ...freshState(), session:{ attempt:1, total:2, resolved:[true,false], firstCorrect:1, phase:'result', showAnswer:false, complete:false, marks:demoMarks } };
+    sWorks.works=[{unitId:'u1',strokes:demoStrokes}];
     sQueue=[{unitId:'u1',mode:'result'}];
   } else if(params.has('ans')){
-    // 3回目（答え表示）デモ：(2)だけ未正解→答えを問題の下に表示
-    sProgress.units['u1']={ ...freshState(), session:{ attempt:3, total:2, resolved:[true,false], firstCorrect:1, phase:'answering', showAnswer:true, complete:false } };
+    // 3回目（やり直し中）デモ：(2)だけ未正解→前回の書き込み薄く＋✕ガイド＋答え表示
+    sProgress.units['u1']={ ...freshState(), session:{ attempt:3, total:2, resolved:[true,false], firstCorrect:1, phase:'answering', showAnswer:true, complete:false, marks:demoMarks } };
+    sWorks.works=[{unitId:'u1',strokes:demoStrokes}];
     sQueue=[{unitId:'u1',mode:'answer'}];
   } else {
     sQueue=[{unitId:'u1',mode:'answer'}];
