@@ -49,23 +49,7 @@
   .sheet{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
   .sheet img{display:block;width:100%}
   .sheet canvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none}
-  .sheet .probcanvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none}
-  .stbanner{text-align:center;font-weight:800;font-size:17px;border-radius:12px;padding:10px;margin:6px 0}
-  .stbanner.ok{background:#e9f8ef;color:#2a9d63} .stbanner.ng{background:#fdeceA;background:#fdecea;color:#d8493b}
-  .abox{border:1px solid var(--line);border-radius:14px;background:#fff;margin:12px 0;overflow:hidden}
-  .abox .aq{font-size:15px;font-weight:600;padding:9px 12px;background:#faf7f2;border-bottom:1px solid var(--line)}
-  .abox .aq .qlb{font-weight:900;margin-right:4px}
-  .abox .aq .ahint{font-size:13px;color:#2a9d63;font-weight:700;margin-top:4px}
-  .abox .apad{position:relative;height:130px;background:
-    linear-gradient(#fff,#fff) ,
-    repeating-linear-gradient(180deg,transparent 0 31px,#eef0f3 31px 32px)}
-  .abox .apad canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
-  .abox .amark{position:absolute;right:10px;top:4px;font-weight:900;font-size:30px;pointer-events:none}
-  .abox.ok .amark{color:#37b87c} .abox.ng .amark{color:#e8302a}
-  .abox.locked .apad{background:#f6faf6}
-  .abox.locked .aq{color:#7a8a7a}
-  /* 国語：設問文だけ縦書き（解答欄は手書きなのでそのまま） */
-  .abox.vtxt .aq{writing-mode:vertical-rl;text-orientation:mixed;max-height:9em}
+  #stGuide{pointer-events:none}
   .tools{display:flex;gap:8px;margin:10px 0}
   .tools button{flex:1;padding:11px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:15px;font-weight:700}
   .tools button.on{background:#fff3ea;border-color:var(--accent);color:var(--accent)}
@@ -107,16 +91,15 @@
       <div class="nm" id="stName"></div>
       <div class="cnt" id="stCnt"></div>
     </div>
-    <div id="stStatus" class="stbanner hidden"></div>
     <div id="stRefs"></div>
-    <div class="sheet" id="stSheet"><img id="stImg" alt=""></div>
-    <div id="stBoxes"></div>
+    <div class="sheet" id="stSheet"><img id="stImg" alt=""><canvas id="stGuide"></canvas><canvas id="stCanvas"></canvas></div>
+    <div id="stAnswerHint" class="hidden"></div>
     <div class="tools" id="stTools">
       <button id="tPen" class="on">✏️ ペン</button>
       <button id="tUndo">⌫ もどす</button>
-      <button id="tClear">🧹 けす</button>
+      <button id="tClear">🧹 ぜんぶけす</button>
     </div>
-    <button class="bigbtn" id="bCheck">ていしゅつ</button>
+    <button class="bigbtn" id="bCheck">こたえあわせ</button>
     <div id="stGrade" class="hidden"></div>
   </section>
 
@@ -181,12 +164,11 @@ function enterChild(c){ startStudy(c).catch(e=>{ alert('読み込みに失敗: '
 /* ===== 学習セッション（子＝答えるだけ／結果確認／やり直し。採点は親） ===== */
 let sChild=null, sLib={books:[],units:[]}, sBookById={};
 let sProgress, sProgId, sReviews, sReviewsId, sWorks, sWorksId;
-let sQueue=[], sIdx=0, sSession=null;
-let sPads=[], activePad=null;   // 手書きパッド群（問題注釈＋小問ごとの解答欄）
+let sQueue=[], sIdx=0, sStrokes=[], sSession=null;
+let curStroke=null, drawing=false;
 
 function childSettings(c){ const s=(family&&family.settings)||{}; const o=(c&&c.settingsOverride)||{};
   return { cap:o.cap||s.cap||15, newpd:o.newpd||s.newpd||6, grad:o.grad||s.grad||30 }; }
-function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function isVerticalBook(b){ return !!b && (b.subject==='国語' || b.type==='reading'); }   // 国語/読解は縦書き
 function currentItem(){ return sQueue[sIdx]; }
 function currentUnit(){ const it=currentItem(); return it && sLib.units.find(u=>u.id===it.unitId); }
@@ -236,80 +218,38 @@ async function showCurrent(){
   return showAnswer();
 }
 
-/* ===== 手書きパッド（複数キャンバスを個別管理） ===== */
-function strokeList(ctx,strokes,W,H,alpha){ ctx.save(); if(alpha!=null)ctx.globalAlpha=alpha; ctx.lineCap='round'; ctx.lineJoin='round';
-  for(const s of (strokes||[])){ ctx.strokeStyle=s.color||'#1b66c9'; ctx.lineWidth=s.width||3; ctx.beginPath(); (s.points||[]).forEach((p,i)=>{ const x=p[0]*W,y=p[1]*H; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); } ctx.restore(); }
-class Pad {
-  constructor(cv, strokes, opts={}){ this.cv=cv; this.strokes=strokes; this.cur=null; this.readonly=!!opts.readonly; this.ghost=opts.ghost||null;
-    cv.addEventListener('pointerdown',e=>this.down(e)); cv.addEventListener('pointermove',e=>this.move(e));
-    cv.addEventListener('pointerup',e=>this.up(e)); cv.addEventListener('pointercancel',()=>this.up());
-    sPads.push(this); this.resize(); if(!this.readonly && !activePad) activePad=this; }
-  resize(){ const cv=this.cv; cv.width=cv.clientWidth||cv.width; cv.height=cv.clientHeight||cv.height; this.redraw(); }
-  pt(e){ const r=this.cv.getBoundingClientRect(); return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]; }
-  down(e){ if(this.readonly)return; activePad=this; e.preventDefault(); try{this.cv.setPointerCapture(e.pointerId);}catch{} this.cur={color:'#1b66c9',width:3,points:[this.pt(e)]}; this.redraw(); }
-  move(e){ if(this.readonly||!this.cur)return; e.preventDefault(); this.cur.points.push(this.pt(e)); this.redraw(); }
-  up(){ if(!this.cur)return; if(this.cur.points.length>1)this.strokes.push(this.cur); this.cur=null; this.redraw(); }
-  undo(){ if(this.readonly)return; this.strokes.pop(); this.redraw(); }
-  clear(){ if(this.readonly)return; this.strokes.length=0; this.redraw(); }
-  redraw(){ const cv=this.cv,ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
-    if(this.ghost) strokeList(ctx,this.ghost,cv.width,cv.height,0.22);
-    strokeList(ctx,this.strokes,cv.width,cv.height); if(this.cur) strokeList(ctx,[this.cur],cv.width,cv.height); }
-}
-function clearPads(){ sPads=[]; activePad=null; }
-function repaintStudy(){ sPads.forEach(p=>p.resize()); }
-// 作業データ（問題への注釈＋小問ごとの解答欄）。旧形式(page strokes)も吸収
-function getWork(uid){ let w=sWorks.works.find(x=>x.unitId===uid);
-  if(!w){ w={unitId:uid, page:{strokes:[]}, answers:{}}; sWorks.works.push(w); }
-  if(!w.page) w.page={strokes:(w.strokes||[])}; if(!w.answers) w.answers={}; return w; }
-
-// 問題画像に注釈できるキャンバスを（毎回作り直して）敷く
-async function mountProblem(u, readonly, pageStrokes){
-  const sheet=$('stSheet'); sheet.querySelectorAll('canvas').forEach(c=>c.remove());
-  $('stRefs').innerHTML='';
-  for(const rid of (u.refPages||[])){ const im=new Image(); im.className='refimg'; im.src=await assetUrl(rid); $('stRefs').appendChild(im); }
-  const pcv=document.createElement('canvas'); pcv.className='probcanvas'; sheet.appendChild(pcv);
-  const img=$('stImg');
-  const mk=()=>{ pcv.style.width=img.clientWidth+'px'; pcv.style.height=img.clientHeight+'px'; new Pad(pcv, pageStrokes, {readonly}); };
-  img.onload=mk; img.src=await assetUrl(u.pageId);
-  if(img.complete && img.naturalWidth) mk();
-}
-
-// 解く画面（解答欄に手書き）。やり直し時は未正解だけ書き直し（前回を薄く下敷き）
+// 答える画面（答え非表示。3回目だけ答え表示）
 async function showAnswer(){
   const u=currentUnit(); const p=sProgress.units[u.id]||{};
   sSession = p.session || startSession(u.items.length);
-  clearPads();
-  $('stStatus').classList.add('hidden');
+  sStrokes=[];
   $('stTools').style.display='flex'; $('tPen').classList.add('on');
   $('bCheck').textContent = sSession.showAnswer ? 'できた（ていしゅつ）' : 'ていしゅつ'; $('bCheck').classList.remove('hidden');
   $('stGrade').classList.add('hidden'); $('stGrade').innerHTML='';
-  const work=getWork(u.id); const redo=sSession.attempt>1;
-  await mountProblem(u, false, work.page.strokes);
-  // 小問ごとの解答欄
-  $('stBoxes').innerHTML=u.items.map((it,i)=>{
-    const done = redo && sSession.resolved[i];                 // 正解済みはロック表示
-    const showAns = sSession.showAnswer && !sSession.resolved[i];// 3回目だけ答えを出す
-    return `<div class="abox ${done?'locked ok':''}" data-i="${i}">
-      <div class="aq"><span class="qlb">${esc(it.label||('('+(i+1)+')'))}</span> ${esc(it.question||'')}
-        ${showAns?`<div class="ahint">こたえ：${esc(it.kind==='figure'?'（図・解答ページ）':(it.answer||''))}</div>`:''}</div>
-      <div class="apad"><canvas></canvas><span class="amark">${done?'◯':''}</span></div>
-    </div>`;
-  }).join('');
-  $('stBoxes').querySelectorAll('.abox').forEach(box=>{
-    const i=+box.dataset.i; const cv=box.querySelector('canvas');
-    const done = redo && sSession.resolved[i];
-    work.answers[i]=work.answers[i]||{strokes:[]};
-    let ghost=null;
-    if(redo && !done){ ghost=(work.answers[i].strokes||[]).slice(); work.answers[i]={strokes:[]}; }  // 前回を薄く、欄は新規
-    new Pad(cv, work.answers[i].strokes, {readonly:done, ghost});
-  });
+  $('stAnswerHint').classList.add('hidden'); $('stAnswerHint').innerHTML='';   // ←答えは既定で非表示
+  $('stRefs').innerHTML='';
+  for(const rid of (u.refPages||[])){ const im=new Image(); im.className='refimg'; im.src=await assetUrl(rid); $('stRefs').appendChild(im); }
+  if(sSession.showAnswer){   // 3回目だけ・問題の直下に答えを表示
+    const vert = isVerticalBook(sBookById[u.bookId]);   // 国語/読解は縦書き
+    const cards=u.items.map((it,i)=> sSession.resolved[i] ? '' :
+      `<div class="gcard${vert?' vtxt':''}"><div class="gqq">${it.label||('('+(i+1)+')')}</div>
+        <div class="gans2">✓ こたえ：${it.kind==='figure'?'（図・解答ページ）':(it.answer||'')}</div>
+        ${(it.figRef&&it.figRef.assetId)?`<img id="figc${i}" alt="" style="max-height:64px;border-radius:6px;border:1px solid #e0e0e0;margin-top:4px">`:''}</div>`).join('');
+    $('stAnswerHint').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">3かいめ：こたえを見て なおそう</div>${cards}`;
+    $('stAnswerHint').classList.remove('hidden');
+    u.items.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
+  }
+  stPaint=()=>{ setupCanvas(); renderGuide(u); };
+  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みで onload が発火しない場合の保険
   window.scrollTo(0,0);
 }
 
 // 提出 → 未採点(pending)にして次へ
 async function onSubmit(){
-  const u=currentUnit(); const work=getWork(u.id);
-  work.attempt=sSession.attempt; work.updatedAt=today();      // strokesはPadが参照で書き込み済み
+  const u=currentUnit();
+  const work={ unitId:u.id, page:0, strokes:sStrokes, stamps:[], attempt:sSession.attempt, updatedAt:today() };
+  const wi=sWorks.works.findIndex(w=>w.unitId===u.id); if(wi>=0)sWorks.works[wi]=work; else sWorks.works.push(work);
   sSession = submit(sSession);
   const prev = sProgress.units[u.id] || freshState();
   sProgress.units[u.id] = { ...prev, session: sSession };
@@ -318,29 +258,32 @@ async function onSubmit(){
   sIdx++; await showCurrent();
 }
 
-// 結果（親採点済み）：各解答欄に◯✕。✕はやり直しへ
+// 結果確認（親採点済み）。○は正解確認、✕はやり直しへ
 async function showResult(){
-  const u=currentUnit(); sSession=sProgress.units[u.id].session; clearPads();
+  const u=currentUnit(); sSession=sProgress.units[u.id].session;
   $('stTools').style.display='none'; $('bCheck').classList.add('hidden');
-  const work=getWork(u.id);
-  const allRight=sSession.resolved.every(Boolean); const wrongN=sSession.resolved.filter(x=>!x).length;
-  $('stStatus').className='stbanner '+(allRight?'ok':'ng');
-  $('stStatus').textContent = allRight ? 'ぜんぶ ◯！ よくできました🎉' : `✕ のところを なおそう（のこり${wrongN}もん）`;
-  $('stStatus').classList.remove('hidden');
-  await mountProblem(u, true, work.page.strokes||[]);
-  $('stBoxes').innerHTML=u.items.map((it,i)=>{
-    const ok=sSession.resolved[i];
-    return `<div class="abox ${ok?'ok':'ng'}" data-i="${i}">
-      <div class="aq"><span class="qlb">${esc(it.label||('('+(i+1)+')'))}</span> ${esc(it.question||'')}</div>
-      <div class="apad"><canvas></canvas><span class="amark">${ok?'◯':'✕'}</span></div>
-    </div>`;
-  }).join('');
-  $('stBoxes').querySelectorAll('.abox').forEach(box=>{ const i=+box.dataset.i; const a=(work.answers&&work.answers[i])||{strokes:[]}; new Pad(box.querySelector('canvas'), a.strokes||[], {readonly:true}); });
+  $('stAnswerHint').classList.add('hidden'); $('stAnswerHint').innerHTML='';
+  const allRight=sSession.resolved.every(Boolean);
+  const wrongN=sSession.resolved.filter(x=>!x).length;
+  const head = allRight
+    ? '<div style="text-align:center;margin:8px 0;font-weight:800;color:#37b87c">ぜんぶ ◯！ よくできました🎉</div>'
+    : `<div style="text-align:center;margin:8px 0;font-weight:800;color:#e8604c">✕ のところを なおそう（のこり${wrongN}もん）</div>`;
   const btn = sSession.complete
     ? `<button class="bigbtn" onclick="window.__finish()">おわり！${allRight?' 🎉':''}</button>`
     : `<button class="bigbtn" onclick="window.__redo()">なおす（${wrongN}もん）</button>`;
-  $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:6px 0">おうちの人が さいてんしたよ</div>${btn}`;
+  $('stGrade').innerHTML=`<div class="muted" style="text-align:center;margin:6px 0">おうちの人が さいてんしたよ</div>${head}${btn}`;
   $('stGrade').classList.remove('hidden');
+  // 答案に赤い◯✕を重ねて表示（返ってきたテストと同じ）
+  stPaint=()=>{
+    const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[];
+    const img=$('stImg'), cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight;
+    drawStrokes(w);
+    const ctx=cv.getContext('2d'); const r=Math.max(15, Math.min(cv.width,cv.height)*0.05); const marks=sSession.marks||{};
+    Object.keys(marks).forEach(k=>{ const m=marks[k]; if(m) drawStampC(ctx, m.type, m.x*cv.width, m.y*cv.height, r); });
+    clearGuide();
+  };
+  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みの保険
   window.scrollTo(0,0);
 }
 window.__finish=async()=>{
@@ -358,6 +301,43 @@ window.__redo=async()=>{
   try{ await persist(); }catch(e){ alert('保存に失敗: '+e.message); return; }
   sQueue[sIdx]={ unitId:u.id, mode:'answer' }; await showAnswer();
 };
+
+/* --- お絵かき（正規化座標） --- */
+function setupCanvas(){ const img=$('stImg'), cv=$('stCanvas'); cv.width=img.clientWidth; cv.height=img.clientHeight; drawStrokes(sStrokes); }
+function drawStrokes(strokes){
+  const cv=$('stCanvas'), ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
+  for(const s of (strokes||[])){ ctx.strokeStyle=s.color||'#1b66c9'; ctx.lineWidth=s.width||3; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath();
+    (s.points||[]).forEach((p,i)=>{ const x=p[0]*cv.width, y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+  if(curStroke){ ctx.strokeStyle=curStroke.color; ctx.lineWidth=curStroke.width; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath();
+    curStroke.points.forEach((p,i)=>{ const x=p[0]*cv.width, y=p[1]*cv.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+}
+function redraw(){ drawStrokes(sStrokes); }
+let stPaint=null;   // いまの画面の再描画関数（リサイズ時に使う）
+// 赤ペンの採点マーク（◯△✕）
+function drawStampC(ctx, type, cx, cy, r){
+  ctx.save(); ctx.strokeStyle='#e8302a'; ctx.lineWidth=Math.max(3.5, r*0.3); ctx.lineCap='round'; ctx.lineJoin='round';
+  if(type==='o'){ ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); }
+  else if(type==='x'){ const d=r*0.85; ctx.beginPath(); ctx.moveTo(cx-d,cy-d); ctx.lineTo(cx+d,cy+d); ctx.moveTo(cx+d,cy-d); ctx.lineTo(cx-d,cy+d); ctx.stroke(); }
+  else if(type==='half'){ const d=r; ctx.beginPath(); ctx.moveTo(cx,cy-d); ctx.lineTo(cx+d*0.92,cy+d*0.62); ctx.lineTo(cx-d*0.92,cy+d*0.62); ctx.closePath(); ctx.stroke(); }
+  ctx.restore();
+}
+// ガイド層（やり直し時）：前回の書き込みを薄く＋まだ直していない✕マーク
+function renderGuide(u){
+  const g=$('stGuide'), img=$('stImg'); g.width=img.clientWidth; g.height=img.clientHeight;
+  const ctx=g.getContext('2d'); ctx.clearRect(0,0,g.width,g.height);
+  if(!sSession || sSession.attempt<=1) return;   // 1回目はガイド無し
+  const w=(sWorks.works.find(x=>x.unitId===u.id)||{}).strokes||[];
+  ctx.save(); ctx.globalAlpha=0.25; ctx.lineCap='round'; ctx.lineJoin='round';
+  for(const s of w){ ctx.strokeStyle=s.color||'#1b66c9'; ctx.lineWidth=s.width||3; ctx.beginPath(); (s.points||[]).forEach((p,i)=>{ const x=p[0]*g.width,y=p[1]*g.height; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
+  ctx.restore();
+  const r=Math.max(15, Math.min(g.width,g.height)*0.05); const marks=sSession.marks||{};
+  u.items.forEach((it,i)=>{ const m=marks[i]; if(m && !sSession.resolved[i]) drawStampC(ctx, m.type, m.x*g.width, m.y*g.height, r); });
+}
+function clearGuide(){ const g=$('stGuide'), img=$('stImg'); g.width=img.clientWidth; g.height=img.clientHeight; g.getContext('2d').clearRect(0,0,g.width,g.height); }
+function ptFromEvent(e){ const cv=$('stCanvas'), r=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [ (t.clientX-r.left)/r.width, (t.clientY-r.top)/r.height ]; }
+function onDown(e){ if(currentItem()&&currentItem().mode==='result')return; e.preventDefault(); drawing=true; curStroke={ color:'#1b66c9', width:3, points:[ptFromEvent(e)] }; redraw(); }
+function onMove(e){ if(!drawing)return; e.preventDefault(); curStroke.points.push(ptFromEvent(e)); redraw(); }
+function onUp(){ if(!drawing)return; drawing=false; if(curStroke&&curStroke.points.length>1)sStrokes.push(curStroke); curStroke=null; redraw(); }
 
 async function cropAsset(assetId,box){
   if(!box)return null; const url=await assetUrl(assetId);
@@ -438,9 +418,12 @@ if(!new URLSearchParams(location.search).has('study') && !new URLSearchParams(lo
 $('bCheck').onclick=onSubmit;
 $('bQuit').onclick=()=>{ if(confirm('やめる？ かいた ものは ほぞんされないよ')) show('vSelect'); };
 $('tPen').onclick=()=>$('tPen').classList.add('on');
-$('tUndo').onclick=()=>{ if(activePad) activePad.undo(); };
-$('tClear').onclick=()=>{ if(activePad) activePad.clear(); };
-window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden')) repaintStudy(); });
+$('tUndo').onclick=()=>{ sStrokes.pop(); redraw(); };
+$('tClear').onclick=()=>{ sStrokes=[]; redraw(); };
+(()=>{ const cv=$('stCanvas');
+  cv.addEventListener('pointerdown',onDown); cv.addEventListener('pointermove',onMove); window.addEventListener('pointerup',onUp);
+  window.addEventListener('resize',()=>{ if(!$('vStudy').classList.contains('hidden')){ if(stPaint) stPaint(); else setupCanvas(); } });
+})();
 
 /* 開発用デモ（?study=1）：Drive無しで学習〜採点を確認 */
 if(new URLSearchParams(location.search).has('study')){
@@ -455,18 +438,17 @@ if(new URLSearchParams(location.search).has('study')){
   ]};
   sBookById={b1:sLib.books[0]}; sProgress={units:{}}; sReviews={reviews:[]}; sWorks={works:[]};
   const params=new URLSearchParams(location.search);
-  // 子が解答欄に書いた手書き（デモ）
-  const demoAns={ 0:{strokes:[{color:'#1b66c9',width:4,points:[[0.12,0.5],[0.2,0.42],[0.28,0.55],[0.36,0.4]]}]},
-                  1:{strokes:[{color:'#1b66c9',width:4,points:[[0.12,0.45],[0.22,0.6],[0.34,0.42],[0.46,0.6]]}]} };
+  const demoMarks={ 0:{type:'o',x:0.30,y:0.34}, 1:{type:'x',x:0.30,y:0.50} };   // 親が答案に置いた赤◯✕
+  const demoStrokes=[ {color:'#1b66c9',width:4,points:[[0.18,0.33],[0.24,0.35]]}, {color:'#1b66c9',width:4,points:[[0.18,0.49],[0.27,0.51],[0.20,0.55]]} ];
   if(params.has('result')){
-    // 親採点済み：(1)◯ (2)✕（未完了→やり直し）
-    sProgress.units['u1']={ ...freshState(), session:{ attempt:1, total:2, resolved:[true,false], firstCorrect:1, phase:'result', showAnswer:false, complete:false, marks:{0:'o',1:'x'} } };
-    sWorks.works=[{unitId:'u1', page:{strokes:[]}, answers:demoAns}];
+    // 親採点済みの結果確認デモ：(1)○ (2)✕（未完了→やり直し）。答案に赤◯✕がのる
+    sProgress.units['u1']={ ...freshState(), session:{ attempt:1, total:2, resolved:[true,false], firstCorrect:1, phase:'result', showAnswer:false, complete:false, marks:demoMarks } };
+    sWorks.works=[{unitId:'u1',strokes:demoStrokes}];
     sQueue=[{unitId:'u1',mode:'result'}];
   } else if(params.has('ans')){
-    // 3回目（やり直し中）：(2)だけ未正解→前回の書き込みを薄く＋答え表示
-    sProgress.units['u1']={ ...freshState(), session:{ attempt:3, total:2, resolved:[true,false], firstCorrect:1, phase:'answering', showAnswer:true, complete:false, marks:{0:'o',1:'x'} } };
-    sWorks.works=[{unitId:'u1', page:{strokes:[]}, answers:demoAns}];
+    // 3回目（やり直し中）デモ：(2)だけ未正解→前回の書き込み薄く＋✕ガイド＋答え表示
+    sProgress.units['u1']={ ...freshState(), session:{ attempt:3, total:2, resolved:[true,false], firstCorrect:1, phase:'answering', showAnswer:true, complete:false, marks:demoMarks } };
+    sWorks.works=[{unitId:'u1',strokes:demoStrokes}];
     sQueue=[{unitId:'u1',mode:'answer'}];
   } else {
     sQueue=[{unitId:'u1',mode:'answer'}];
