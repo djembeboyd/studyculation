@@ -35,12 +35,14 @@ export function advance(prev, q, { bookType = 'reps', grad = GRAD_DEFAULT, now =
   s.interval = iv;
   s.due = addDays(now, iv);
   s.history.push({ date: now, q });
-  if (q >= 4) {
-    if (bookType !== 'reps') {
-      if (s.history.filter(h => h.q >= 4).length >= 2) s.state = 'graduated';
-    } else if (iv > grad) {
-      s.state = 'graduated';
-    }
+  // 反復学習の種類で卒業条件を分ける（2トラック）
+  if (bookType === 'reps') {
+    // ドリル系（計算・漢字・語句など再利用できるスキル）＝忘却曲線で反復
+    if (q >= 4 && iv > grad) s.state = 'graduated';
+  } else {
+    // 長文読解・記述＝同じ本文の再出題は記憶になるだけなので反復しない。
+    // 一度解く→（セッション内で本文付きの直し）→完了＝即卒業（忘却曲線に乗せない）。
+    s.state = 'graduated';
   }
   return s;
 }

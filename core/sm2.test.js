@@ -40,12 +40,15 @@ t('ef は 1.3 を下回らない', () => {
   assert.equal(s.ef, 1.3);
 });
 
-t('reading: q>=4 が2回で卒業（intervalに依らず）', () => {
+t('reading: 一度の完了で卒業（SM-2の反復に乗せない）', () => {
   let s = freshState();
   s = advance(s, 4, { bookType: 'reading', now: NOW });
-  assert.equal(s.state, 'active'); // 1回目はまだ
-  s = advance(s, 4, { bookType: 'reading', now: NOW });
-  assert.equal(s.state, 'graduated'); // 2回目で卒業
+  assert.equal(s.state, 'graduated'); // 1回で完了＝再出題しない
+});
+t('reading: 答えを見て低品質でも卒業（再出題しない）', () => {
+  let s = freshState();
+  s = advance(s, 2, { bookType: 'reading', now: NOW });
+  assert.equal(s.state, 'graduated'); // 直しは済んでいる前提で完了扱い
 });
 
 t('isDue: active かつ due<=today', () => {
