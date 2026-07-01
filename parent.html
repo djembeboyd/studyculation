@@ -452,7 +452,7 @@ async function fillThumbs(){
   for(let di=0; di<bvUnits.length; di++){
     const u = bvUnits[di];
     const pe = document.getElementById('pgt-'+di);
-    if(pe && u.pageId){ const url = await getAssetUrl(u.pageId); if(url){ pe.src = url; pe.dataset.full = url; } else pe.classList.add('missing'); }
+    if(pe && u.pageId){ const url = u.region ? await cropToUrl(u.pageId, u.region) : await getAssetUrl(u.pageId); if(url){ pe.src = url; pe.dataset.full = url; } else pe.classList.add('missing'); }
     for(let si=0; si<u.items.length; si++){
       const it = u.items[si]; const fe = document.getElementById('figt-'+di+'-'+si);
       if(fe){ if(it.figRef && it.figRef.assetId){ const url = await cropToUrl(it.figRef.assetId, it.figRef.box); if(url){ fe.src = url; fe.dataset.full = url; } else fe.classList.add('missing'); } else fe.classList.add('missing'); }
