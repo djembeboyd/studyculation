@@ -247,7 +247,18 @@ async function showCurrent(){
   resetZoom();   // 問題ごとにズームは等倍に戻す
   $('stCnt').textContent=`${sIdx+1} / ${sQueue.length}`;
   prefetchUnit(sQueue[sIdx+1]);   // 次の問題を裏で先読み（めくった瞬間に出る）
-  if(currentItem().mode==='result') return showResult();
+  if(currentItem().mode==='result'){
+    const u=currentUnit(); const sess=(sProgress.units[u.id]||{}).session;
+    // ✕がある採点結果は、確認画面を挟まず直接やり直しへ（✕を直すのは自明）
+    if(sess && !sess.complete){
+      sSession=nextAttempt(sess);
+      sProgress.units[u.id]={ ...sProgress.units[u.id], session:sSession };
+      try{ await persist(); }catch(e){ alert('保存に失敗: '+e.message); return; }
+      sQueue[sIdx]={ unitId:u.id, mode:'answer' };
+      return showAnswer();
+    }
+    return showResult();   // ぜんぶ○ or 3回終了＝結果（お祝い/おわり）
+  }
   return showAnswer();
 }
 
@@ -262,16 +273,19 @@ async function showAnswer(){
   $('stAnswerHint').classList.add('hidden'); $('stAnswerHint').innerHTML='';   // ←答えは既定で非表示
   $('stRefs').innerHTML='';
   for(const rid of (u.refPages||[])){ const im=new Image(); im.className='refimg'; im.src=await assetUrl(rid); $('stRefs').appendChild(im); }
+  const redo = sSession.attempt>1;   // やり直し中か
+  const wrongN = sSession.resolved.filter(x=>!x).length;
+  let hint = redo ? `<div style="text-align:center;margin:6px 0 2px;font-weight:800;color:#e8604c">✕のところを なおそう（のこり${wrongN}もん）</div>` : '';
   if(sSession.showAnswer){   // 3回目だけ・問題の直下に答えを表示
     const vert = isVerticalBook(sBookById[u.bookId]);   // 国語/読解は縦書き
     const cards=u.items.map((it,i)=> sSession.resolved[i] ? '' :
       `<div class="gcard${vert?' vtxt':''}"><div class="gqq">${it.label||('('+(i+1)+')')}</div>
         <div class="gans2">✓ こたえ：${it.kind==='figure'?'（図・解答ページ）':(it.answer||'')}</div>
         ${(it.figRef&&it.figRef.assetId)?`<img id="figc${i}" alt="" style="max-height:64px;border-radius:6px;border:1px solid #e0e0e0;margin-top:4px">`:''}</div>`).join('');
-    $('stAnswerHint').innerHTML=`<div class="muted" style="text-align:center;margin:8px 0">3かいめ：こたえを見て なおそう</div>${cards}`;
-    $('stAnswerHint').classList.remove('hidden');
+    hint += `<div class="muted" style="text-align:center;margin:8px 0">3かいめ：こたえを見て なおそう</div>${cards}`;
     u.items.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
   }
+  if(hint){ $('stAnswerHint').innerHTML=hint; $('stAnswerHint').classList.remove('hidden'); }
   stPaint=()=>{ setupCanvas(); renderGuide(u); };
   const img=$('stImg'); img.onload=stPaint; img.src=await pageUrl(u);
   if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みで onload が発火しない場合の保険
