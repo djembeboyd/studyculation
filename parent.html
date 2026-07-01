@@ -931,7 +931,7 @@ async function gvShow(){
   gVertical=isVerticalBook((books||[]).find(b=>b.id===item.unit.bookId));
   renderGvCur(); renderGvChips(); renderGvInk();
   const img=$('gvImg'); img.onload=redrawGrade;
-  img.src=item.unit.pageId ? await getAssetUrl(item.unit.pageId) : '';
+  img.src=item.unit.pageId ? (item.unit.region ? await cropToUrl(item.unit.pageId, item.unit.region) : await getAssetUrl(item.unit.pageId)) : '';
   if(img.complete && img.naturalWidth) redrawGrade();   // キャッシュ済みの保険
   ['vLogin','vHome'].forEach(v=>$(v).classList.add('hidden')); $('vGrade').classList.remove('hidden');
   window.scrollTo(0,0);

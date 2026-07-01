@@ -273,7 +273,7 @@ async function showAnswer(){
     u.items.forEach(async(it,i)=>{ if(it.figRef&&it.figRef.assetId){ const d=await cropAsset(it.figRef.assetId,it.figRef.box); const el=document.getElementById('figc'+i); if(el&&d)el.src=d; } });
   }
   stPaint=()=>{ setupCanvas(); renderGuide(u); };
-  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  const img=$('stImg'); img.onload=stPaint; img.src=await pageUrl(u);
   if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みで onload が発火しない場合の保険
   window.scrollTo(0,0);
 }
@@ -315,7 +315,7 @@ async function showResult(){
     Object.keys(marks).forEach(k=>{ const m=marks[k]; if(m && m.x!=null && m.y!=null) drawStampC(ctx, m.type, m.x*cv.width, m.y*cv.height, r); });
     clearGuide();
   };
-  const img=$('stImg'); img.onload=stPaint; img.src=await assetUrl(u.pageId);
+  const img=$('stImg'); img.onload=stPaint; img.src=await pageUrl(u);
   if(img.complete && img.naturalWidth) stPaint();   // キャッシュ済みの保険
   window.scrollTo(0,0);
 }
@@ -389,6 +389,8 @@ function zMove(e){ if(!zPtrs.has(e.pointerId))return; zPtrs.set(e.pointerId,{x:e
     applyZoom(); } }
 function zUp(e){ zPtrs.delete(e.pointerId); if(zPtrs.size<2) pinch0=null; }
 
+// 大問の範囲(region)があればその部分だけ切り出す。無ければページ全体。
+async function pageUrl(u){ return (u && u.region) ? await cropAsset(u.pageId, u.region) : await assetUrl(u.pageId); }
 async function cropAsset(assetId,box){
   if(!box)return null; const url=await assetUrl(assetId);
   return await new Promise(res=>{ const img=new Image(); img.onload=()=>{ const c=document.createElement('canvas');
