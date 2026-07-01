@@ -765,6 +765,17 @@ $('bvLoadPages').onclick = loadBookPages;
 $('bvEdit').onclick = () => { bvEditing = true; setEditUI(); renderBookUnits(); };
 $('bvSave').onclick = saveBookUnits;
 async function applyImport(data){
+  // 範囲(region)だけのパッチ取込：既存unitsにregionを後付け（教材本体は消さない）
+  if(data.regions){
+    if(!libFolderId){ alert('ライブラリ未読込'); return; }
+    const uj = await loadOrInitJSON(libFolderId,'units.json',{units:[]});
+    const units = uj.data.units||[]; let n=0;
+    for(const u of units){ if(data.regions[u.id]){ u.region = data.regions[u.id]; n++; } }
+    await writeJSON(uj.id, { units });
+    bvUnits = units.filter(u=>u.bookId===viewingBook.id); renderBookUnits(); renderBooks();
+    toast(`大問の範囲を ${n}問に 設定しました`);
+    return;
+  }
   const newUnits = (data.units||[]).map(u=>({ ...u, bookId: viewingBook.id }));
   if(!newUnits.length){ alert('units が空です'); return; }
   if(libFolderId){
