@@ -963,6 +963,132 @@
         { "label": "②", "question": "ひろしくん＝おもり10こ分。一ばん上のはこ／ちがう同じはこ3つ", "answer": "解答の図のとおり", "kind": "figure", "conf": 1, "points": [],
           "figRef": { "ansPageNo": 19, "box": { "x": 0.48, "y": 0.115, "w": 0.49, "h": 0.17 } } }
       ]
+    },
+    {
+      "id": "u_th1_tameshi1",
+      "label": "[たしざんとひきざん(1)] ためしてみよう1 おなじこたえの線つなぎ",
+      "category": "数と計算", "tags": ["たし算ひき算", "線でむすぶ"],
+      "pageNo": 60, "region": { "x": 0, "y": 0.71, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "－", "question": "こたえがおなじカードを線でつなぐ", "answer": "9-3と3+3（6）／10-7と4-1（3）／2+8と5+5（10）／5-1と7-3（4）／4+4と8-0（8）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "たし算とひき算が混在した問題を正確に計算できるかがポイント。切り替えをスムーズに",
+          "figRef": { "ansPageNo": 20, "box": { "x": 0.02, "y": 0.165, "w": 0.45, "h": 0.10 } } }
+      ]
+    },
+    {
+      "id": "u_th1_tameshi2",
+      "label": "[たしざんとひきざん(1)] ためしてみよう2 ＋か−かかず",
+      "category": "数と計算", "tags": ["たし算ひき算", "きごう"],
+      "pageNo": 61, "region": { "x": 0, "y": 0.66, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "①", "question": "6□4=10", "answer": "＋", "kind": "value", "conf": 1, "points": [], "kaisetsu": "数字と数字の関係をながめて推測する問題。じっくり時間をかけて定着させる" },
+        { "label": "②", "question": "9□2=7", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "0□8=8", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "5□3=2", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "1□4=5", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "10□7=3", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "0□6=6", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "9□1=8", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "7+□=8", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "9+□=9", "answer": "0", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_yasashi1",
+      "label": "[たしざんとひきざん(1)] やさしい1 まぜこぜけいさん",
+      "category": "数と計算", "tags": ["たし算ひき算"],
+      "pageNo": 62, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.23 },
+      "items": [
+        { "label": "①", "question": "3+7", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "8-3", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10-0", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "5+5", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "0+6", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "9-2", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "4+6", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "2-2", "answer": "0", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "7-1", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "4+5", "answer": "9", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_yasashi2",
+      "label": "[たしざんとひきざん(1)] やさしい2 おなじこたえの線つなぎ",
+      "category": "数と計算", "tags": ["たし算ひき算", "線でむすぶ"],
+      "pageNo": 62, "region": { "x": 0, "y": 0.36, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "こたえがおなじカードを線でつなぐ", "answer": "6+1と9-2（7）／0+4と7-3（4）／10-1と7+2（9）／5-0と3+2（5）／3+3と7-1（6）", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 20, "box": { "x": 0.50, "y": 0.22, "w": 0.46, "h": 0.09 } } }
+      ]
+    },
+    {
+      "id": "u_th1_yasashi3",
+      "label": "[たしざんとひきざん(1)] やさしい3 ○と□からえらぶ",
+      "category": "数と計算", "tags": ["たし算ひき算", "推理"],
+      "pageNo": 62, "region": { "x": 0, "y": 0.56, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "①", "question": "○（6・4・5）と□（0・4・3）から1つずつ、たして7になるのは", "answer": "○＝4、□＝3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "○から□をひいて5になるのは", "answer": "○＝5、□＝0", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_yasashi4",
+      "label": "[たしざんとひきざん(1)] やさしい4 こたえが【 】になるかず",
+      "category": "数と計算", "tags": ["たし算ひき算", "逆算"],
+      "pageNo": 63, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "①【8】", "question": "(1)4+□ (2)□-2 (3)9-□ (4)8+□", "answer": "(1)4 (2)10 (3)1 (4)0", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②【4】", "question": "(1)□+2 (2)□-3 (3)8-□ (4)□+0", "answer": "(1)2 (2)7 (3)4 (4)4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③【6】", "question": "(1)□-3 (2)0+□ (3)10-□ (4)□-0", "answer": "(1)9 (2)6 (3)4 (4)6", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_yasashi5",
+      "label": "[たしざんとひきざん(1)] やさしい5 ＋−やかずを入れる",
+      "category": "数と計算", "tags": ["たし算ひき算", "きごう"],
+      "pageNo": 63, "region": { "x": 0, "y": 0.45, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "①", "question": "6□1=7", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "5□3=2", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "2+□=2", "answer": "0", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "4□1=3", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "3□3=6", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "□-8=0", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "2□1=1", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "4□3=7", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "9□5=4", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "□+9=9", "answer": "0", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_muzu1",
+      "label": "[たしざんとひきざん(1)] むずかしい1 カードでたべものの名まえ",
+      "category": "数と計算", "tags": ["たし算ひき算", "ことばパズル"],
+      "pageNo": 64, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.66 },
+      "items": [
+        { "label": "2になる", "question": "こたえが2になるカードとたべもの", "answer": "ち(3-1)・い(1+1)・こ(7-5)→「いちご」", "kind": "value", "conf": 1, "points": [], "kaisetsu": "条件にあうカードを探してひらがなを組み合わせるパズル。あせって計算を間違えると言葉が作れない。落ち着いて正確に" },
+        { "label": "6になる", "question": "こたえが6になるカードとたべもの", "answer": "た(3+3)・い(1+5)・け(9-3)・し(0+6)→「しいたけ」", "kind": "value", "conf": 1, "points": [] },
+        { "label": "7より大", "question": "こたえが7より大きくなるカードとたべもの", "answer": "い(5+5)・す(10-1)・か(8+0)→「すいか」", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_muzu2",
+      "label": "[たしざんとひきざん(1)] むずかしい2 □○△のかず",
+      "category": "数と計算", "tags": ["たし算ひき算", "消去算"],
+      "pageNo": 64, "region": { "x": 0, "y": 0.74, "w": 1, "h": 0.23 },
+      "items": [
+        { "label": "①", "question": "□+○=3、□-○=1", "answer": "□＝2、○＝1", "kind": "value", "conf": 1, "points": [], "kaisetsu": "小学生の高学年でいう消去算。数字が小さいので実際にあてはめて解かせる。□+○=3なのでどちらも3より大きくない" },
+        { "label": "②", "question": "□+△=6、△-□=2", "answer": "□＝2、△＝4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th1_challenge",
+      "label": "[たしざんとひきざん(1)] チャレンジ ありのめいろ",
+      "category": "数と計算", "tags": ["たし算ひき算", "めいろ"],
+      "pageNo": 65, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "－", "question": "こたえを□にかき、こたえのすくないほうの道をとおる（とおるしきを○でかこむ）", "answer": "解答の図のとおり：1=6-1(5)／2=2+3(5)／3=9-5(4)／4=3+3(6)／5=8-7(1)／6=0+2(2) の道をとおる", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "計算ばかりでは飽きるので『この迷路をうまくゴールできるかな』と言ってやる気を出させる。□には全部数字を書かせる",
+          "figRef": { "ansPageNo": 21, "box": { "x": 0.48, "y": 0.10, "w": 0.49, "h": 0.35 } } }
+      ]
     }
   ]
 }
