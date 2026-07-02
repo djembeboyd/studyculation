@@ -1214,6 +1214,116 @@
         { "label": "④", "question": "こたえが3になるひきざんを2つ", "answer": "4-1=3、6-3=3", "kind": "value", "conf": 1, "points": [] },
         { "label": "⑤", "question": "こたえが3より大きくなるひきざんを2つ（3は入らない）", "answer": "6-1=5、5-1=4", "kind": "value", "conf": 1, "points": [] }
       ]
+    },
+    {
+      "id": "u_ok1_tameshi1",
+      "label": "[大きさくらべ(1)] ためしてみよう1 ながさくらべ",
+      "category": "量と測定", "tags": ["ながさ", "くらべる"],
+      "pageNo": 72, "region": { "x": 0, "y": 0.66, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "①", "question": "ぼう2本、ながいほうに○", "answer": "あ", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『長さ』の比較。まっすぐでないものは、まっすぐにしてから比べる。曲がり角やうずまきが多い方が長い" },
+        { "label": "②", "question": "えんぴつ2本", "answer": "い", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "うずまきと なみ", "answer": "あ", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_tameshi2",
+      "label": "[大きさくらべ(1)] ためしてみよう2 水のかさくらべ",
+      "category": "量と測定", "tags": ["かさ", "くらべる"],
+      "pageNo": 73, "region": { "x": 0, "y": 0.55, "w": 1, "h": 0.43 },
+      "items": [
+        { "label": "①", "question": "おなじバケツ、水のたかさがちがう", "answer": "あ", "kind": "value", "conf": 1, "points": [], "kaisetsu": "同じ形の容器は水の高さで判断。高さが同じなら底の広さで判断。同じ容器なら個数が多いほど多い" },
+        { "label": "②", "question": "大きさのちがう入れもの", "answer": "あ", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "おなじバケツのかず（4こと4こ+すくないの1）", "answer": "い", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi1",
+      "label": "[大きさくらべ(1)] やさしい1 ぼうのながさ",
+      "category": "量と測定", "tags": ["ながさ", "ます目"],
+      "pageNo": 74, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "①", "question": "一ばんながいぼうは", "answer": "あ", "kind": "value", "conf": 1, "points": [], "kaisetsu": "目盛りの数で比較できる。端をそろえて比較させてもよい" },
+        { "label": "②", "question": "おなじながさのぼうは", "answer": "う と お", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi2",
+      "label": "[大きさくらべ(1)] やさしい2 ろうそくのながさじゅん",
+      "category": "量と測定", "tags": ["ながさ", "じゅんばん"],
+      "pageNo": 74, "region": { "x": 0, "y": 0.45, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "ながいじゅんに1〜4のばんごう", "answer": "左から 3・1・2・4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi3",
+      "label": "[大きさくらべ(1)] やさしい3 どうぶつのせいくらべ",
+      "category": "量と測定", "tags": ["たかさ", "じゅんばん"],
+      "pageNo": 74, "region": { "x": 0, "y": 0.69, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "－", "question": "せのたかいじゅんに1〜5（だんの上にのっているので注意）", "answer": "左から 5・2・1・4・3（ねずみ5・ぱんだ2・きりん1・いぬ4・らいおん3）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi4",
+      "label": "[大きさくらべ(1)] やさしい4 ジュースと水",
+      "category": "量と測定", "tags": ["かさ", "ひき算"],
+      "pageNo": 75, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "ジュース4はい、水7はい。どちらがなんはいぶんおおい", "answer": "7-4=3　水（が）3（はいぶん）おおい", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi5",
+      "label": "[大きさくらべ(1)] やさしい5 水がおおいのは",
+      "category": "量と測定", "tags": ["かさ", "くらべる"],
+      "pageNo": 75, "region": { "x": 0, "y": 0.24, "w": 1, "h": 0.31 },
+      "items": [
+        { "label": "①", "question": "おなじ高さで底の広さがちがう", "answer": "右（い）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "ほそいのと ふといの", "answer": "右（い）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "同じ入れもの（かたむき）", "answer": "左（あ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "くだのかたち", "answer": "左（あ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_yasashi6",
+      "label": "[大きさくらべ(1)] やさしい6 バケツのかず",
+      "category": "量と測定", "tags": ["かさ", "じゅんばん"],
+      "pageNo": 75, "region": { "x": 0, "y": 0.55, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "－", "question": "おおくくんだじゅんにばんごう", "answer": "つよし（3）・しんご（2）・たくや（1）・まさひろ（4）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_muzu1",
+      "label": "[大きさくらべ(1)] むずかしい1 ちずのきょり",
+      "category": "量と測定", "tags": ["ながさ", "ちず"],
+      "pageNo": 76, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.56 },
+      "items": [
+        { "label": "①", "question": "家→えきのきょり(あ)とバスてい→花やのきょり(い)、みじかいのは", "answer": "い", "kind": "value", "conf": 1, "points": [], "kaisetsu": "直線の長さが方眼紙のます目いくつ分かを書かせて比べる" },
+        { "label": "②", "question": "あのきょりとおなじきょりは", "answer": "う", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "うをいってかえってくるのとおなじきょりは", "answer": "え", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok1_muzu2",
+      "label": "[大きさくらべ(1)] むずかしい2 まきつけたひも",
+      "category": "量と測定", "tags": ["ながさ", "くらべる"],
+      "pageNo": 76, "region": { "x": 0, "y": 0.64, "w": 1, "h": 0.33 },
+      "items": [
+        { "label": "－", "question": "おなじふとさのぼうにまいたひも。一ばんながいのは", "answer": "え", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ひもを巻いた回数が多いほど長い" }
+      ]
+    },
+    {
+      "id": "u_ok1_challenge",
+      "label": "[大きさくらべ(1)] チャレンジ はこの上のせいくらべ",
+      "category": "量と測定", "tags": ["たかさ", "推理"],
+      "pageNo": 77, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "①", "question": "ビンのたかいじゅんに1〜4（はこの数もあわせて考える）", "answer": "左から 3・2・1・4（はこ4こ分・5こ分・6こ分・3こ分）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たての長さが同じはこ何個分かで考える。絵の見た目でなく、はこの数で比較させる" },
+        { "label": "②", "question": "子どものたかいじゅんに1〜4", "answer": "左から 3・1・2・4（はこ4こ分・7こ分・6こ分・3こ分）", "kind": "value", "conf": 1, "points": [] }
+      ]
     }
   ]
 }
