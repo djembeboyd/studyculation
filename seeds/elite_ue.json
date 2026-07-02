@@ -661,6 +661,163 @@
         { "label": "－", "question": "トマト1目もり・にんじん2目もり・かぼちゃ3目もり。①〜⑥のはかりに目もりをかき入れる", "answer": "のっているやさいの目もりをたす（解答の図のとおり。例：①トマト+にんじん=3目もり）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "まず各やさいの重さを確認→はかりごとにたし算。理解できないときは1つずつ順番に確かめる",
           "figRef": { "ansPageNo": 15, "box": { "x": 0.02, "y": 0.70, "w": 0.45, "h": 0.24 } } }
       ]
+    },
+    {
+      "id": "u_h1_tameshi1",
+      "label": "[ひきざん(1)] ためしてみよう1 のこりはいくつ",
+      "category": "数と計算", "tags": ["ひき算", "のこり"],
+      "pageNo": 48, "region": { "x": 0, "y": 0.585, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "①", "question": "あめ8こ、5こたべると（しきとこたえ）", "answer": "8-5=3　3（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ひき算の練習。なくなった分に✕などの印をつけ、残りを数えて式と同じ答えになることを納得させる" },
+        { "label": "②", "question": "とり5わ、3わとんでいくと", "answer": "5-3=2　2（わ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "きって8まい、6まいつかうと", "answer": "8-6=2　2（まい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_tameshi2",
+      "label": "[ひきざん(1)] ためしてみよう2 ちがいはいくつ",
+      "category": "数と計算", "tags": ["ひき算", "ちがい"],
+      "pageNo": 49, "region": { "x": 0, "y": 0.585, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "①", "question": "かき6こと3こ、ちがいは（しきとこたえ）", "answer": "6-3=3　3（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "2つのかたまりの差。しきはかならず大きい数から小さい数をひく。少ない方に印をつけて確認" },
+        { "label": "②", "question": "ふうせん3こと2こ、ちがいは", "answer": "3-2=1　1（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "金ぎょ8ひきと3びき、ちがいは", "answer": "8-3=5　5（ひき）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi1",
+      "label": "[ひきざん(1)] やさしい1 いちごののこり",
+      "category": "数と計算", "tags": ["ひき算", "文章題"],
+      "pageNo": 50, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.21 },
+      "items": [
+        { "label": "－", "question": "いちご8こ、6こたべた（しきとこたえ）", "answer": "8-6=2　2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi2",
+      "label": "[ひきざん(1)] やさしい2 おりがみののこり",
+      "category": "数と計算", "tags": ["ひき算", "文章題"],
+      "pageNo": 50, "region": { "x": 0, "y": 0.34, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "おりがみ6まい、2まいつかった", "answer": "6-2=4　4（まい）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "文章をよく読み『残り』か『違い』かを理解して式を書く練習" }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi3",
+      "label": "[ひきざん(1)] やさしい3 ちょうをあげる",
+      "category": "数と計算", "tags": ["ひき算", "文章題"],
+      "pageNo": 50, "region": { "x": 0, "y": 0.51, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "－", "question": "ちょう9ひき、いもうとに5ひきあげた", "answer": "9-5=4　4（ひき）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi4",
+      "label": "[ひきざん(1)] やさしい4 男の子はなん人",
+      "category": "数と計算", "tags": ["ひき算", "文章題"],
+      "pageNo": 50, "region": { "x": 0, "y": 0.69, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "子ども7人、うち4人が女の子。男の子は", "answer": "7-4=3　3（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi5",
+      "label": "[ひきざん(1)] やさしい5 ちがいはいくつ（しき）",
+      "category": "数と計算", "tags": ["ひき算", "ちがい"],
+      "pageNo": 51, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.34 },
+      "items": [
+        { "label": "①", "question": "●5と●2", "answer": "5-2=3　3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "●7と●5", "answer": "7-5=2　2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "●3と●9", "answer": "9-3=6　6", "kind": "value", "conf": 1, "points": [], "kaisetsu": "大きい数から小さい数をひく" },
+        { "label": "④", "question": "10と1", "answer": "10-1=9　9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "5と8", "answer": "8-5=3　3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "6と9", "answer": "9-6=3　3", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi6",
+      "label": "[ひきざん(1)] やさしい6 さいころのちがい",
+      "category": "数と計算", "tags": ["ひき算", "ちがい"],
+      "pageNo": 51, "region": { "x": 0, "y": 0.41, "w": 1, "h": 0.14 },
+      "items": [
+        { "label": "－", "question": "さいころ6と2の目のちがい", "answer": "6-2=4　4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi7",
+      "label": "[ひきざん(1)] やさしい7 おなじこたえの線つなぎ",
+      "category": "数と計算", "tags": ["ひき算", "線でむすぶ"],
+      "pageNo": 51, "region": { "x": 0, "y": 0.55, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "－", "question": "こたえがおなじになるカードを線でつなぐ", "answer": "10-3と8-1（7）／9-5と7-3（4）／8-7と6-5（1）／4-2と8-6（2）／7-2と8-3（5）", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 16, "box": { "x": 0.50, "y": 0.54, "w": 0.46, "h": 0.08 } } }
+      ]
+    },
+    {
+      "id": "u_h1_yasashi8",
+      "label": "[ひきざん(1)] やさしい8 まん中からまわりをひく",
+      "category": "数と計算", "tags": ["ひき算", "円"],
+      "pageNo": 51, "region": { "x": 0, "y": 0.74, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "①", "question": "まん中9からまわり（6・8・2・4・7・5）をひく", "answer": "3・1・7・5・2・4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "まん中7からまわり（3・2・4・5・1・6）をひく", "answer": "4・5・3・2・6・1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_muzu1",
+      "label": "[ひきざん(1)] むずかしい1 □にあうかず",
+      "category": "数と計算", "tags": ["ひき算", "逆算"],
+      "pageNo": 52, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.21 },
+      "items": [
+        { "label": "①", "question": "□-3=7", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "7-□=4", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "8-□=3", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "□-2=6", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "9-□=8", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "□-1=7", "answer": "8", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_muzu2",
+      "label": "[ひきざん(1)] むずかしい2 ひきざんピラミッド",
+      "category": "数と計算", "tags": ["ひき算", "つみ木"],
+      "pageNo": 52, "region": { "x": 0, "y": 0.29, "w": 1, "h": 0.26 },
+      "items": [
+        { "label": "①", "question": "7・3・1 から順に左-右", "answer": "2だん目＝4と2、下＝2", "kind": "value", "conf": 1, "points": [], "kaisetsu": "れい：9-7=2、7-6=1、2-1=1 のように上から順に。①②を一つずつ説明してから取り組ませる" },
+        { "label": "②", "question": "9・6・4 から順に", "answer": "2だん目＝3と2、下＝1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_muzu3",
+      "label": "[ひきざん(1)] むずかしい3 かけっこのあいだ",
+      "category": "数と計算", "tags": ["ひき算", "植木算"],
+      "pageNo": 52, "region": { "x": 0, "y": 0.55, "w": 1, "h": 0.22 },
+      "items": [
+        { "label": "－", "question": "9人でかけっこ。まさる4とう、たけし8とう。あいだはなん人（ずをかく）", "answer": "3（人）※8-4=4ではない。図をかくと、あいだにいるのは5・6・7とうの3人", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "単純に8-4=4としてはいけない。植木算の考え方の基礎。図をかいて確認させる",
+          "figRef": { "ansPageNo": 17, "box": { "x": 0.02, "y": 0.30, "w": 0.45, "h": 0.09 } } }
+      ]
+    },
+    {
+      "id": "u_h1_muzu4",
+      "label": "[ひきざん(1)] むずかしい4 ひょうのひきざん",
+      "category": "数と計算", "tags": ["ひき算", "ひょう"],
+      "pageNo": 52, "region": { "x": 0, "y": 0.77, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "○-□をひょうにかく（○=7,6,5,8,9,3,6,4,8／□=3,2,3,1,7,2,5,3,7）", "answer": "4・4・2・7・2・1・1・1・1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_h1_challenge",
+      "label": "[ひきざん(1)] チャレンジ つみ木のひきざん",
+      "category": "数と計算", "tags": ["ひき算", "つみ木"],
+      "pageNo": 53, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "①", "question": "6こ − とった分 ＝ のこり4こ。とったのは", "answer": "2", "kind": "value", "conf": 1, "points": [], "kaisetsu": "とった積み木の個数を推測して書く。最初の積み木の図に、とった個数分だけ色をぬって区別させる" },
+        { "label": "②", "question": "8こ − □ ＝ 4こ", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "6こ − □ ＝ 4こ", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "6こ − □ ＝ 2こ", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "9こ − 4こ ＝ □", "answer": "5", "kind": "value", "conf": 1, "points": [] }
+      ]
     }
   ]
 }
