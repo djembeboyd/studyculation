@@ -1324,6 +1324,115 @@
         { "label": "①", "question": "ビンのたかいじゅんに1〜4（はこの数もあわせて考える）", "answer": "左から 3・2・1・4（はこ4こ分・5こ分・6こ分・3こ分）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たての長さが同じはこ何個分かで考える。絵の見た目でなく、はこの数で比較させる" },
         { "label": "②", "question": "子どものたかいじゅんに1〜4", "answer": "左から 3・1・2・4（はこ4こ分・7こ分・6こ分・3こ分）", "kind": "value", "conf": 1, "points": [] }
       ]
+    },
+    {
+      "id": "u_ok2_tameshi1",
+      "label": "[大きさくらべ(2)] ためしてみよう1 ひろさくらべ",
+      "category": "量と測定", "tags": ["ひろさ", "ます目"],
+      "pageNo": 78, "region": { "x": 0, "y": 0.575, "w": 1, "h": 0.41 },
+      "items": [
+        { "label": "①", "question": "ますの数がちがう2つ、ひろいのは", "answer": "い", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『広さ』の比較。見た目でなく、正方形何個分かを常に考えさせる" },
+        { "label": "②", "question": "いろのついたますのかず（あが広い）", "answer": "あ", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "いろつき（あ）と白（い）", "answer": "い", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_tameshi2",
+      "label": "[大きさくらべ(2)] ためしてみよう2 あつさのじゅん",
+      "category": "量と測定", "tags": ["あつさ", "じゅんばん"],
+      "pageNo": 79, "region": { "x": 0, "y": 0.585, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "－", "question": "あついじゅんにばんごう", "answer": "左から 3・2・4・1", "kind": "value", "conf": 1, "points": [], "kaisetsu": "厚さは平らに置いたときの下からの長さ。長いほど厚い" }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi1",
+      "label": "[大きさくらべ(2)] やさしい1 いろのついたひろさじゅん",
+      "category": "量と測定", "tags": ["ひろさ", "ます目"],
+      "pageNo": 80, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "－", "question": "ひろいじゅんに あ〜え にばんごう", "answer": "あ（4）・い（3）・う（1）・え（2）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "小さい正方形何ます分かを数えて広さを数字で表す" }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi2",
+      "label": "[大きさくらべ(2)] やさしい2 ひろいじゅんにならべる",
+      "category": "量と測定", "tags": ["ひろさ", "じゅんばん"],
+      "pageNo": 80, "region": { "x": 0, "y": 0.40, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "－", "question": "あ〜お をひろいじゅんに", "answer": "お→え→あ→う→い", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi3",
+      "label": "[大きさくらべ(2)] やさしい3 おなじひろさをみつける",
+      "category": "量と測定", "tags": ["ひろさ", "ます目"],
+      "pageNo": 80, "region": { "x": 0, "y": 0.72, "w": 1, "h": 0.25 },
+      "items": [
+        { "label": "－", "question": "左のかたち（4ます）とおなじひろさを あ〜え からぜんぶ", "answer": "あ と う", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi4",
+      "label": "[大きさくらべ(2)] やさしい4 がようしのあつさ",
+      "category": "量と測定", "tags": ["あつさ"],
+      "pageNo": 81, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "－", "question": "たくさんかさねたものとすこしかさねたもの、あついのは", "answer": "左（たくさんかさねたほう）に○", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi5",
+      "label": "[大きさくらべ(2)] やさしい5 いたのつみかさね",
+      "category": "量と測定", "tags": ["たかさ", "あつさ"],
+      "pageNo": 81, "region": { "x": 0, "y": 0.35, "w": 1, "h": 0.26 },
+      "items": [
+        { "label": "－", "question": "おなじあつさのいたをつむ。ぜんたいが一ばんひくくなるのは", "answer": "い（いたの枚数が一ばん少ない）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "同じ厚さの板を重ねるので、枚数が少ないほど低い" }
+      ]
+    },
+    {
+      "id": "u_ok2_yasashi6",
+      "label": "[大きさくらべ(2)] やさしい6 白いはこのたかさくらべ",
+      "category": "量と測定", "tags": ["たかさ", "推理"],
+      "pageNo": 81, "region": { "x": 0, "y": 0.61, "w": 1, "h": 0.36 },
+      "items": [
+        { "label": "①", "question": "いろのついたはこをとったとき、一ばんたかくなるのは", "answer": "お", "kind": "value", "conf": 1, "points": [], "kaisetsu": "あ〜おの白い箱が何個あるかを数えさせる" },
+        { "label": "②", "question": "2ばん目にたかくなるのは", "answer": "い", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_muzu1",
+      "label": "[大きさくらべ(2)] むずかしい1 いろのついたひろさ",
+      "category": "量と測定", "tags": ["ひろさ", "はんぶん"],
+      "pageNo": 82, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.45 },
+      "items": [
+        { "label": "①", "question": "いろのついたところが一ばんひろいのは", "answer": "お", "kind": "value", "conf": 1, "points": [], "kaisetsu": "色の付いた部分を1つにまとめて考える。広さの順は お＞う＞あ＝え＝か＝き＞く＞い" },
+        { "label": "②", "question": "一ばんせまいのは", "answer": "く", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "もとの大きさのはんぶんになっているのをぜんぶ", "answer": "あ・え・か・き", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_muzu2",
+      "label": "[大きさくらべ(2)] むずかしい2 本のあつさ",
+      "category": "量と測定", "tags": ["あつさ", "推理"],
+      "pageNo": 82, "region": { "x": 0, "y": 0.58, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "①", "question": "同じ高さにつんだ（あ5・い8・う7・え3・お9さつ）。1さつが一ばんうすいのは", "answer": "お（の本）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "積み重ねて同じ高さ＝数が多いほど1冊が薄い。実際にためして確かめさせる" },
+        { "label": "②", "question": "1さつが一ばんあついのは", "answer": "え（の本）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "1さつが3ばんめにうすいのは", "answer": "う（の本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_ok2_challenge",
+      "label": "[大きさくらべ(2)] チャレンジ ピエロのせいくらべ",
+      "category": "量と測定", "tags": ["たかさ", "推理"],
+      "pageNo": 83, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "①", "question": "とら3びきのせのたかいじゅん", "answer": "左から 1・2・3（はこ6・7・8こ分：はこが低いほどせが高い）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "下から上までの長さは等しいので、動物以外の箱の高さが低いほど背が高い。3種類の箱の高さの関係に注意" },
+        { "label": "②", "question": "ピエロ3人のじゅん", "answer": "左から 2・1・3（はこ9・8・11こ分）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "らいおん3びきのじゅん", "answer": "左から 2・3・1（はこ10・11・9こ分）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "ぱんだ4ひきのじゅん", "answer": "左から 2・4・1・3（はこ9・11・8・10こ分）", "kind": "value", "conf": 1, "points": [] }
+      ]
     }
   ]
 }
