@@ -1,5 +1,7 @@
 {
-  "note": "エリート教室算数・上（本編）。pageNo=問題PDFのページ番号 / ansPageNo=解答PDFのページ番号。教材は『除外なし』で登録すること。",
+  "note": "エリート教室算数・上（本編）。pageNo=問題PDFのページ番号 / ansPageNo=解答PDFのページ番号。pageNoBase/ansPageNoBase=登録済み教材の1枚目がPDFの何ページ目か（実登録：問題は表紙5枚除外→先頭がp6、解答は表紙1枚除外→先頭がp2。Driveの実画像3点で照合済み）。",
+  "pageNoBase": 6,
+  "ansPageNoBase": 2,
   "units": [
     {
       "id": "u_e3_tameshi1",

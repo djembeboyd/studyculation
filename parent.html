@@ -777,15 +777,16 @@ async function applyImport(data){
     return;
   }
   // ページ番号(pageNo/refPageNos/figRef.ansPageNo)で書かれたデータを、この教材のアセットIDに解決する
-  // 前提：教材登録時に「除外なし」で全ページ登録（sourcePageIds[n-1]=PDFのnページ目）
+  // pageNoBase＝登録済みの1枚目がPDFの何ページ目か（表紙を除外して登録した場合のズレを吸収）
   const srcIds = viewingBook.sourcePageIds||[], ansIds = viewingBook.answerPageIds||[];
+  const srcBase = data.pageNoBase||1, ansBase = data.ansPageNoBase||1;
   const resolve = (u)=>{
     const o = { ...u, bookId: viewingBook.id };
-    if(o.pageNo){ o.pageId = srcIds[o.pageNo-1]; delete o.pageNo; }
-    if(o.refPageNos){ o.refPages = o.refPageNos.map(n=>srcIds[n-1]).filter(Boolean); delete o.refPageNos; }
+    if(o.pageNo){ o.pageId = srcIds[o.pageNo-srcBase]; delete o.pageNo; }
+    if(o.refPageNos){ o.refPages = o.refPageNos.map(n=>srcIds[n-srcBase]).filter(Boolean); delete o.refPageNos; }
     o.items = (o.items||[]).map(it=>{
       const t = { ...it };
-      if(t.figRef && t.figRef.ansPageNo){ t.figRef = { assetId: ansIds[t.figRef.ansPageNo-1], box: t.figRef.box }; }
+      if(t.figRef && t.figRef.ansPageNo){ t.figRef = { assetId: ansIds[t.figRef.ansPageNo-ansBase], box: t.figRef.box }; }
       return t;
     });
     return o;
