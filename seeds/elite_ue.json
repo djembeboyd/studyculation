@@ -1965,6 +1965,195 @@
         { "label": "－", "question": "上のかずから左のかずをひき、正しいこたえのマスに色をぬる。出てくるどうぶつは", "answer": "かば", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "14×17=238マスのひき算。一人では大変なので、そばについて間違えそうなときに助言してあげる",
           "figRef": { "ansPageNo": 33, "box": { "x": 0.50, "y": 0.435, "w": 0.46, "h": 0.21 } } }
       ]
+    },
+    {
+      "id": "u_3k1_tameshi1",
+      "label": "[3つのかず(1)] ためしてみよう1 たしざんつづき",
+      "category": "数と計算", "tags": ["3つの数", "たし算"],
+      "pageNo": 102, "region": { "x": 0, "y": 0.66, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "1-①", "question": "4+5+6", "answer": "15", "kind": "value", "conf": 1, "points": [], "kaisetsu": "3つの数の計算。基本は2つの式と同じで、左から順番に計算。最初の2つの計算結果は必ず紙に書き残させる" },
+        { "label": "1-②", "question": "2+7+8", "answer": "17", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "1+3+9", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-④", "question": "3+5+5", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑤", "question": "9+4+6", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑥", "question": "1+8+4", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2", "question": "こうえんに7人、8人きて、ふたりきた（しきとこたえ）", "answer": "7+8+2=17　17（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_tameshi2",
+      "label": "[3つのかず(1)] ためしてみよう2 ひきざんつづき",
+      "category": "数と計算", "tags": ["3つの数", "ひき算"],
+      "pageNo": 103, "region": { "x": 0, "y": 0.68, "w": 1, "h": 0.30 },
+      "items": [
+        { "label": "1-①", "question": "13-3-7", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-②", "question": "9-5-2", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "20-4-8", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-④", "question": "17-1-7", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑤", "question": "11-2-1", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑥", "question": "19-6-9", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2", "question": "いちご12こ、わたし5こ・いもうと4こたべた。のこりは", "answer": "12-5-4=3　3（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi1",
+      "label": "[3つのかず(1)] やさしい1 たしざん",
+      "category": "数と計算", "tags": ["3つの数", "たし算"],
+      "pageNo": 104, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "①", "question": "9+2+8", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "7+6+1", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "3+4+8", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "2+6+5", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "7+1+9", "answer": "17", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "8+2+9", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "3+6+9", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "10+1+4", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "5+7+3", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "4+8+1", "answer": "13", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi2",
+      "label": "[3つのかず(1)] やさしい2 すずめ",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 104, "region": { "x": 0, "y": 0.32, "w": 1, "h": 0.15 },
+      "items": [
+        { "label": "－", "question": "すずめ9わ、3わきて、また3わきた", "answer": "9+3+3=15　15（わ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi3",
+      "label": "[3つのかず(1)] やさしい3 としょしつ",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 104, "region": { "x": 0, "y": 0.47, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "1年生5人・2年生2人・6年生8人、みんなで", "answer": "5+2+8=15　15（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi4",
+      "label": "[3つのかず(1)] やさしい4 水そうのさかな",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 104, "region": { "x": 0, "y": 0.63, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "めだか7ひき・金ぎょ6ぴき、ふなを5ひき入れる。ぜんぶで", "answer": "7+6+5=18　18（ひき）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi5",
+      "label": "[3つのかず(1)] やさしい5 あめぜんぶで",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 104, "region": { "x": 0, "y": 0.79, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "－", "question": "7こもっていて、おとうさんに5こ・おかあさんに7こもらった", "answer": "7+5+7=19　19（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi6",
+      "label": "[3つのかず(1)] やさしい6 ひきざん",
+      "category": "数と計算", "tags": ["3つの数", "ひき算"],
+      "pageNo": 105, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "①", "question": "7-4-1", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "15-5-10", "answer": "0", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "16-9-2", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "14-6-4", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "17-8-6", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "11-7-1", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "13-4-2", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "12-6-3", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "18-6-7", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "14-5-5", "answer": "4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi7",
+      "label": "[3つのかず(1)] やさしい7 あめをあげる",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 105, "region": { "x": 0, "y": 0.27, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "15こもっていて、いもうとに8こ・おとうとに5こあげた", "answer": "15-8-5=2　2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi8",
+      "label": "[3つのかず(1)] やさしい8 白いチューリップ",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 105, "region": { "x": 0, "y": 0.43, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "20本のうち赤9本・きいろ7本、のこりが白。白は", "answer": "20-9-7=4　4（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi9",
+      "label": "[3つのかず(1)] やさしい9 こうえんののこり",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 105, "region": { "x": 0, "y": 0.59, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "あわせて18人。女の子6人かえり、男の子4人かえった。あと", "answer": "18-6-4=8　8（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_yasashi10",
+      "label": "[3つのかず(1)] やさしい10 クッキーののこり",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 105, "region": { "x": 0, "y": 0.76, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "12まい。おとうさん3まい、おかあさんはおとうさんより4まいおおくたべた。のこりは", "answer": "おかあさん3+4=7（まい）、12-3-7=2　2（まい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_muzu1",
+      "label": "[3つのかず(1)] むずかしい1 くふうしてけいさん（10づくり）",
+      "category": "数と計算", "tags": ["3つの数", "くふう"],
+      "pageNo": 106, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "①", "question": "7+8+3＝□+8＝□", "answer": "10、18（7と3を先にたす）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "10のまとまりを作る工夫。例外的に順番を変えて計算する。3つの数から『どれか2つで10になるね』と選ばせる" },
+        { "label": "②", "question": "9+4+1＝□+4＝□", "answer": "10、14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "16-9-6＝□-9＝□", "answer": "10、1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "13-6-3＝□-6＝□", "answer": "10、4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_muzu2",
+      "label": "[3つのかず(1)] むずかしい2 ぬいぐるみあわせて",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 106, "region": { "x": 0, "y": 0.32, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "－", "question": "まゆみ6こ、いもうとは3こおおい。そのあといっしょに3こかった。あわせて", "answer": "いもうと6+3=9（こ）、6+9+3=18　18（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k1_muzu3",
+      "label": "[3つのかず(1)] むずかしい3 えんぴつをあげる",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 106, "region": { "x": 0, "y": 0.50, "w": 1, "h": 0.12 },
+      "items": [
+        { "label": "－", "question": "19本。ともだちふたりに7本ずつあげると", "answer": "19-7-7=5　5（本）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『ふたりに7本ずつ』を式でどう表すかを確認" }
+      ]
+    },
+    {
+      "id": "u_3k1_muzu4",
+      "label": "[3つのかず(1)] むずかしい4 さいころ3つ",
+      "category": "数と計算", "tags": ["3つの数", "推理"],
+      "pageNo": 106, "region": { "x": 0, "y": 0.62, "w": 1, "h": 0.35 },
+      "items": [
+        { "label": "①", "question": "たしたかずが一ばん小さいのは", "answer": "1+1+1=3　3", "kind": "value", "conf": 1, "points": [], "kaisetsu": "確率の基本。『さいころの目で一番小さいのは？』と聞いて3回たす式を作らせる" },
+        { "label": "②", "question": "一ばん大きいのは", "answer": "6+6+6=18　18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "たしたかずが12で、1つの目が4。あと2つの目は（ぜんぶ）", "answer": "（2と6）（3と5）（4と4）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "12-4=8。1〜6の数で2つたして8になる組を探す" }
+      ]
+    },
+    {
+      "id": "u_3k1_challenge",
+      "label": "[3つのかず(1)] チャレンジ まじょのあんごう",
+      "category": "数と計算", "tags": ["3つの数", "クロスワード", "あんごう"],
+      "pageNo": 107, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "－", "question": "クロスワードのけいさんで きごうのかずをもとめ、あんごうをひらがなにする。つえのかくしばしょは", "answer": "♥3・♣2／◆9・♠5／▼5・■5／▲3・★3／※7・●2／◎2・□1 → 32(し)95(ろ)55(の)33(す)72(み)21(か)＝「しろのすみか」", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "クロスワードパズルの計算版。たての式も横と同じく上から順に計算すればよい。たてと横の位置を間違えないように",
+          "figRef": { "ansPageNo": 35, "box": { "x": 0.48, "y": 0.455, "w": 0.48, "h": 0.07 } } }
+      ]
     }
   ]
 }
