@@ -1601,6 +1601,181 @@
         { "label": "③", "question": "きとくをつないだのとおなじながさは", "answer": "う と け（1+6=7＝4+3）", "kind": "value", "conf": 1, "points": [] },
         { "label": "④", "question": "3ばん目にみじかくなるのは", "answer": "え と き（5+1=6）", "kind": "value", "conf": 1, "points": [] }
       ]
+    },
+    {
+      "id": "u_n20a_tameshi1",
+      "label": "[20までのかず(1)] ためしてみよう1 大きさと10のまとまり",
+      "category": "数と計算", "tags": ["20までの数", "10のまとまり"],
+      "pageNo": 90, "region": { "x": 0, "y": 0.615, "w": 1, "h": 0.375 },
+      "items": [
+        { "label": "1-①", "question": "12と16、大きいのは", "answer": "16", "kind": "value", "conf": 1, "points": [], "kaisetsu": "20までの数。10よりいくら大きいかを常に考えさせる。10〜19の比較は一の位で判断" },
+        { "label": "1-②", "question": "14と17", "answer": "17", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "19と11", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-①", "question": "16＝10と□", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-②", "question": "17＝□と7", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-③", "question": "□＝10と10", "answer": "20", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-④", "question": "13より2大きいかず", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-⑤", "question": "18より4小さいかず", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-⑥", "question": "□-19-18-17-□-□-14-13", "answer": "（左から）20、16、15", "kind": "value", "conf": 1, "points": [], "kaisetsu": "1ずつ減っている規則を見つけさせる。つまずいたら20、19、18…と逆から唱えさせる" }
+      ]
+    },
+    {
+      "id": "u_n20a_tameshi2",
+      "label": "[20までのかず(1)] ためしてみよう2 10づくりのたしざん",
+      "category": "数と計算", "tags": ["20までの数", "くり上がり", "10づくり"],
+      "pageNo": 91, "region": { "x": 0, "y": 0.605, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "1-①", "question": "4+8＝4+□+2＝□（10づくり）", "answer": "（左から）6、12", "kind": "value", "conf": 1, "points": [], "kaisetsu": "くり上がりのたし算。たして10になる数を作るため数を分解する。分解のしかたは子どものやりやすい方でよい" },
+        { "label": "1-②", "question": "5+7＝5+□+2＝□", "answer": "（左から）5、12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "6+9＝6+□+□＝□", "answer": "（左から）4、5、15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-①", "question": "10+6", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-②", "question": "10+8", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-③", "question": "10+4", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-④", "question": "2+9", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-⑤", "question": "7+7", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2-⑥", "question": "8+7", "answer": "15", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi1",
+      "label": "[20までのかず(1)] やさしい1 いくつありますか",
+      "category": "数と計算", "tags": ["20までの数", "かぞえる"],
+      "pageNo": 92, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "①", "question": "ます10と4", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "ます10と2", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "ます10と8", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "ます10と9", "answer": "19", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi2",
+      "label": "[20までのかず(1)] やさしい2 一ばん大きいかず",
+      "category": "数と計算", "tags": ["20までの数", "大小"],
+      "pageNo": 92, "region": { "x": 0, "y": 0.40, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "①", "question": "14,18,9,8", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "11,15,19,17", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "13,14,8,20", "answer": "20", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "9,13,10,16,8,15", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "12,16,11,13,20,19", "answer": "20", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi3",
+      "label": "[20までのかず(1)] やさしい3 □より大きいかずぜんぶ",
+      "category": "数と計算", "tags": ["20までの数", "大小"],
+      "pageNo": 92, "region": { "x": 0, "y": 0.59, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "①", "question": "13より大きいかず（15 12 14 11 13）", "answer": "15、14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "18より（18 17 15 20 19）", "answer": "20、19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "15より（10 17 13 14 19）", "answer": "17、19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "16より（18 12 11 15 17）", "answer": "18、17", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "19より（11 14 20 18 15）", "answer": "20", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi4",
+      "label": "[20までのかず(1)] やさしい4 大きいじゅんにならべる",
+      "category": "数と計算", "tags": ["20までの数", "じゅんばん"],
+      "pageNo": 93, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "①", "question": "12,10,14,17", "answer": "17、14、12、10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "8,13,18,17", "answer": "18、17、13、8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "9,10,8,14,7", "answer": "14、10、9、8、7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "11,13,15,20,19", "answer": "20、19、15、13、11", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi5",
+      "label": "[20までのかず(1)] やさしい5 たしざん",
+      "category": "数と計算", "tags": ["20までの数", "たし算"],
+      "pageNo": 93, "region": { "x": 0, "y": 0.27, "w": 1, "h": 0.22 },
+      "items": [
+        { "label": "①", "question": "10+8", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "10+6", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10+2", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "10+7", "answer": "17", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "9+5", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "8+4", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "3+9", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "5+10", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "1+10", "answer": "11", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi6",
+      "label": "[20までのかず(1)] やさしい6 まん中とまわりをたす",
+      "category": "数と計算", "tags": ["20までの数", "たし算", "円"],
+      "pageNo": 93, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.26 },
+      "items": [
+        { "label": "①", "question": "まん中10とまわり（6・3・7・4・8・5）", "answer": "16・13・17・14・18・15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "まん中7とまわり（9・6・8・5・7・3)", "answer": "16・13・15・12・14・10", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_yasashi7",
+      "label": "[20までのかず(1)] やさしい7 えんぴつあわせて",
+      "category": "数と計算", "tags": ["20までの数", "文章題"],
+      "pageNo": 93, "region": { "x": 0, "y": 0.75, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "6本、おとうさんから8本もらった", "answer": "6+8=14　14（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_muzu1",
+      "label": "[20までのかず(1)] むずかしい1 あわせて20の線むすび",
+      "category": "数と計算", "tags": ["20までの数", "線でむすぶ"],
+      "pageNo": 94, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "－", "question": "左の●と右のかずをあわせて20になるように線でむすぶ", "answer": "●10こ↔10こ／●8こ↔12こ／●3こ↔17こ／●1こ↔19こ／●5こ↔15こ", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "2つの数を選んで和を指定の数にあわせる問題",
+          "figRef": { "ansPageNo": 31, "box": { "x": 0.02, "y": 0.545, "w": 0.45, "h": 0.16 } } }
+      ]
+    },
+    {
+      "id": "u_n20a_muzu2",
+      "label": "[20までのかず(1)] むずかしい2 かずのならびの□",
+      "category": "数と計算", "tags": ["20までの数", "規則性"],
+      "pageNo": 94, "region": { "x": 0, "y": 0.41, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "①", "question": "5-10-15-□", "answer": "20", "kind": "value", "conf": 1, "points": [], "kaisetsu": "規則性の問題" },
+        { "label": "②", "question": "18-16-14-□-10", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "2-6-□-□-18", "answer": "10、14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "19-□-13-10-□-□", "answer": "16、7、4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "20-□-12-8-□", "answer": "16、4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_muzu3",
+      "label": "[20までのかず(1)] むずかしい3 10のまとまりと4つのかず",
+      "category": "数と計算", "tags": ["20までの数", "10のまとまり"],
+      "pageNo": 94, "region": { "x": 0, "y": 0.57, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "①", "question": "10が1こと□で16", "answer": "6", "kind": "value", "conf": 1, "points": [], "kaisetsu": "20までの数で4つまでの数の計算。くり上がりはないので計算ミスに注意" },
+        { "label": "②", "question": "10が1こと4と5で□", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10が1こと1と5と□で18", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "10が1こと3と3と3で□", "answer": "19", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_n20a_muzu4",
+      "label": "[20までのかず(1)] むずかしい4 りんごはなんこ",
+      "category": "数と計算", "tags": ["20までの数", "文章題"],
+      "pageNo": 94, "region": { "x": 0, "y": 0.77, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "みかん9こで、りんごより7こすくない。りんごは", "answer": "9+7=16　16（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『すくない』でもたし算になる文章題。正しい式を立てる練習" }
+      ]
+    },
+    {
+      "id": "u_n20a_challenge",
+      "label": "[20までのかず(1)] チャレンジ かずのピラミッド",
+      "category": "数と計算", "tags": ["20までの数", "合成分解"],
+      "pageNo": 95, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "2だん", "question": "下の2つをたすと上のかず ①6=2と□ ②8=□と1 ③13=□と8", "answer": "①4 ②7 ③5", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たし算・ひき算というより数の合成・分解。下から上へは合成、上から下へは分解" },
+        { "label": "3だん", "question": "①12/4と□/1と□と□ ②15/7と□/□と2と□ ③20/□と11/□と3と8", "answer": "①8、3、5 ②8、5、6 ③9、6", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 31, "box": { "x": 0.50, "y": 0.30, "w": 0.46, "h": 0.19 } } }
+      ]
     }
   ]
 }
