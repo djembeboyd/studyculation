@@ -1433,6 +1433,174 @@
         { "label": "③", "question": "らいおん3びきのじゅん", "answer": "左から 2・3・1（はこ10・11・9こ分）", "kind": "value", "conf": 1, "points": [] },
         { "label": "④", "question": "ぱんだ4ひきのじゅん", "answer": "左から 2・4・1・3（はこ9・11・8・10こ分）", "kind": "value", "conf": 1, "points": [] }
       ]
+    },
+    {
+      "id": "u_m2_te1",
+      "label": "[まとめ(2)] ていちゃく1 のこりはいくつ",
+      "category": "数と計算", "tags": ["まとめ", "ひき算"],
+      "pageNo": 84, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.85 },
+      "items": [
+        { "label": "①", "question": "りんご6こ、2こたべた（しきとこたえ）", "answer": "6-2=4　4（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ルーム12の総復習。間違えたところは前のテーマに戻って復習" },
+        { "label": "②", "question": "ふうせん8こ、4ことんでいった", "answer": "8-4=4　4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "えんぴつ9本、7本つかった", "answer": "9-7=2　2（本）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "チューリップ7本、6本かれた", "answer": "7-6=1　1（本）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "ぶどう10ふさ、5ふさたべた", "answer": "10-5=5　5（ふさ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te2",
+      "label": "[まとめ(2)] ていちゃく2 ちがいはいくつ",
+      "category": "数と計算", "tags": ["まとめ", "ひき算"],
+      "pageNo": 85, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.35 },
+      "items": [
+        { "label": "①", "question": "みかん4こと1こ", "answer": "4-1=3　3（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "えんぴつ8本と6本", "answer": "8-6=2　2（本）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "チューリップ10本と2本", "answer": "10-2=8　8（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te3",
+      "label": "[まとめ(2)] ていちゃく3 ひきざん",
+      "category": "数と計算", "tags": ["まとめ", "ひき算"],
+      "pageNo": 85, "region": { "x": 0, "y": 0.42, "w": 1, "h": 0.26 },
+      "items": [
+        { "label": "①", "question": "6-2", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "8-7", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "5-0", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "10-3", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "9-4", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "4-1", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "8-0", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "10-9", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "7-5", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "1-0", "answer": "1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te4",
+      "label": "[まとめ(2)] ていちゃく4 ＋−を入れる",
+      "category": "数と計算", "tags": ["まとめ", "きごう"],
+      "pageNo": 85, "region": { "x": 0, "y": 0.68, "w": 1, "h": 0.29 },
+      "items": [
+        { "label": "①", "question": "3□3=6", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "9□4=5", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10□8=2", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "0□1=1", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "7□5=2", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "3□7=10", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "0□9=9", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "6□4=10", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "6□2=8", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "4□1=5", "answer": "＋", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te5",
+      "label": "[まとめ(2)] ていちゃく5 なんさい",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 86, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.15 },
+      "items": [
+        { "label": "－", "question": "さなえ6さい、ふみえは3さい年上", "answer": "6+3=9　9（さい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te6",
+      "label": "[まとめ(2)] ていちゃく6 おりがみなんまい",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 86, "region": { "x": 0, "y": 0.22, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "いちろう5まいで、じろうくんより3まいすくない。じろうくんは", "answer": "5+3=8　8（まい）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『すくないです』という言葉があっても、ひき算にならないことに注意" }
+      ]
+    },
+    {
+      "id": "u_m2_te7",
+      "label": "[まとめ(2)] ていちゃく7 ながさくらべ",
+      "category": "量と測定", "tags": ["まとめ", "ながさ"],
+      "pageNo": 86, "region": { "x": 0, "y": 0.40, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "①", "question": "あといのながいのは", "answer": "あ", "kind": "value", "conf": 1, "points": [], "kaisetsu": "太さは長さに関係ないことを確認" },
+        { "label": "②", "question": "おれ線と直線", "answer": "あ", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_te8",
+      "label": "[まとめ(2)] ていちゃく8 ひろさくらべ",
+      "category": "量と測定", "tags": ["まとめ", "ひろさ"],
+      "pageNo": 86, "region": { "x": 0, "y": 0.67, "w": 1, "h": 0.30 },
+      "items": [
+        { "label": "①", "question": "あといのひろいのは", "answer": "あ", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "あといのひろいのは", "answer": "い", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_re1",
+      "label": "[まとめ(2)] れんしゅう1 白いおはじき",
+      "category": "数と計算", "tags": ["まとめ", "3つの数"],
+      "pageNo": 87, "region": { "x": 0, "y": 0.10, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "ぜんぶで10こ。赤3こ・青5こ、のこりは白。白は", "answer": "3+5=8、10-8=2　2（こ）（10-3=7、7-5=2でも可）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_re2",
+      "label": "[まとめ(2)] れんしゅう2 えんぴつをとる",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 87, "region": { "x": 0, "y": 0.27, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "10本中、ゆうや6本、おとうとがのこり。ゆうやはなん本おおくとった", "answer": "おとうと10-6=4（ほん）、6-4=2　2（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_re3",
+      "label": "[まとめ(2)] れんしゅう3 おなじこたえになる□",
+      "category": "数と計算", "tags": ["まとめ", "逆算"],
+      "pageNo": 87, "region": { "x": 0, "y": 0.44, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "①", "question": "6-4 と 8-□", "answer": "6（こたえ2）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "あの答えを先に紙に書いてから考えさせる" },
+        { "label": "②", "question": "4+3 と □-2", "answer": "9（こたえ7）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "7-1 と 6-□", "answer": "0（こたえ6）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "2+5 と □-3", "answer": "10（こたえ7）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_re4",
+      "label": "[まとめ(2)] れんしゅう4 せんぶんずとしき",
+      "category": "数と計算", "tags": ["まとめ", "線分図"],
+      "pageNo": 87, "region": { "x": 0, "y": 0.68, "w": 1, "h": 0.29 },
+      "items": [
+        { "label": "①", "question": "□が7と3に", "answer": "7+3=10　□＝10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "6が□と1に", "answer": "6-1=5　□＝5", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_re5",
+      "label": "[まとめ(2)] れんしゅう5 おなじながさを3くみ",
+      "category": "量と測定", "tags": ["まとめ", "ながさ"],
+      "pageNo": 88, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "－", "question": "ながさがおなじものを3くみ（・と・のあいだは同じながさ）", "answer": "あとう（6）／いとか（7）／えとお（8）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "・と・の間の長さを1として数える（あ6・い7・う6・え8・お8・か7）" }
+      ]
+    },
+    {
+      "id": "u_m2_re6",
+      "label": "[まとめ(2)] れんしゅう6 ひろいじゅん",
+      "category": "量と測定", "tags": ["まとめ", "ひろさ"],
+      "pageNo": 88, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.47 },
+      "items": [
+        { "label": "－", "question": "あ〜かをひろいじゅんに", "answer": "か→う→お→え→あ→い（か9・う8・お7・え6・あ5・い4ます）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m2_challenge",
+      "label": "[まとめ(2)] チャレンジ テープをつなぐ",
+      "category": "量と測定", "tags": ["まとめ", "ながさ", "推理"],
+      "pageNo": 89, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.90 },
+      "items": [
+        { "label": "①", "question": "一ばんながくなるのは、どれとどれ", "answer": "あ と お（9ます+10ます）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "各テープが何ます分かを数える（あ9・い8・う4・え5・お10・か7・き1・く6・け3・こ7）。たてに並んでいても横と同じ" },
+        { "label": "②", "question": "2ばん目にながくなるのは", "answer": "い と お（8+10）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "きとくをつないだのとおなじながさは", "answer": "う と け（1+6=7＝4+3）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "3ばん目にみじかくなるのは", "answer": "え と き（5+1=6）", "kind": "value", "conf": 1, "points": [] }
+      ]
     }
   ]
 }
