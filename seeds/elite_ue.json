@@ -1,0 +1,407 @@
+{
+  "note": "エリート教室算数・上（本編）。pageNo=問題PDFのページ番号 / ansPageNo=解答PDFのページ番号。教材は『除外なし』で登録すること。",
+  "units": [
+    {
+      "id": "u_e3_tameshi1",
+      "label": "[テーマ3] ためしてみよう1 いくつといくつ",
+      "category": "数と計算", "tags": ["あわせていくつ", "たし算の準備"],
+      "pageNo": 18, "region": { "x": 0, "y": 0.64, "w": 1, "h": 0.34 },
+      "items": [
+        { "label": "①", "question": "さいころ 6と3", "answer": "9", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たし算の準備。イメージしにくければ手やおはじきで数えさせてOK" },
+        { "label": "②", "question": "さいころ 1と2", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "さいころ 4と5", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "4と4", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "2と5", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "3と2", "answer": "5", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_tameshi2",
+      "label": "[テーマ3] ためしてみよう2 かくれた犬は何びき",
+      "category": "数と計算", "tags": ["いくつといくつ", "見えない数"],
+      "pageNo": 19, "region": { "x": 0, "y": 0.60, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "①", "question": "9ひき中、見えているのは2ひき", "answer": "7（ひき）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "見えていない部分をイメージさせる問題。絵や図をかく習慣づけに" },
+        { "label": "②", "question": "見えているのは4ひき", "answer": "5（ひき）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "見えているのは6ぴき", "answer": "3（びき)", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "見えているのは8ぴき", "answer": "1（ぴき）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi1",
+      "label": "[テーマ3] やさしい1 ボールをあわせて",
+      "category": "数と計算", "tags": ["あわせていくつ"],
+      "pageNo": 20, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "①", "question": "4こと3こ", "answer": "7（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "2こと2こ", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "5こと3こ", "answer": "8（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi2",
+      "label": "[テーマ3] やさしい2 あわせていくつ",
+      "category": "数と計算", "tags": ["あわせていくつ"],
+      "pageNo": 20, "region": { "x": 0, "y": 0.35, "w": 1, "h": 0.44 },
+      "items": [
+        { "label": "①", "question": "●4と○1", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "●2と○5", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "さいころ 5と3", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "さいころ 4と4", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "3と4", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "5と1", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "7と2", "answer": "9", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi3",
+      "label": "[テーマ3] やさしい3 おはじき ぜんぶで",
+      "category": "数と計算", "tags": ["あわせていくつ", "文章題"],
+      "pageNo": 20, "region": { "x": 0, "y": 0.79, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "赤4こと青3こ、ぜんぶで", "answer": "7（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi4",
+      "label": "[テーマ3] やさしい4 玉入れ 入らなかった玉",
+      "category": "数と計算", "tags": ["いくつといくつ", "残りの数"],
+      "pageNo": 21, "region": { "x": 0, "y": 0.075, "w": 1, "h": 0.235 },
+      "items": [
+        { "label": "よしこ", "question": "6こ投げて、かごに5こ", "answer": "1（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『入った数』ではなく『入らなかった玉の数』であることに注意" },
+        { "label": "まさお", "question": "かごに2こ", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "はなこ", "question": "かごに1こ", "answer": "5（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "たろう", "question": "かごに3こ", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "あきお", "question": "かごに4こ", "answer": "2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi5",
+      "label": "[テーマ3] やさしい5 あわせて9をつくる線つなぎ",
+      "category": "数と計算", "tags": ["9の合成", "線でむすぶ"],
+      "pageNo": 21, "region": { "x": 0, "y": 0.31, "w": 1, "h": 0.22 },
+      "items": [
+        { "label": "－", "question": "上と下のカードをあわせて9になるよう線でつなぐ", "answer": "3-6、5-4、1-8、2-7、7-2、4-5、6-3", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 6, "box": { "x": 0.52, "y": 0.385, "w": 0.45, "h": 0.115 } } }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi6",
+      "label": "[テーマ3] やさしい6 たべたケーキの数",
+      "category": "数と計算", "tags": ["いくつといくつ", "残りの数"],
+      "pageNo": 21, "region": { "x": 0, "y": 0.53, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "ゆきこ", "question": "8こ入りで、のこり3こ", "answer": "5（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "えみこ", "question": "のこり7こ", "answer": "1（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "よしお", "question": "のこり2こ", "answer": "6（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "たかし", "question": "のこり4こ", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_yasashi7",
+      "label": "[テーマ3] やさしい7 あわせて7になるかず",
+      "category": "数と計算", "tags": ["7の合成"],
+      "pageNo": 21, "region": { "x": 0, "y": 0.77, "w": 1, "h": 0.21 },
+      "items": [
+        { "label": "①", "question": "1と□で7", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "2と□で7", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "4と□で7", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "□と6で7", "answer": "1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_muzu1",
+      "label": "[テーマ3] むずかしい1 花たばの二人ぐみ",
+      "category": "数と計算", "tags": ["数の合成", "組み合わせ"],
+      "pageNo": 22, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "組1", "question": "チューリップ8本・ひまわり5本になる二人ぐみ", "answer": "あ と き", "kind": "value", "conf": 1, "points": [], "kaisetsu": "チューリップとひまわりを一度に考えると難しい。まず『5と□で8』のようにチューリップだけで候補をしぼり、次にひまわりで確かめる（順番はどの組からでも可）" },
+        { "label": "組2", "question": "同じ条件の二人ぐみ", "answer": "い と お", "kind": "value", "conf": 1, "points": [] },
+        { "label": "組3", "question": "同じ条件の二人ぐみ", "answer": "う と か", "kind": "value", "conf": 1, "points": [] },
+        { "label": "組4", "question": "同じ条件の二人ぐみ", "answer": "え と く", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e3_muzu2",
+      "label": "[テーマ3] むずかしい2 9をじゅんにわける",
+      "category": "数と計算", "tags": ["9の分解", "ツリー"],
+      "pageNo": 22, "region": { "x": 0, "y": 0.50, "w": 1, "h": 0.47 },
+      "items": [
+        { "label": "①", "question": "9を上から順に分ける（9=4と□…）", "answer": "9＝4と5／4＝1と3／5＝2と3", "kind": "value", "conf": 1, "points": [], "kaisetsu": "上から順番に1つずつ。『1は分けられない』ことに気づかせる" },
+        { "label": "②", "question": "9を上から順に分ける（9=3と□…）", "answer": "9＝3と6／3＝2と1／6＝4と2／2＝1と1・4＝3と1・2＝1と1", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 7, "box": { "x": 0.03, "y": 0.16, "w": 0.45, "h": 0.18 } } }
+      ]
+    },
+    {
+      "id": "u_e3_challenge",
+      "label": "[テーマ3] チャレンジ まとあてゲーム",
+      "category": "数と計算", "tags": ["合成", "とくてん"],
+      "pageNo": 23, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.66 },
+      "items": [
+        { "label": "①", "question": "1回目のとくてん（はるえ●／なつえ○／あきえ◎、まとの外は0てん）", "answer": "はるえ3てん・なつえ6てん・あきえ4てん", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『1点と5点では何点？』のように2つの数をあわせる練習。わからなければテーマ3の最初に戻って復習" },
+        { "label": "②", "question": "2回目：はるえ8てん・なつえ6てん・あきえ6てんになるよう、まとの□に印をかく", "answer": "●＝5てんと3てん／○＝5てんと1てん／◎＝3てんと3てん（まとに印刷ずみの◎とあわせて6てん）", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 7, "box": { "x": 0.50, "y": 0.16, "w": 0.42, "h": 0.19 } } }
+      ]
+    },
+    {
+      "id": "u_e4_tameshi1",
+      "label": "[テーマ4] ためしてみよう1 かくれたまめ（10になるかず）",
+      "category": "数と計算", "tags": ["10の合成"],
+      "pageNo": 24, "region": { "x": 0, "y": 0.70, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "①", "question": "あわせて10こ。見えているのは7こ", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "テーマ3と同じ内容で『10になる数』の練習。10は2けたで戸惑いやすいが、1〜9と同じやり方でできることを理解させる" },
+        { "label": "②", "question": "見えているのは4こ", "answer": "6（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "見えているのは8こ", "answer": "2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_tameshi2a",
+      "label": "[テーマ4] ためしてみよう2-1 三角の3つわけ",
+      "category": "数と計算", "tags": ["3つの数", "分解"],
+      "pageNo": 25, "region": { "x": 0, "y": 0.54, "w": 1, "h": 0.29 },
+      "items": [
+        { "label": "①", "question": "8を 4と3と○に", "answer": "1", "kind": "value", "conf": 1, "points": [], "kaisetsu": "1つの数を3つに分ける練習。わかっている2つを先に1つにまとめるのがコツ" },
+        { "label": "②", "question": "9を 2と○と4に", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10を ○と4と2に", "answer": "4", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_tameshi2b",
+      "label": "[テーマ4] ためしてみよう2-2 10のわけかた",
+      "category": "数と計算", "tags": ["10の分解", "3つの数"],
+      "pageNo": 25, "region": { "x": 0, "y": 0.82, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "①", "question": "1と3と□で10", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "□と5と3で10", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "3と□と3で10", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "2と7と□で10", "answer": "1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi1",
+      "label": "[テーマ4] やさしい1 あわせて10になるかず",
+      "category": "数と計算", "tags": ["10の合成"],
+      "pageNo": 26, "region": { "x": 0, "y": 0.09, "w": 1, "h": 0.22 },
+      "items": [
+        { "label": "①", "question": "3と□で10", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "8と□で10", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "□と7で10", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "□と5で10", "answer": "5", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi2",
+      "label": "[テーマ4] やさしい2 あわせて10の線つなぎ",
+      "category": "数と計算", "tags": ["10の合成", "線でむすぶ"],
+      "pageNo": 26, "region": { "x": 0, "y": 0.31, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "－", "question": "カードを線でつないで あわせて10", "answer": "1-9、4-6、6-4、7-3、8-2", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 8, "box": { "x": 0.50, "y": 0.16, "w": 0.45, "h": 0.21 } } }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi3",
+      "label": "[テーマ4] やさしい3 10を3つにわける",
+      "category": "数と計算", "tags": ["10の分解", "3つの数"],
+      "pageNo": 26, "region": { "x": 0, "y": 0.63, "w": 1, "h": 0.34 },
+      "items": [
+        { "label": "①", "question": "1と2と□", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "4と□と3", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "□と7と2", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "□と6と3", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "3と□と3", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "4と4と□", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "□と6と1", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "2と□と5", "answer": "3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "8と1と□", "answer": "1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "□と2と2", "answer": "6", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi4",
+      "label": "[テーマ4] やさしい4 ボールを3人でわける",
+      "category": "数と計算", "tags": ["10の分解", "文章題"],
+      "pageNo": 27, "region": { "x": 0, "y": 0.065, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "10こを3人で。まもる3こ・わたる3こ、ひろしくんは", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "数字がそのまま書かれていない文章題。ポイントを図にまとめる練習をさせる" }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi5",
+      "label": "[テーマ4] やさしい5 ケーキとドーナツをわける",
+      "category": "数と計算", "tags": ["分解", "文章題"],
+      "pageNo": 27, "region": { "x": 0, "y": 0.27, "w": 1, "h": 0.38 },
+      "items": [
+        { "label": "ケーキ", "question": "6こ。まき2こ・みき1こ、ゆきさんは", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "ドーナツ", "question": "8こ。まき1こ・みき4こ、ゆきさんは", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_yasashi6",
+      "label": "[テーマ4] やさしい6 あめを3人でわける",
+      "category": "数と計算", "tags": ["10の分解", "文章題"],
+      "pageNo": 27, "region": { "x": 0, "y": 0.70, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "－", "question": "10こ。たかし2こ・まさし5こ、きよしくんは", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_muzu1",
+      "label": "[テーマ4] むずかしい1 3だんのカードで10",
+      "category": "数と計算", "tags": ["10の合成", "3つの数", "線でむすぶ"],
+      "pageNo": 28, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "－", "question": "上・中・下のカードを線でむすんで3つあわせて10（れい：3-3-4）", "answer": "解答の図のとおり（各れつ3まいで10になる組み合わせ）", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 9, "box": { "x": 0.02, "y": 0.11, "w": 0.46, "h": 0.16 } } }
+      ]
+    },
+    {
+      "id": "u_e4_muzu2",
+      "label": "[テーマ4] むずかしい2 ○□△のかず（1〜3）",
+      "category": "数と計算", "tags": ["分解", "推理"],
+      "pageNo": 28, "region": { "x": 0, "y": 0.48, "w": 1, "h": 0.49 },
+      "items": [
+        { "label": "①", "question": "5＝□と□と△", "answer": "2と2と1", "kind": "value", "conf": 1, "points": [], "kaisetsu": "○□△には1〜3の同じ数字が入る（○=3、□=2、△=1）。数の多い記号から数字をあてはめて確かめる" },
+        { "label": "②", "question": "7＝□と□と○", "answer": "2と2と3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "8＝○と○と□", "answer": "3と3と2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "6＝○と△と△と△", "answer": "3と1と1と1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "10＝○と○と○と△", "answer": "3と3と3と1", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e4_challenge",
+      "label": "[テーマ4] チャレンジ ビンゴゲーム",
+      "category": "数と計算", "tags": ["合成", "ビンゴ"],
+      "pageNo": 29, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.90 },
+      "items": [
+        { "label": "①", "question": "4回のカードでビンゴになったのはだれ", "answer": "つとむくん", "kind": "value", "conf": 1, "points": [], "kaisetsu": "出た数字の合計をカードに鉛筆で○をつけていく。ななめもビンゴになることを忘れずに" },
+        { "label": "②", "question": "さとしとつとむが同時にビンゴになる4回目の□のかず", "answer": "3（5と3で8）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_tameshi1",
+      "label": "[テーマ5] ためしてみよう1 あわせていくつ（しき）",
+      "category": "数と計算", "tags": ["たし算", "しきをかく"],
+      "pageNo": 30, "region": { "x": 0, "y": 0.555, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "①", "question": "あめ5こと4こ（しきとこたえ）", "answer": "5+4=9　9（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "テーマ5からたし算。＋と＝の記号の意味を理解し、式に表すことを目標に" },
+        { "label": "②", "question": "さかな1ぴきと5ひき", "answer": "1+5=6　6（ぴき）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "ふうせん7こと3こ", "answer": "7+3=10　10（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_tameshi2",
+      "label": "[テーマ5] ためしてみよう2 ふえるといくつ（しき）",
+      "category": "数と計算", "tags": ["たし算", "ふえる"],
+      "pageNo": 31, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.49 },
+      "items": [
+        { "label": "①", "question": "4人のところへ1人きた", "answer": "4+1=5　5（人）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "＋には『ふえる』という意味もあることを理解させる" },
+        { "label": "②", "question": "さかな4ひきに3びき入れた", "answer": "4+3=7　7（ひき）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "ねこ4ひきに5ひききた", "answer": "4+5=9　9（ひき）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi1",
+      "label": "[テーマ5] やさしい1 あわせてなん人",
+      "category": "数と計算", "tags": ["たし算", "文章題"],
+      "pageNo": 32, "region": { "x": 0, "y": 0.09, "w": 1, "h": 0.155 },
+      "items": [
+        { "label": "－", "question": "男の子4人と女の子3人（しきとこたえ）", "answer": "4+3=7　7（人）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "文章だけの問題。最初は絵をかかせて問題文をイメージさせる" }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi2",
+      "label": "[テーマ5] やさしい2 玉入れ2かいのあわせて",
+      "category": "数と計算", "tags": ["たし算", "ひょうをよむ"],
+      "pageNo": 32, "region": { "x": 0, "y": 0.245, "w": 1, "h": 0.33 },
+      "items": [
+        { "label": "①", "question": "3人の入った玉のあわせて（□をうめる）", "answer": "たけし 3+2=5／みさこ 4+3=7／ゆうき 2+7=9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "一ばんたくさん入ったのはだれ", "answer": "ゆうき", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi3",
+      "label": "[テーマ5] やさしい3 しきをかいてこたえる",
+      "category": "数と計算", "tags": ["たし算", "しきをかく"],
+      "pageNo": 32, "region": { "x": 0, "y": 0.575, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "①", "question": "3たす6", "answer": "3+6=9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "1たす8", "answer": "1+8=9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "5たす2", "answer": "5+2=7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "5たす4", "answer": "5+4=9", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi4",
+      "label": "[テーマ5] やさしい4 ふえてなん人",
+      "category": "数と計算", "tags": ["たし算", "文章題"],
+      "pageNo": 32, "region": { "x": 0, "y": 0.815, "w": 1, "h": 0.15 },
+      "items": [
+        { "label": "－", "question": "5人のところへ4人きた（しきとこたえ）", "answer": "5+4=9　9（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi5",
+      "label": "[テーマ5] やさしい5 ふやすといくつ（しき）",
+      "category": "数と計算", "tags": ["たし算", "しきをかく"],
+      "pageNo": 33, "region": { "x": 0, "y": 0.065, "w": 1, "h": 0.47 },
+      "items": [
+        { "label": "①", "question": "パイナップル5こ、あと5こふやすと", "answer": "5+5=10　10（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "ふくろう2わ、7わふえると", "answer": "2+7=9　9（わ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "かき5こ、あと3こかうと", "answer": "5+3=8　8（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_yasashi6",
+      "label": "[テーマ5] やさしい6 おなじこたえの線つなぎ",
+      "category": "数と計算", "tags": ["たし算", "線でむすぶ"],
+      "pageNo": 33, "region": { "x": 0, "y": 0.535, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "おなじこたえになるカードを線でむすぶ", "answer": "1+4と3+2（5）／5+2と4+3（7）／6+3と5+4（9）／3+5と4+4（8）／2+4と4+2（6）", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 10, "box": { "x": 0.50, "y": 0.55, "w": 0.46, "h": 0.09 } } }
+      ]
+    },
+    {
+      "id": "u_e5_muzu1",
+      "label": "[テーマ5] むずかしい1 たしざんピラミッド",
+      "category": "数と計算", "tags": ["たし算", "つみ木"],
+      "pageNo": 34, "region": { "x": 0, "y": 0.08, "w": 1, "h": 0.25 },
+      "items": [
+        { "label": "①", "question": "下だん1・2・4のピラミッド", "answer": "2だん目＝3と6、上＝9", "kind": "value", "conf": 1, "points": [], "kaisetsu": "下から順に1つずつ計算。②③は空いているマスの解ける部分から数字を入れる" },
+        { "label": "②", "question": "上10・2だん目7と□・下だん5□2", "answer": "2だん目の□＝3、下だんは5・2・1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "上10のピラミッド", "answer": "2だん目＝6と4／3だん目＝4・2・2／下だん＝3・1・1・1", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 11, "box": { "x": 0.02, "y": 0.185, "w": 0.46, "h": 0.11 } } }
+      ]
+    },
+    {
+      "id": "u_e5_muzu2",
+      "label": "[テーマ5] むずかしい2 3人のおはじき",
+      "category": "数と計算", "tags": ["たし算", "文章題"],
+      "pageNo": 34, "region": { "x": 0, "y": 0.33, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "あきこ1こ、たろうはあきこより1こ多く、ともみはたろうより3こ多い。3人あわせて", "answer": "8（こ）（たろう1+1=2、ともみ2+3=5、1+2=3、3+5=8）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "人数が3人いるので頭の中では整理しにくい。必ず図をかかせてイメージさせる" }
+      ]
+    },
+    {
+      "id": "u_e5_muzu3",
+      "label": "[テーマ5] むずかしい3 じゃんけんのとくてん",
+      "category": "数と計算", "tags": ["たし算", "ひょうをよむ"],
+      "pageNo": 34, "region": { "x": 0, "y": 0.50, "w": 1, "h": 0.46 },
+      "items": [
+        { "label": "①", "question": "2かい目までのとくてん（かち3てん・まけ1てん・あいこ2てん）", "answer": "けんた 1+1=2（てん）／ようこ 3+3=6（てん）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "問題文の表に実際の得点を書かせる" },
+        { "label": "②", "question": "3かい目と4かい目をたしたとくてん", "answer": "けんた 2+3=5（てん）／ようこ 2+1=3（てん）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "それぞれのごうけい（表にかく）", "answer": "けんた 7てん／ようこ 9てん", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_e5_challenge",
+      "label": "[テーマ5] チャレンジ たしざんめいろ",
+      "category": "数と計算", "tags": ["たし算", "めいろ"],
+      "pageNo": 35, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.90 },
+      "items": [
+        { "label": "－", "question": "すべての式のこたえを□にかき、こたえの大きいほうをたどってゴールへ", "answer": "解答の図のとおり（例：4+5=9、3+6=9、4+6=10、3+7=10、4+2+4=10 など。大きいほうの道をたどる）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "迷路をしながらたし算の練習。ゴールした時の達成感・喜びを感じさせてあげる",
+          "figRef": { "ansPageNo": 11, "box": { "x": 0.47, "y": 0.18, "w": 0.50, "h": 0.30 } } }
+      ]
+    }
+  ]
+}
