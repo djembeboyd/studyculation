@@ -2428,6 +2428,295 @@
         { "label": "－", "question": "おなじいろがとなりどうしにならないように、3つのいろをぬる（①六角形3つ ②三角つなぎ ③大きなかたち＝どのいろも8まいずつ）", "answer": "解答の図のとおり（となりあわなければ他のぬりかたも可）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "同じ模様の三角形が横に並ばないのがポイント。うまくいかないときは、一つ飛ばした所か向かい合う所に置くとよい",
           "figRef": { "ansPageNo": 39, "box": { "x": 0.48, "y": 0.09, "w": 0.48, "h": 0.56 } } }
       ]
+    },
+    {
+      "id": "u_os2_tameshi1",
+      "label": "[おおいすくない(2)] ためしてみよう1 つみ木のかず",
+      "category": "量と測定", "tags": ["つみ木", "空間認識"],
+      "pageNo": 120, "region": { "x": 0, "y": 0.62, "w": 1, "h": 0.36 },
+      "items": [
+        { "label": "あ", "question": "かたちをつくるつみ木のかず", "answer": "8（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "隠れている積み木を数える発展的内容。実物やさいころで作って確認させると理解しやすい（全部隠れているのは：あ2・い1・う2・え1個）" },
+        { "label": "い", "question": "つみ木のかず", "answer": "9（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "う", "question": "つみ木のかず", "answer": "8（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "え", "question": "つみ木のかず", "answer": "8（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_tameshi2",
+      "label": "[おおいすくない(2)] ためしてみよう2 金ぎょの和差算",
+      "category": "量と測定", "tags": ["和差算", "文章題"],
+      "pageNo": 121, "region": { "x": 0, "y": 0.79, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "－", "question": "あわせて10ぴき、ひでとしはゆうすけより4ひきおおい。それぞれ", "answer": "ひでとしくん7（ひき）、ゆうすけくん3（びき）（10-4=6、6のはんぶん3、3+4=7）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ふたりの数を同じにするため、まず10-4=6の計算をする。絵をかいて説明するとわかりやすい" }
+      ]
+    },
+    {
+      "id": "u_os2_yasashi1",
+      "label": "[おおいすくない(2)] やさしい1 つみ木なんこ",
+      "category": "量と測定", "tags": ["つみ木", "空間認識"],
+      "pageNo": 122, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.36 },
+      "items": [
+        { "label": "あ", "question": "つみ木のかず", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "い", "question": "つみ木のかず", "answer": "5（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "う", "question": "つみ木のかず", "answer": "7（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "え", "question": "つみ木のかず", "answer": "7（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "お", "question": "つみ木のかず", "answer": "9（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_yasashi2",
+      "label": "[おおいすくない(2)] やさしい2 とったつみ木のかず",
+      "category": "量と測定", "tags": ["つみ木", "ひき算"],
+      "pageNo": 122, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.48 },
+      "items": [
+        { "label": "①", "question": "あ（27こ…3×3×3ではなく18こ）から、①のかたちにするには なんことる", "answer": "3（こ）（18-15）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "取った積み木を想像するのは非常に難しい。あと①〜④の積み木の数を数えて、その差が取った数（あ18・①15・②12・③9・④7個）" },
+        { "label": "②", "question": "なんことる", "answer": "6（こ）（18-12）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "なんことる", "answer": "9（こ）（18-9）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "なんことる", "answer": "11（こ）（18-7）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_yasashi3",
+      "label": "[おおいすくない(2)] やさしい3 どんぐりの和差算",
+      "category": "量と測定", "tags": ["和差算", "文章題"],
+      "pageNo": 123, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "－", "question": "ぜんぶで15こ、あいさんはゆりさんより5こおおい。それぞれ", "answer": "15-5=10、10のはんぶんは5、5+5=10　ゆりさん5（こ）・あいさん10（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "和差算の考え方。れいだい2と同じパターン" }
+      ]
+    },
+    {
+      "id": "u_os2_yasashi4",
+      "label": "[おおいすくない(2)] やさしい4 といたもんだいの和差算",
+      "category": "量と測定", "tags": ["和差算", "文章題"],
+      "pageNo": 123, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.47 },
+      "items": [
+        { "label": "－", "question": "あわせて17もん、ゆきえさんははじめくんより5もんすくない。それぞれ", "answer": "17-5=12、12のはんぶんは6、6+5=11　ゆきえさん6（もん）・はじめくん11（もん）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_muzu1",
+      "label": "[おおいすくない(2)] むずかしい1 三かくのピラミッド",
+      "category": "量と測定", "tags": ["規則性", "三角"],
+      "pageNo": 124, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.55 },
+      "items": [
+        { "label": "①", "question": "2だん目には三かくがいくつ", "answer": "3（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "1段目1個・2段目3個・3段目5個・4段目7個・5段目9個＝2個ずつ増える規則に注目" },
+        { "label": "②", "question": "1だんふえると三かくはいくつおおくなる", "answer": "2（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "2だん目と4だん目をあわせると5だん目より", "answer": "1（つ）おおく（なる）（3+7=10、10-9=1）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "6だん目をつくると三かくはいくつ", "answer": "11（こ）（9+2）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_muzu2",
+      "label": "[おおいすくない(2)] むずかしい2 シュークリームとプリン",
+      "category": "量と測定", "tags": ["和差算", "文章題"],
+      "pageNo": 124, "region": { "x": 0, "y": 0.68, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "あわせて16こ、シュークリームはプリンより4こすくない。それぞれ", "answer": "シュークリーム6（こ）・プリン10（こ）（16-4=12、12のはんぶん6、6+4=10）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os2_challenge",
+      "label": "[おおいすくない(2)] チャレンジ 見えるつみ木のいろ",
+      "category": "量と測定", "tags": ["つみ木", "空間認識"],
+      "pageNo": 125, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "①(1)", "question": "左から見ると、それぞれなんこ見える", "answer": "白1こ・こいグレー1こ・うすいグレー0こ・くろ2こ", "kind": "value", "conf": 1, "points": [], "kaisetsu": "手前に数が多い列があると後ろは見えない。差の分だけ見える＝空間認識の練習" },
+        { "label": "①(2)", "question": "右から見ると", "answer": "白0こ・こいグレー0こ・うすいグレー3こ・くろ1こ", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "こうへいくんとあやさんの見えかたから、右のつみ木にいろをぬる", "answer": "解答の図のとおり", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 41, "box": { "x": 0.48, "y": 0.04, "w": 0.48, "h": 0.14 } } }
+      ]
+    },
+    {
+      "id": "u_m3_te1",
+      "label": "[まとめ(3)] ていちゃく1 一ばん大きいかず",
+      "category": "数と計算", "tags": ["まとめ", "20までの数"],
+      "pageNo": 126, "region": { "x": 0, "y": 0.155, "w": 1, "h": 0.27 },
+      "items": [
+        { "label": "①", "question": "8,15,6,11", "answer": "15", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ルーム13の総復習。間違えたらそれぞれのテーマに戻る" },
+        { "label": "②", "question": "12,13,17,18", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "5,16,3,14", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "19,9,4,2,10", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "7,14,1,20,11,13", "answer": "20", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te2",
+      "label": "[まとめ(3)] ていちゃく2 たしざん",
+      "category": "数と計算", "tags": ["まとめ", "たし算"],
+      "pageNo": 126, "region": { "x": 0, "y": 0.425, "w": 1, "h": 0.245 },
+      "items": [
+        { "label": "①", "question": "7+8", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "4+9", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "6+6", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "10+2", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "11+3", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "5+13", "answer": "18", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "17+2", "answer": "19", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "4+16", "answer": "20", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te3",
+      "label": "[まとめ(3)] ていちゃく3 ひきざん",
+      "category": "数と計算", "tags": ["まとめ", "ひき算"],
+      "pageNo": 126, "region": { "x": 0, "y": 0.67, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "①", "question": "11-3", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "14-5", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "16-9", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "13-3", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "17-1", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "12-6", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "15-7", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "19-9", "answer": "10", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te4",
+      "label": "[まとめ(3)] ていちゃく4 3つのかず",
+      "category": "数と計算", "tags": ["まとめ", "3つの数"],
+      "pageNo": 127, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.22 },
+      "items": [
+        { "label": "①", "question": "5+5+6", "answer": "16", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "3+8+4", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "7+4+3", "answer": "14", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "9-1-3", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "17-2-5", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "13-5-4", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "6+7-8", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "14-9+6", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "12+4-9", "answer": "7", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "11-7+8", "answer": "12", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te5",
+      "label": "[まとめ(3)] ていちゃく5 りんごぜんぶで",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 127, "region": { "x": 0, "y": 0.29, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "5こ、3こかって、4こもらった", "answer": "5+3+4=12　12（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te6",
+      "label": "[まとめ(3)] ていちゃく6 たまごののこり",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 127, "region": { "x": 0, "y": 0.46, "w": 1, "h": 0.15 },
+      "items": [
+        { "label": "－", "question": "18こ、たまごやきに6こ・目だまやきに5こつかった", "answer": "18-6-5=7　7（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te7",
+      "label": "[まとめ(3)] ていちゃく7 バスの人数",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 127, "region": { "x": 0, "y": 0.61, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "11人のっていて、3人のってきて7人おりた", "answer": "11+3-7=7　7（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te8",
+      "label": "[まとめ(3)] ていちゃく8 ろうそくの火",
+      "category": "数と計算", "tags": ["まとめ", "文章題"],
+      "pageNo": 127, "region": { "x": 0, "y": 0.78, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "－", "question": "火のついたろうそく15本。6本きえて、3本にまた火をつけた", "answer": "15-6+3=12　12（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te9",
+      "label": "[まとめ(3)] ていちゃく9 じんとりゲーム",
+      "category": "量と測定", "tags": ["まとめ", "ひろさ"],
+      "pageNo": 128, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.42 },
+      "items": [
+        { "label": "－", "question": "とったじんちのひろいじゅんに1〜3", "answer": "けんいち（1）・けんじ（2）・けんぞう（3）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_te10",
+      "label": "[まとめ(3)] ていちゃく10 つみ木なんこ",
+      "category": "量と測定", "tags": ["まとめ", "つみ木"],
+      "pageNo": 128, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.47 },
+      "items": [
+        { "label": "①", "question": "つみ木のかず", "answer": "2（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "つみ木のかず", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "つみ木のかず", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "つみ木のかず", "answer": "4（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "つみ木のかず", "answer": "6（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "つみ木のかず", "answer": "5（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_re1",
+      "label": "[まとめ(3)] れんしゅう1 あわせて19の線むすび",
+      "category": "数と計算", "tags": ["まとめ", "線でむすぶ"],
+      "pageNo": 129, "region": { "x": 0, "y": 0.11, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "－", "question": "左の●と右のかずをあわせて19になるように線でむすぶ", "answer": "●6こ↔13／●4こ↔15／●7こ↔12／●1こ↔18／●9こ↔10", "kind": "figure", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 42, "box": { "x": 0.48, "y": 0.285, "w": 0.48, "h": 0.16 } } }
+      ]
+    },
+    {
+      "id": "u_m3_re2",
+      "label": "[まとめ(3)] れんしゅう2 10のまとまり",
+      "category": "数と計算", "tags": ["まとめ", "10のまとまり"],
+      "pageNo": 129, "region": { "x": 0, "y": 0.43, "w": 1, "h": 0.26 },
+      "items": [
+        { "label": "①", "question": "10が1こと□で14", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "10が1こと2と3で□", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10が2こから□をひくと15", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "10が2こから8をひくと□", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "10が2こから1と6をひくと□", "answer": "13", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_re3",
+      "label": "[まとめ(3)] れんしゅう3 ＋−を2つ入れる",
+      "category": "数と計算", "tags": ["まとめ", "きごう"],
+      "pageNo": 129, "region": { "x": 0, "y": 0.69, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "①", "question": "3□2□4=9", "answer": "＋、＋", "kind": "value", "conf": 1, "points": [], "kaisetsu": "いきなり答えを出すのは難しいので、＋−を順番にあてはめて確かめる" },
+        { "label": "②", "question": "8□4□3=1", "answer": "−、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "5□4□6=3", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "9□7□1=3", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "6□7□4=9", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "8□3□6=11", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "8□3□7=18", "answer": "＋、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "14□5□2=7", "answer": "−、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "15□9□1=7", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "12□2□6=8", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_re4",
+      "label": "[まとめ(3)] れんしゅう4 三かく8まいのかたち",
+      "category": "量と測定", "tags": ["まとめ", "ひろさ", "三角"],
+      "pageNo": 130, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "－", "question": "◣を8まいつかうとできるかたちをすべて", "answer": "う と か", "kind": "value", "conf": 1, "points": [], "kaisetsu": "正方形が三角2枚でできることを利用。三角の枚数がそのまま数えられない形はこれで数える" }
+      ]
+    },
+    {
+      "id": "u_m3_re5",
+      "label": "[まとめ(3)] れんしゅう5 つみ木のピラミッド",
+      "category": "量と測定", "tags": ["まとめ", "つみ木", "空間認識"],
+      "pageNo": 130, "region": { "x": 0, "y": 0.47, "w": 1, "h": 0.50 },
+      "items": [
+        { "label": "①", "question": "一ばん下のだんに つみ木はなんこ", "answer": "10（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "見えていない積み木が多い難問。下から1段目10個・2段目6個・3段目3個・4段目1個と順に数える" },
+        { "label": "②", "question": "つみ木はぜんぶでなんこ", "answer": "10+6+3+1=20　20（こ）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "かくれているつみ木はぜんぶでなんこ", "answer": "20-10=10　10（こ）（見えているのは10個）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_m3_challenge",
+      "label": "[まとめ(3)] チャレンジ おなじこすうのつみ木",
+      "category": "量と測定", "tags": ["まとめ", "つみ木", "空間認識"],
+      "pageNo": 131, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "－", "question": "れいのつみ木（7こ）とおなじこすうでできるかたちを①〜⑧からえらんで○", "answer": "②・⑤・⑦（各7こ。ほかは①6・③6・④8・⑥6・⑧5こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "それぞれの積み木の個数を数える。例と同じ7個のものを選ぶ" }
+      ]
     }
   ]
 }
