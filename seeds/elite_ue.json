@@ -2154,6 +2154,176 @@
         { "label": "－", "question": "クロスワードのけいさんで きごうのかずをもとめ、あんごうをひらがなにする。つえのかくしばしょは", "answer": "♥3・♣2／◆9・♠5／▼5・■5／▲3・★3／※7・●2／◎2・□1 → 32(し)95(ろ)55(の)33(す)72(み)21(か)＝「しろのすみか」", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "クロスワードパズルの計算版。たての式も横と同じく上から順に計算すればよい。たてと横の位置を間違えないように",
           "figRef": { "ansPageNo": 35, "box": { "x": 0.48, "y": 0.455, "w": 0.48, "h": 0.07 } } }
       ]
+    },
+    {
+      "id": "u_3k2_tameshi1",
+      "label": "[3つのかず(2)] ためしてみよう1 とちゅうでふえる/へる①",
+      "category": "数と計算", "tags": ["3つの数", "たしひき混合"],
+      "pageNo": 108, "region": { "x": 0, "y": 0.70, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "1-①", "question": "3+9-2", "answer": "10", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たし算とひき算が混在。基本どおり左から順番に1つずつ計算" },
+        { "label": "1-②", "question": "7+1-4", "answer": "4", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "10+1-6", "answer": "5", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-④", "question": "5+9-3", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑤", "question": "4+8-2", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑥", "question": "10+7-8", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2", "question": "もも7こ。6こかって、5こたべた", "answer": "7+6-5=8　8（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_tameshi2",
+      "label": "[3つのかず(2)] ためしてみよう2 とちゅうでふえる/へる②",
+      "category": "数と計算", "tags": ["3つの数", "たしひき混合"],
+      "pageNo": 109, "region": { "x": 0, "y": 0.62, "w": 1, "h": 0.36 },
+      "items": [
+        { "label": "1-①", "question": "10-4+2", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-②", "question": "15-5+1", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-③", "question": "14-9+3", "answer": "8", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-④", "question": "11-6+7", "answer": "12", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑤", "question": "19-9+1", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "1-⑥", "question": "12-8+9", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "2", "question": "コップ10こ。2こわれて、5こかった", "answer": "10-2+5=13　13（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "ひいてからたす順番。文意を正確に読みとって式を立てる" }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi1",
+      "label": "[3つのかず(2)] やさしい1 まぜこぜけいさん",
+      "category": "数と計算", "tags": ["3つの数", "たしひき混合"],
+      "pageNo": 110, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.23 },
+      "items": [
+        { "label": "①", "question": "7+3-8", "answer": "2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "16-9+4", "answer": "11", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "10+2-6", "answer": "6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "17-6+4", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "18-8+3", "answer": "13", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "4+6-1", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "12+5-7", "answer": "10", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "20-7+2", "answer": "15", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑨", "question": "15-9+3", "answer": "9", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑩", "question": "11+1-6", "answer": "6", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi2",
+      "label": "[3つのかず(2)] やさしい2 ＋か−を入れる",
+      "category": "数と計算", "tags": ["3つの数", "きごう"],
+      "pageNo": 110, "region": { "x": 0, "y": 0.36, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "①", "question": "8+4□5=7", "answer": "−", "kind": "value", "conf": 1, "points": [], "kaisetsu": "前の計算を先にして、出た答えを書いておき、最後の記号を考える" },
+        { "label": "②", "question": "17-6□3=14", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "3□7+9=19", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "16-8□2=10", "answer": "＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "12□4+3=11", "answer": "−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "9□7+8=10", "answer": "−", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi3",
+      "label": "[3つのかず(2)] やさしい3 バスのおきゃくさん",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 110, "region": { "x": 0, "y": 0.52, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "16人のっていて、6人おりて4人のってきた", "answer": "16-6+4=14　14（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi4",
+      "label": "[3つのかず(2)] やさしい4 ジュースののこり",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 110, "region": { "x": 0, "y": 0.72, "w": 1, "h": 0.25 },
+      "items": [
+        { "label": "－", "question": "8本あって5本かってきて、みんなで6本のんだ", "answer": "8+5-6=7　7（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi5",
+      "label": "[3つのかず(2)] やさしい5 おかしのかず",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 111, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.19 },
+      "items": [
+        { "label": "－", "question": "9こもっていて4こもらい、いもうとに7こあげた", "answer": "9+4-7=6　6（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi6",
+      "label": "[3つのかず(2)] やさしい6 えんぴつぜんぶで",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 111, "region": { "x": 0, "y": 0.26, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "9本もっていて、せん月3本つかい、こん月6本かった", "answer": "9-3+6=12　12（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi7",
+      "label": "[3つのかず(2)] やさしい7 たまごののこり",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 111, "region": { "x": 0, "y": 0.46, "w": 1, "h": 0.21 },
+      "items": [
+        { "label": "－", "question": "6こあって6こかってきて、10こつかった", "answer": "6+6-10=2　2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_yasashi8",
+      "label": "[3つのかず(2)] やさしい8 なくしたえんぴつ",
+      "category": "数と計算", "tags": ["3つの数", "文章題"],
+      "pageNo": 111, "region": { "x": 0, "y": 0.67, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "13本もっていて7本なくし、おかあさんが5本かってくれた", "answer": "13-7+5=11　11（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_muzu1",
+      "label": "[3つのかず(2)] むずかしい1 ＋−を2つ入れる",
+      "category": "数と計算", "tags": ["3つの数", "きごう", "推理"],
+      "pageNo": 112, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "①", "question": "9□4□5=8", "answer": "＋、−", "kind": "value", "conf": 1, "points": [], "kaisetsu": "□が2個以上あって難しい。一つずつ順番に符号を入れて確かめさせる" },
+        { "label": "②", "question": "5□2□9=12", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "7□5□6=6", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "8□3□7=12", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "16□9□8=15", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑥", "question": "13□7□1=7", "answer": "−、＋", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑦", "question": "10□4□5=9", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑧", "question": "10□1□8=3", "answer": "＋、−", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_muzu2",
+      "label": "[3つのかず(2)] むずかしい2 ＋−を3つ入れる",
+      "category": "数と計算", "tags": ["3つの数", "きごう", "推理"],
+      "pageNo": 112, "region": { "x": 0, "y": 0.33, "w": 1, "h": 0.13 },
+      "items": [
+        { "label": "①", "question": "13□5-6□4□8=0", "answer": "＋、−、−（13+5-6-4-8=0）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "□が3つある難問。すぐ正答できたら数の感覚がすぐれている" },
+        { "label": "②", "question": "14-5□2□7□4=0", "answer": "＋、−、−（14-5+2-7-4=0）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_3k2_muzu3",
+      "label": "[3つのかず(2)] むずかしい3 ふねのはじめの人数",
+      "category": "数と計算", "tags": ["3つの数", "文章題", "さかのぼり"],
+      "pageNo": 112, "region": { "x": 0, "y": 0.46, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "－", "question": "4人おりて3人のってくると11人のこっていた。はじめは", "answer": "11-3+4=12　12（人）（4-3=1人へったので11+1=12でも可）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『4人降りて3人乗る＝1人減った』ととらえると11+1=12人" }
+      ]
+    },
+    {
+      "id": "u_3k2_muzu4",
+      "label": "[3つのかず(2)] むずかしい4 あげたおはじき",
+      "category": "数と計算", "tags": ["3つの数", "文章題", "さかのぼり"],
+      "pageNo": 112, "region": { "x": 0, "y": 0.64, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "10こ→4こなくす→10こかう→ともだちにあげたら7こになった。あげたのは", "answer": "10-4+10=16（こ）、16-7=9　9（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "友達にあげる前は16個あることをまず理解させる" }
+      ]
+    },
+    {
+      "id": "u_3k2_challenge",
+      "label": "[3つのかず(2)] チャレンジ たてよこけいさん表",
+      "category": "数と計算", "tags": ["3つの数", "パズル"],
+      "pageNo": 113, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.90 },
+      "items": [
+        { "label": "－", "question": "たてとよこのけいさんがあうように□にかずを入れる", "answer": "上のだんから：15+3+2=20／4+□1+□6=11／□10+5-□4=11／9+□7+4=20（解答の図のとおり）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "計算できる場所（3つの数がわかっている所)から順に埋める。右端の一番下が20→下から2番目に11→左端に10が入るとスムーズ",
+          "figRef": { "ansPageNo": 37, "box": { "x": 0.48, "y": 0.255, "w": 0.48, "h": 0.26 } } }
+      ]
     }
   ]
 }
