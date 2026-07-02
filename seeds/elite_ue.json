@@ -1089,6 +1089,131 @@
         { "label": "－", "question": "こたえを□にかき、こたえのすくないほうの道をとおる（とおるしきを○でかこむ）", "answer": "解答の図のとおり：1=6-1(5)／2=2+3(5)／3=9-5(4)／4=3+3(6)／5=8-7(1)／6=0+2(2) の道をとおる", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "計算ばかりでは飽きるので『この迷路をうまくゴールできるかな』と言ってやる気を出させる。□には全部数字を書かせる",
           "figRef": { "ansPageNo": 21, "box": { "x": 0.48, "y": 0.10, "w": 0.49, "h": 0.35 } } }
       ]
+    },
+    {
+      "id": "u_th2_tameshi1",
+      "label": "[たしざんとひきざん(2)] ためしてみよう1 のりおり",
+      "category": "数と計算", "tags": ["たし算ひき算", "じゅんに考える"],
+      "pageNo": 66, "region": { "x": 0, "y": 0.50, "w": 1, "h": 0.48 },
+      "items": [
+        { "label": "①", "question": "4人のうち、ひとりおりました", "answer": "3（人）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "『乗る＝たし算？降りる＝ひき算？』と聞いて意味を確認させる。式は一つにまとめなくてよい" },
+        { "label": "②", "question": "つぎに3人のりました。ぜんぶで", "answer": "6（人）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "つぎに、ふたりおりました。のこりは", "answer": "4（人）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "つぎに、ふたりのりました。ぜんぶで", "answer": "6（人）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "つぎに、3人おりました。のこりは", "answer": "3（人）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_tameshi2",
+      "label": "[たしざんとひきざん(2)] ためしてみよう2 なん人のこっている",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 67, "region": { "x": 0, "y": 0.815, "w": 1, "h": 0.16 },
+      "items": [
+        { "label": "－", "question": "子ども10人、5人かえった（しきとこたえ）", "answer": "10-5=5　5（人）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "字だけの文章題。まず絵や図を思い浮かべ、たし算かひき算かを判断する" }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi1",
+      "label": "[たしざんとひきざん(2)] やさしい1 いろがみのちがい",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 68, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.17 },
+      "items": [
+        { "label": "－", "question": "はなこ6まい、みつこ8まい。みつこはなんまいおおい", "answer": "8-6=2　2（まい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi2",
+      "label": "[たしざんとひきざん(2)] やさしい2 えんぴつぜんぶで",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 68, "region": { "x": 0, "y": 0.30, "w": 1, "h": 0.14 },
+      "items": [
+        { "label": "－", "question": "くろえんぴつ5本、あかえんぴつ3本。ぜんぶで", "answer": "5+3=8　8（本）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi3",
+      "label": "[たしざんとひきざん(2)] やさしい3 せんぶんずからしき",
+      "category": "数と計算", "tags": ["線分図", "しき"],
+      "pageNo": 68, "region": { "x": 0, "y": 0.44, "w": 1, "h": 0.53 },
+      "items": [
+        { "label": "①", "question": "□が7と3に", "answer": "7+3=10　□＝10", "kind": "value", "conf": 1, "points": [], "kaisetsu": "線分図の復習。たし算の式かひき算の式か正確に立式させる" },
+        { "label": "②", "question": "9が□と3に", "answer": "9-3=6　□＝6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "8が6と□に", "answer": "8-6=2　□＝2", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "□が1と5に", "answer": "1+5=6　□＝6", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "10が□と5に", "answer": "10-5=5　□＝5", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi4",
+      "label": "[たしざんとひきざん(2)] やさしい4 なわとび",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 69, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.44 },
+      "items": [
+        { "label": "①", "question": "男の子4人と女の子3人、あわせて", "answer": "4+3=7　7（人）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "どちらがなん人おおい", "answer": "4-3=1　男の子（が）ひとり（おおい）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "男の子3人と女の子ひとりがかえった。いまなん人", "answer": "かえった子ども3+1=4（人）、7-4=3　3（人）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "たしてからひくのか、ひいてからたすのか、どちらの考え方もあることを説明" }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi5",
+      "label": "[たしざんとひきざん(2)] やさしい5 ふうせんののこり",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 69, "region": { "x": 0, "y": 0.51, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "赤3こと白6こ。白が5こわれた。あわせてなんこのこっている", "answer": "3+6=9（こ）、9-5=4　4（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_yasashi6",
+      "label": "[たしざんとひきざん(2)] やさしい6 なんさい",
+      "category": "数と計算", "tags": ["たし算ひき算", "文章題"],
+      "pageNo": 69, "region": { "x": 0, "y": 0.75, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "かずこ8さいで、たろうくんより4さい年上。たろうくんは", "answer": "8-4=4　4（さい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_muzu1",
+      "label": "[たしざんとひきざん(2)] むずかしい1 ナイフとフォークとスプーン",
+      "category": "数と計算", "tags": ["たし算ひき算", "3つの数", "文章題"],
+      "pageNo": 70, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.36 },
+      "items": [
+        { "label": "①", "question": "ナイフ5本、フォークはナイフより3本おおく、スプーンはフォークより1本すくない。スプーンは", "answer": "5+3=8、8-1=7　7（本）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "3つの数の文章題。ナイフの5本以外は本数が書いていないので、順番に出させる" },
+        { "label": "②", "question": "スプーンとナイフでは、どちらがなん本すくない", "answer": "7-5=2　ナイフ（が）2（本）すくない", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_th2_muzu2",
+      "label": "[たしざんとひきざん(2)] むずかしい2 でん車はなんりょう",
+      "category": "数と計算", "tags": ["たし算ひき算", "植木算"],
+      "pageNo": 70, "region": { "x": 0, "y": 0.49, "w": 1, "h": 0.20 },
+      "items": [
+        { "label": "－", "question": "たけしくんの車りょうは、まえから2ばん目、うしろから5ばん目。ぜんぶでなんりょう", "answer": "まえとうしろの車りょう1+4=5、5+1=6　6（りょう）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "2+5-1=6と一つの式でひくのは高度なので、前に1つ・後ろに4つと考え、自分の1を後で足す2つの式で",
+          "figRef": { "ansPageNo": 23, "box": { "x": 0.02, "y": 0.555, "w": 0.45, "h": 0.06 } } }
+      ]
+    },
+    {
+      "id": "u_th2_muzu3",
+      "label": "[たしざんとひきざん(2)] むずかしい3 れつのなん人",
+      "category": "数と計算", "tags": ["たし算ひき算", "植木算"],
+      "pageNo": 70, "region": { "x": 0, "y": 0.69, "w": 1, "h": 0.24 },
+      "items": [
+        { "label": "－", "question": "あきこさんはれつのちょうどまん中で、まえに3人。みんなでなん人", "answer": "まえとうしろの人3+3=6、6+1=7　7（人）", "kind": "value", "conf": 1, "points": [],
+          "figRef": { "ansPageNo": 23, "box": { "x": 0.02, "y": 0.775, "w": 0.45, "h": 0.06 } } }
+      ]
+    },
+    {
+      "id": "u_th2_challenge",
+      "label": "[たしざんとひきざん(2)] チャレンジ 5つのかずでしきづくり",
+      "category": "数と計算", "tags": ["たし算ひき算", "しきづくり"],
+      "pageNo": 71, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.90 },
+      "items": [
+        { "label": "①", "question": "3,6,4,5,1から。こたえが10になるたしざん", "answer": "4+6=10（6+4でも可）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "①②はたし算なので数字が前後してもよい。③〜⑤はひき算なので、ひかれる数とひく数の差が条件に合っていなければならない" },
+        { "label": "②", "question": "こたえが10より大きくなるたしざん", "answer": "5+6=11（6+5でも可）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "こたえが1になるひきざんを3つ", "answer": "4-3=1、5-4=1、6-5=1", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "こたえが3になるひきざんを2つ", "answer": "4-1=3、6-3=3", "kind": "value", "conf": 1, "points": [] },
+        { "label": "⑤", "question": "こたえが3より大きくなるひきざんを2つ（3は入らない）", "answer": "6-1=5、5-1=4", "kind": "value", "conf": 1, "points": [] }
+      ]
     }
   ]
 }
