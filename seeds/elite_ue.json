@@ -2324,6 +2324,110 @@
         { "label": "－", "question": "たてとよこのけいさんがあうように□にかずを入れる", "answer": "上のだんから：15+3+2=20／4+□1+□6=11／□10+5-□4=11／9+□7+4=20（解答の図のとおり）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "計算できる場所（3つの数がわかっている所)から順に埋める。右端の一番下が20→下から2番目に11→左端に10が入るとスムーズ",
           "figRef": { "ansPageNo": 37, "box": { "x": 0.48, "y": 0.255, "w": 0.48, "h": 0.26 } } }
       ]
+    },
+    {
+      "id": "u_os1_tameshi1",
+      "label": "[おおいすくない(1)] ためしてみよう1 ますのかず",
+      "category": "量と測定", "tags": ["ひろさ", "ます目"],
+      "pageNo": 114, "region": { "x": 0, "y": 0.80, "w": 1, "h": 0.18 },
+      "items": [
+        { "label": "①", "question": "かたちの中に■がいくつ", "answer": "10（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "面積・体積の導入部分。方眼紙の図形が1マスの図形何枚分かを理解させる" },
+        { "label": "②", "question": "■がいくつ（中に穴あり）", "answer": "8（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_tameshi2",
+      "label": "[おおいすくない(1)] ためしてみよう2 コップでかさくらべ",
+      "category": "量と測定", "tags": ["かさ", "コップ"],
+      "pageNo": 115, "region": { "x": 0, "y": 0.66, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "①", "question": "ポット（コップ8はい）とビン（4はい）、どちらがどれだけおおい", "answer": "ポット（のほうが）4（はいぶん）おおい", "kind": "value", "conf": 1, "points": [], "kaisetsu": "形が違う物の水の量は、同じ大きさのコップ何杯分かで比較する" },
+        { "label": "②", "question": "あわせるとコップなんはいぶん", "answer": "8+4=12　12（はいぶん）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_yasashi1",
+      "label": "[おおいすくない(1)] やさしい1 いろのついたます",
+      "category": "量と測定", "tags": ["ひろさ", "ます目"],
+      "pageNo": 116, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.30 },
+      "items": [
+        { "label": "①", "question": "あに■がいくつ", "answer": "6（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "あ6個・い7個・う9個。それぞれの個数を数字で書いてから解かせる" },
+        { "label": "②", "question": "あ〜うで一ばん■がおおいのは", "answer": "う", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "いをうとおなじにするには、あとなんこ", "answer": "9-7=2　2（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_yasashi2",
+      "label": "[おおいすくない(1)] やさしい2 うつしかえた水",
+      "category": "量と測定", "tags": ["かさ", "目もり"],
+      "pageNo": 116, "region": { "x": 0, "y": 0.43, "w": 1, "h": 0.14 },
+      "items": [
+        { "label": "－", "question": "コップ5はい＝入れもの一ぱい（4目もり…図）。コップ1ぱいぶんは", "answer": "4（目もり）※コップ5はいで一ぱい（20目もり相当）→1ぱい＝4目もり", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_yasashi3",
+      "label": "[おおいすくない(1)] やさしい3 ポット・ビン・ペットボトル",
+      "category": "量と測定", "tags": ["かさ", "目もり"],
+      "pageNo": 116, "region": { "x": 0, "y": 0.57, "w": 1, "h": 0.40 },
+      "items": [
+        { "label": "①", "question": "水が一ばんすくないのは（ポット8・ビン4・ペットボトル5目もり）", "answer": "ビン", "kind": "value", "conf": 1, "points": [] },
+        { "label": "②", "question": "ビンを一ぱいにするには、あとなん目もりぶん", "answer": "10-4=6　6（目もりぶん）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "ビン＋ペットボトルはポットよりおおい？すくない？", "answer": "おおい（4+5=9目もり＞ポット8目もり）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_yasashi4",
+      "label": "[おおいすくない(1)] やさしい4 三かくいくつぶん",
+      "category": "量と測定", "tags": ["ひろさ", "三角"],
+      "pageNo": 117, "region": { "x": 0, "y": 0.07, "w": 1, "h": 0.32 },
+      "items": [
+        { "label": "①", "question": "かたちは◣をなんこつかっている", "answer": "20（こ）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "四角（正方形）の部分が三角2個分であることに着目させる" },
+        { "label": "②", "question": "◣をなんこ", "answer": "12（こ）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_yasashi5",
+      "label": "[おおいすくない(1)] やさしい5 目もりでかさくらべ",
+      "category": "量と測定", "tags": ["かさ", "目もり"],
+      "pageNo": 117, "region": { "x": 0, "y": 0.39, "w": 1, "h": 0.55 },
+      "items": [
+        { "label": "①", "question": "一ばん水がおおいのはどれで、なん目もりぶん", "answer": "い（で）6（目もりぶん）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "あ2・い6・う4・え4目もり分。いとえは底面積が広いことに着目" },
+        { "label": "②", "question": "一ばんおおいものとすくないものの差は", "answer": "6-2=4　4（目もりぶん）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_muzu1",
+      "label": "[おおいすくない(1)] むずかしい1 あのいたなんまい",
+      "category": "量と測定", "tags": ["ひろさ", "三角", "パズル"],
+      "pageNo": 118, "region": { "x": 0, "y": 0.13, "w": 1, "h": 0.28 },
+      "items": [
+        { "label": "①", "question": "やじるしのかたちは、あの三かくいた なんまい", "answer": "4（まい）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "図形にあの三角を実際にかき込ませて数える",
+          "figRef": { "ansPageNo": 39, "box": { "x": 0.02, "y": 0.38, "w": 0.45, "h": 0.28 } } },
+        { "label": "②", "question": "大きい三かくは", "answer": "6（まい）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "③", "question": "ひし形のかたちは", "answer": "7（まい）", "kind": "value", "conf": 1, "points": [] },
+        { "label": "④", "question": "とりのかたちは", "answer": "5（まい）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_muzu2",
+      "label": "[おおいすくない(1)] むずかしい2 水とうのかさくらべ",
+      "category": "量と測定", "tags": ["かさ", "たんい", "考える"],
+      "pageNo": 118, "region": { "x": 0, "y": 0.41, "w": 1, "h": 0.55 },
+      "items": [
+        { "label": "①", "question": "たかし＝じぶんのふたで9はい、おとうさん＝じぶんのふたで8はい。このくらべかたでどちらがおおいかわかる？", "answer": "わからない（たかしくんとおとうさんの水とうのふたの大きさがちがうから）", "kind": "value", "conf": 1, "points": [], "kaisetsu": "単純に9-8=1としない。基準にする物が違えば比較できないことを理解させる（単位の考え方の基礎）" },
+        { "label": "②", "question": "たかしのふたで、おとうさんの水とうは12はい。どちらがどれだけおおい", "answer": "おとうさん（のほうが）3（ばい）おおい（12-9=3）", "kind": "value", "conf": 1, "points": [] }
+      ]
+    },
+    {
+      "id": "u_os1_challenge",
+      "label": "[おおいすくない(1)] チャレンジ 三かくの色ぬり",
+      "category": "量と測定", "tags": ["ひろさ", "色ぬり", "パズル"],
+      "pageNo": 119, "region": { "x": 0, "y": 0.06, "w": 1, "h": 0.92 },
+      "items": [
+        { "label": "－", "question": "おなじいろがとなりどうしにならないように、3つのいろをぬる（①六角形3つ ②三角つなぎ ③大きなかたち＝どのいろも8まいずつ）", "answer": "解答の図のとおり（となりあわなければ他のぬりかたも可）", "kind": "figure", "conf": 1, "points": [], "kaisetsu": "同じ模様の三角形が横に並ばないのがポイント。うまくいかないときは、一つ飛ばした所か向かい合う所に置くとよい",
+          "figRef": { "ansPageNo": 39, "box": { "x": 0.48, "y": 0.09, "w": 0.48, "h": 0.56 } } }
+      ]
     }
   ]
 }
